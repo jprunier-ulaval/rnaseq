@@ -1,0 +1,12 @@
+Package: rnaseq
+Title: Wrapper Functions for RNA-Seq Post-Processing
+Version: 0.0.0.9000
+Authors@R: person("Charles", "Joly Beauparlant", email =
+                  "Charles.Joly-Beauparlant@crchul.ulaval.ca",
+                  role = c("aut", "cre"))
+Description: Wrapper functions to import quantification data, to process the
+             results (normalization and DE) and to produce deliverables.
+Depends: R (>= 3.4.2)
+License: Artistic-2.0
+Encoding: UTF-8
+LazyData: true
