@@ -25,6 +25,6 @@ Import quantifications from Kallisto
 }
 \examples{
 abundances <- get_demo_abundance_files()
-txi <- import_kallisto(abundances, anno = "Hs.Ensembl91")
+txi <- import_kallisto(abundances, anno = "Hs.Ensembl79")
 
 }
