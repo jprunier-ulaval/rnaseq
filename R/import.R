@@ -7,6 +7,7 @@
 #'             * Hs.Ensembl79
 #' @param txOut Return counts and abundance at the transcript level. Default:
 #'              FALSE
+#' @param ignoreTxVersion Ignore version of tx. Default = FALSE
 #'
 #' @return A txi object.
 #'
@@ -20,7 +21,8 @@
 #' @import tximport
 #'
 #' @export
-import_kallisto <- function(filenames, anno = "Hs.Ensembl91", txOut = FALSE) {
+import_kallisto <- function(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
+                            ignoreTxVersion = FALSE) {
     stopifnot(all(file.exists(filenames)))
     valid_anno <- c("Hs.Ensembl91", "Hs.Ensembl79")
     stopifnot(anno %in% valid_anno)
@@ -35,8 +37,10 @@ import_kallisto <- function(filenames, anno = "Hs.Ensembl91", txOut = FALSE) {
         tx2gene <- dplyr::select(anno, TXNAME = transcript_id, GENEID = gene_id)
     }
     if (txOut == TRUE) {
-        tximport(filenames, type = "kallisto", tx2gene = tx2gene, txOut = TRUE)
+        tximport(filenames, type = "kallisto", tx2gene = tx2gene, txOut = TRUE,
+                 ignoreTxVersion = ignoreTxVersion)
     } else {
-        tximport(filenames, type = "kallisto", tx2gene = tx2gene)
+        tximport(filenames, type = "kallisto", tx2gene = tx2gene,
+                 ignoreTxVersion = ignoreTxVersion)
     }
 }
