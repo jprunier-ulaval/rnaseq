@@ -13,7 +13,7 @@
 #' @examples
 #' txi <- get_demo_txi()
 #' design <- get_demo_design()
-#' dds <- deseq2_analysis(txi, design, ~ group) 
+#' dds <- deseq2_analysis(txi, design, ~ group)
 #' de <- DESeq2::results(dds, contrast = c("group", "A", "B"))
 #'
 #' @import DESeq2
