@@ -1,6 +1,6 @@
 Package: rnaseq
 Title: Wrapper Functions for RNA-Seq Post-Processing
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: person("Charles", "Joly Beauparlant", email =
                   "Charles.Joly-Beauparlant@crchul.ulaval.ca",
                   role = c("aut", "cre"))
@@ -14,5 +14,9 @@ RoxygenNote: 6.0.1
 Imports:
     readr,
     dplyr,
+    tidyr,
     stringr,
-    tximport
+    tximport,
+    FactoMineR,
+    ggplot2,
+    ggrepel
