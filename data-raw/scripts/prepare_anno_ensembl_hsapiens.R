@@ -5,7 +5,7 @@ source("scripts/add_refseq.R")
 argv <- commandArgs(trailingOnly = TRUE)
 input <- argv[1]
 release <- argv[2]
-var <- paste0("Ensembl", release, "_tx_2_all")
+var <- paste0("Hs.Ensembl", release)
 output <- paste0(var, ".RData")
 
 anno <- import(input) %>%
