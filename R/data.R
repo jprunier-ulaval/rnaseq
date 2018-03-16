@@ -1,6 +1,6 @@
-#' Annotation for Ensembl release 91
+#' Annotation for Homo sapiens Ensembl release 91
 #'
-#' Basics annoations for the Ensembl release 91
+#' Basics annoations for the Homo sapiens Ensembl release 91
 #'
 #' @format A data.frame with 200243 rows and 5 columns:
 #' \describe{
@@ -10,11 +10,11 @@
 #'   \item{entrez_id}{Entrez id}
 #'   \item{transcript_type}{Transcript biotype}
 #' }
-"Ensembl91_tx_2_all"
+"Hs.Ensembl91"
 
-#' Annotation for Ensembl release 79
+#' Annotation for Homo sapiens Ensembl release 79
 #'
-#' Basics annoations for the Ensembl release 79
+#' Basics annoations for the Homo sapiens Ensembl release 79
 #'
 #' @format A data.frame with 213622 rows and 5 columns:
 #' \describe{
@@ -24,4 +24,4 @@
 #'   \item{entrez_id}{Entrez id}
 #'   \item{transcript_type}{Transcript biotype}
 #' }
-"Ensembl79_tx_2_all"
+"Hs.Ensembl79"
