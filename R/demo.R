@@ -23,6 +23,7 @@ get_demo_abundance_files <- function() {
 #' @export
 get_demo_txi <- function() {
     abundances <- get_demo_abundance_files()
+    names(abundances) <- basename(dirname(abundances))
     import_kallisto(abundances, anno = "Hs.Ensembl79")
 }
 

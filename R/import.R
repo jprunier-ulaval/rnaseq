@@ -24,10 +24,8 @@
 import_kallisto <- function(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
                             ignoreTxVersion = FALSE) {
     stopifnot(all(file.exists(filenames)))
-    valid_anno <- c("Hs.Ensembl91", "Hs.Ensembl79")
-    stopifnot(anno %in% valid_anno)
     if (stringr::str_detect(anno, "Ensembl")) {
-        anno <- get(anno)
+        anno <- get_anno(anno)
         tx2gene <- dplyr::select(anno, TXNAME = id, GENEID = ensembl_gene)
     }
     if (txOut == TRUE) {
@@ -37,4 +35,10 @@ import_kallisto <- function(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
         tximport(filenames, type = "kallisto", tx2gene = tx2gene,
                  ignoreTxVersion = ignoreTxVersion)
     }
+}
+
+get_anno <- function(anno) {
+    valid_anno <- c("Hs.Ensembl91", "Hs.Ensembl79")
+    stopifnot(anno %in% valid_anno)
+    get(anno)
 }
