@@ -7,10 +7,10 @@
 #'
 #' @export
 get_demo_abundance_files <- function() {
-    c(system.file("extdata/a/abundance.tsv", package="rnaseq"),
-      system.file("extdata/b/abundance.tsv", package="rnaseq"),
-      system.file("extdata/c/abundance.tsv", package="rnaseq"),
-      system.file("extdata/d/abundance.tsv", package="rnaseq"))
+    c(system.file("extdata/quant/a/abundance.tsv", package="rnaseq"),
+      system.file("extdata/quant/b/abundance.tsv", package="rnaseq"),
+      system.file("extdata/quant/c/abundance.tsv", package="rnaseq"),
+      system.file("extdata/quant/d/abundance.tsv", package="rnaseq"))
 }
 
 #' Get demo txi file
@@ -38,4 +38,16 @@ get_demo_txi <- function() {
 #' @export
 get_demo_design <- function() {
     data.frame(group = c("A", "A", "B", "B"), sample = letters[1:4])
+}
+
+#' Get demo kallisto quant dir
+#' 
+#' @return The path to kallisto results
+#' 
+#' @examples
+#' dir_quant <- get_demo_kallisto_dir()
+#'
+#' @export
+get_demo_kallisto_dir <- function() {
+    system.file("extdata/quant", package = "rnaseq")
 }
