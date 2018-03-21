@@ -24,7 +24,7 @@ get_demo_abundance_files <- function() {
 get_demo_txi <- function() {
     abundances <- get_demo_abundance_files()
     names(abundances) <- basename(dirname(abundances))
-    import_kallisto(abundances, anno = "Hs.Ensembl79")
+    import_kallisto(abundances, anno = "Hs.Ensembl79", txOut = TRUE)
 }
 
 #' Get demo design

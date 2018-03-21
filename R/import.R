@@ -40,6 +40,7 @@ import_kallisto <- function(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
     }
     txi$fpkm <- get_fpkm(txi)
     txi$anno <- get_anno(anno, txOut)
+    txi$txOut <- txOut
     stopifnot(all(rownames(txi$fpkm) %in% txi$anno$id))
     txi
 }

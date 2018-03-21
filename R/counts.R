@@ -15,7 +15,7 @@
 #' @export
 format_counts <- function(txi) {
     names_txi <- c("abundance", "counts", "length", "countsFromAbundance",
-                   "fpkm", "anno")
+                   "fpkm", "anno", "txOut")
     stopifnot(all(names(txi) %in% names_txi))
     stopifnot(identical(rownames(txi$counts), rownames(txi$abundance)))
     stopifnot(identical(colnames(txi$counts), colnames(txi$abundance)))
