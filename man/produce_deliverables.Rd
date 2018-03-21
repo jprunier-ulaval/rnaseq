@@ -25,7 +25,8 @@ Currently available:
 \item{file_type}{Abundance file format to use (h5 or tsv).}
 }
 \value{
-Invisibly returns a list with counts and de.
+Invisibly returns a list with txi_tx, txi_genes, df_tx (PCA),
+        df_genes (PCA), design, contrasts, counts and de values.
 }
 \description{
 counts.csv: counts at the gene level and at the transcript level

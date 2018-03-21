@@ -15,7 +15,8 @@
 #' @param dir_output Directory where to write outputs
 #' @param file_type Abundance file format to use (h5 or tsv).
 #'
-#' @return Invisibly returns a list with counts and de.
+#' @return Invisibly returns a list with txi_tx, txi_genes, df_tx (PCA),
+#'         df_genes (PCA), design, contrasts, counts and de values.
 #'
 #' @examples
 #' dir_kallisto <- get_demo_kallisto_dir()
@@ -44,6 +45,14 @@ produce_deliverables <- function (dir_kallisto, anno, design, contrasts, dir_out
     txi_genes <- import_kallisto(files, anno = anno, txOut = FALSE)
     txi_tx <- import_kallisto(files, anno = anno, txOut = TRUE)
 
+    # PCA
+    pdf(file.path(dir_output, "PCA_genes.pdf"))
+    df_genes <- produce_pca(txi_genes)
+    dev.off()
+    pdf(file.path(dir_output, "PCA_tx.pdf"))
+    df_tx <- produce_pca(txi_tx)
+    dev.off()
+
     # Produce counts
     counts_genes <- format_counts(txi_genes)
     counts_tx <- format_counts(txi_tx)
@@ -66,4 +75,13 @@ produce_deliverables <- function (dir_kallisto, anno, design, contrasts, dir_out
     names(de) <- names(de_tx)
 
     iwalk(de, ~ write_csv(.x, file.path(dir_output, paste0(.y, ".csv"))))
+
+    invisible(list(txi_tx = txi_tx,
+                   txi_genes = txi_genes,
+                   df_tx = df_tx,
+                   df_genes = df_genes,
+                   design = design,
+                   contrasts = contrasts,
+                   counts = counts,
+                   de = de))
 }
