@@ -4,14 +4,10 @@
 \alias{format_counts}
 \title{Prepare formated table counts.}
 \usage{
-format_counts(txi, anno, level)
+format_counts(txi)
 }
 \arguments{
 \item{txi}{The txi object returned by the import_kallisto function.}
-
-\item{anno}{The anno used when creating the txi object.}
-
-\item{level}{The level of the analysis (gene or transcript)}
 }
 \value{
 A data.frame with the anno and the merged counts values.
@@ -21,6 +17,6 @@ The table contains annotation and the counts (raw_counts/tpm/fpkm).
 }
 \examples{
 txi <- get_demo_txi()
-counts <- format_counts(txi, "Hs.Ensembl79", "gene")
+counts <- format_counts(txi)
 
 }

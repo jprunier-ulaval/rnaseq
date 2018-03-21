@@ -24,26 +24,37 @@
 import_kallisto <- function(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
                             ignoreTxVersion = FALSE) {
     stopifnot(all(file.exists(filenames)))
+    stopifnot(txOut %in% c(TRUE, FALSE))
+    stopifnot(ignoreTxVersion %in% c(TRUE, FALSE))
+
     if (stringr::str_detect(anno, "Ensembl")) {
-        anno <- get_anno(anno)
-        tx2gene <- dplyr::select(anno, TXNAME = id, GENEID = ensembl_gene)
+        tx2gene <- get(anno) %>%
+            dplyr::select(TXNAME = id, GENEID = ensembl_gene)
     }
     if (txOut == TRUE) {
-        tximport(filenames, type = "kallisto", tx2gene = tx2gene, txOut = TRUE,
+        txi <- tximport(filenames, type = "kallisto", tx2gene = tx2gene, txOut = TRUE,
                  ignoreTxVersion = ignoreTxVersion)
     } else {
-        tximport(filenames, type = "kallisto", tx2gene = tx2gene,
+        txi <- tximport(filenames, type = "kallisto", tx2gene = tx2gene,
                  ignoreTxVersion = ignoreTxVersion)
     }
+    txi$fpkm <- get_fpkm(txi)
+    txi$anno <- get_anno(anno, txOut)
+    stopifnot(all(rownames(txi$fpkm) %in% txi$anno$id))
+    txi
 }
 
-get_anno <- function(anno, level = "transcript") {
+get_anno <- function(anno, txOut) {
     valid_anno <- c("Hs.Ensembl91", "Hs.Ensembl79")
     stopifnot(anno %in% valid_anno)
     anno <- get(anno)
-    if (level == "gene") {
+    if (!txOut) {
         anno <- mutate(anno, id = ensembl_gene) %>%
             filter(!duplicated(ensembl_gene))
     }
     anno
+}
+
+get_fpkm <- function(txi) {
+    (txi$counts * 10^6) / (colSums(txi$counts) * (txi$length))
 }
