@@ -62,12 +62,13 @@ format_de <- function(dds, txi, contrast) {
                   main_isoform_grp2, baseMean, lfcSE, fold_change,
                   log2FoldChange, stat)
 
-    mutate(res, mean_TPM_grp1 = round(mean_TPM_grp1, 4),
+    res <- mutate(res, mean_TPM_grp1 = round(mean_TPM_grp1, 4),
            mean_TPM_grp2 = round(mean_TPM_grp2, 4),
            pV = round(pV, 4),
            qV = round(qV, 4),
            percent_grp1 = round(percent_grp1, 4),
            percent_grp2 = round(percent_grp2, 4))
+    as.data.frame(res)
 }
 
 get_mean_tpm <- function(dds, txi, group) {

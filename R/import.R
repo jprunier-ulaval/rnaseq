@@ -46,14 +46,18 @@ import_kallisto <- function(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
 }
 
 get_anno <- function(anno, txOut) {
-    valid_anno <- c("Hs.Ensembl91", "Hs.Ensembl79")
-    stopifnot(anno %in% valid_anno)
+    validate_anno(anno)
     anno <- get(anno)
     if (!txOut) {
         anno <- mutate(anno, id = ensembl_gene) %>%
             filter(!duplicated(ensembl_gene))
     }
     anno
+}
+
+validate_anno <- function(anno) {
+    valid_anno <- c("Hs.Ensembl91", "Hs.Ensembl79")
+    stopifnot(anno %in% valid_anno)
 }
 
 get_fpkm <- function(txi) {
