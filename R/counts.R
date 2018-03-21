@@ -16,7 +16,7 @@
 format_counts <- function(txi) {
     names_txi <- c("abundance", "counts", "length", "countsFromAbundance",
                    "fpkm", "anno", "txOut")
-    stopifnot(all(names(txi) %in% names_txi))
+    stopifnot(all(names_txi %in% names(txi)))
     stopifnot(identical(rownames(txi$counts), rownames(txi$abundance)))
     stopifnot(identical(colnames(txi$counts), colnames(txi$abundance)))
     stopifnot(identical(rownames(txi$counts), rownames(txi$fpkm)))
