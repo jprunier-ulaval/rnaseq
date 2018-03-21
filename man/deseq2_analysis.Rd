@@ -16,8 +16,6 @@ deseq2_analysis(txi, design, formula, filter = 2)
 
 \item{filter}{The minimum number of reads detected for a feature across all
 samples. Default: 2}
-
-\item{contrast}{The contrast for the comparison (see ?DESeq2::results).}
 }
 \value{
 A DESeqDataSet object.
