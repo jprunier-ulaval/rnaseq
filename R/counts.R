@@ -34,11 +34,7 @@ format_counts <- function(txi, anno, level) {
         mutate(id = rownames(raw_counts))
 
     # Add anno
-    anno <- get_anno(anno)
-    if (level == "gene") {
-        anno <- mutate(anno, id = ensembl_gene) %>%
-            filter(!duplicated(ensembl_gene))
-    }
+    anno <- get_anno(anno, level = level)
     left_join(res, anno, by = "id") %>%
         dplyr::select(id:transcript_type, everything())
 }

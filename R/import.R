@@ -37,8 +37,13 @@ import_kallisto <- function(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
     }
 }
 
-get_anno <- function(anno) {
+get_anno <- function(anno, level = "transcript") {
     valid_anno <- c("Hs.Ensembl91", "Hs.Ensembl79")
     stopifnot(anno %in% valid_anno)
-    get(anno)
+    anno <- get(anno)
+    if (level == "gene") {
+        anno <- mutate(anno, id = ensembl_gene) %>%
+            filter(!duplicated(ensembl_gene))
+    }
+    anno
 }
