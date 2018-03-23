@@ -12,6 +12,7 @@ produce_deliverables(dir_kallisto, anno, design, contrasts, dir_output,
 
 \item{anno}{The version of the annotation to use. Default: "Hs.Ensembl91"
 Currently available:
+* Hs.Gencode27
 * Hs.Ensembl91
 * Hs.Ensembl79}
 

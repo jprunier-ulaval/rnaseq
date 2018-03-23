@@ -3,6 +3,7 @@
 #' @param filenames Paths to the abundance files.
 #' @param anno The version of the annotation to use. Default: "Hs.Ensembl91"
 #'             Currently available:
+#'             * Hs.Gencode27
 #'             * Hs.Ensembl91
 #'             * Hs.Ensembl79
 #' @param txOut Return counts and abundance at the transcript level. Default:

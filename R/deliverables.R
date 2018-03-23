@@ -7,6 +7,7 @@
 #' @param dir_kallisto Directory with Kallisto quantifications
 #' @param anno The version of the annotation to use. Default: "Hs.Ensembl91"
 #'             Currently available:
+#'             * Hs.Gencode27
 #'             * Hs.Ensembl91
 #'             * Hs.Ensembl79
 #' @param design The experimental design
