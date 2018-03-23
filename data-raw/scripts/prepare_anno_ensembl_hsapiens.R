@@ -21,5 +21,5 @@ tx_2_all <- add_refseq(anno, "gene_id") %>%
 
 # Save results
 assign(var, tx_2_all)
-save_cmd <- paste0("save(", var, ', file = "', output, '", compresss = "xz")')
+save_cmd <- paste0("save(", var, ', file = "', output, '", compress = "xz")')
 eval(parse(text = save_cmd))
