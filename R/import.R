@@ -28,10 +28,8 @@ import_kallisto <- function(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
     stopifnot(txOut %in% c(TRUE, FALSE))
     stopifnot(ignoreTxVersion %in% c(TRUE, FALSE))
 
-    if (stringr::str_detect(anno, "Ensembl")) {
-        tx2gene <- get(anno) %>%
-            dplyr::select(TXNAME = id, GENEID = ensembl_gene)
-    }
+    tx2gene <- get(anno) %>%
+        dplyr::select(TXNAME = id, GENEID = ensembl_gene)
     if (txOut == TRUE) {
         txi <- tximport(filenames, type = "kallisto", tx2gene = tx2gene, txOut = TRUE,
                  ignoreTxVersion = ignoreTxVersion)
