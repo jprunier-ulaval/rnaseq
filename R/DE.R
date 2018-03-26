@@ -51,8 +51,8 @@ format_de <- function(dds, txi, contrast) {
         as.data.frame() %>%
         rownames_to_column("id") %>%
         left_join(txi$anno, by = "id") %>%
-        mutate(mean_TPM_grp1 = get_mean_tpm(dds, txi, contrast[2]),
-               mean_TPM_grp2 = get_mean_tpm(dds, txi, contrast[3]),
+        mutate(mean_TPM_grp1 = get_mean_tpm(dds, txi, contrast[3]),
+               mean_TPM_grp2 = get_mean_tpm(dds, txi, contrast[2]),
                fold_change = 2^log2FoldChange) %>%
         splicing_analysis(txi)
 
