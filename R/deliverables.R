@@ -35,6 +35,7 @@
 #' @export
 produce_deliverables <- function (dir_kallisto, anno, design, contrasts, dir_output, file_type = "h5") {
     stopifnot(dir.exists(dir_kallisto))
+    stopifnot(dir.exists(dir_output))
     stopifnot(file_type %in% c("tsv", "h5"))
     validate_anno(anno)
 
