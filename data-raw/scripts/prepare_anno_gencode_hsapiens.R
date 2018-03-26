@@ -1,5 +1,6 @@
 library(tidyverse)
 library(rtracklayer)
+library(Biostrings)
 source("scripts/add_refseq.R")
 
 argv <- commandArgs(trailingOnly = TRUE)
@@ -8,6 +9,7 @@ release <- argv[2]
 var <- paste0("Hs.Gencode", release)
 output <- paste0(var, ".RData")
 
+message(input)
 stopifnot(file.exists(input))
 
 fa <- readDNAStringSet(input)
@@ -25,9 +27,10 @@ col_names <- c("id",
                "filler")
 
 df <- tibble(full_name = names(fa)) %>%
-    separate(full_name, into = col_names, sep = "\\|")
+    separate(full_name, into = col_names, sep = "\\|") %>%
+    mutate(no_version = str_replace(ensembl_gene, "\\..*$", ""))
 
-df <- add_refseq(df, "ensembl_gene") %>%
+df <- add_refseq(df, "no_version") %>%
     dplyr::select(id, ensembl_gene, symbol, entrez_id = entrezgene,
                   transcript_type)
 
