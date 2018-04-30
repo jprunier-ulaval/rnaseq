@@ -4,10 +4,12 @@
 \alias{format_counts}
 \title{Prepare formated table counts.}
 \usage{
-format_counts(txi)
+format_counts(txi, digits = 4)
 }
 \arguments{
 \item{txi}{The txi object returned by the import_kallisto function.}
+
+\item{digits}{Integer indicating the number of decimal places}
 }
 \value{
 A data.frame with the anno and the merged counts values.

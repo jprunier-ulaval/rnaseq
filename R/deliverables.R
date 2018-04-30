@@ -15,6 +15,7 @@
 #' @param contrasts List of contrasts
 #' @param dir_output Directory where to write outputs
 #' @param file_type Abundance file format to use (h5 or tsv).
+#' @param digits Integer indicating the number of decimal places
 #'
 #' @return Invisibly returns a list with txi_tx, txi_genes, df_tx (PCA),
 #'         df_genes (PCA), design, contrasts, counts and de values.
@@ -33,7 +34,7 @@
 #' @import purrr
 #'
 #' @export
-produce_deliverables <- function (dir_kallisto, anno, design, contrasts, dir_output, file_type = "h5") {
+produce_deliverables <- function (dir_kallisto, anno, design, contrasts, dir_output, file_type = "h5", digits = 4) {
     stopifnot(dir.exists(dir_kallisto))
     stopifnot(dir.exists(dir_output))
     stopifnot(file_type %in% c("tsv", "h5"))
@@ -56,8 +57,8 @@ produce_deliverables <- function (dir_kallisto, anno, design, contrasts, dir_out
     dev.off()
 
     # Produce counts
-    counts_genes <- format_counts(txi_genes)
-    counts_tx <- format_counts(txi_tx)
+    counts_genes <- format_counts(txi_genes, digits = digits)
+    counts_tx <- format_counts(txi_tx, digits = digits)
     counts <- rbind(counts_tx, counts_genes)
     write_csv(counts, file.path(dir_output, "counts.csv"))
 
@@ -65,8 +66,8 @@ produce_deliverables <- function (dir_kallisto, anno, design, contrasts, dir_out
     dds_genes <- deseq2_analysis(txi_genes, design, ~ group)
     dds_tx <- deseq2_analysis(txi_tx, design, ~ group)
 
-    de_genes <- map(contrasts, ~ format_de(dds_genes, txi_genes, .x))
-    de_tx <- map(contrasts, ~ format_de(dds_tx, txi_tx, .x))
+    de_genes <- map(contrasts, ~ format_de(dds_genes, txi_genes, .x, digits = digits))
+    de_tx <- map(contrasts, ~ format_de(dds_tx, txi_tx, .x, digits = digits))
 
     rbind_df <- function(n) {
         tx <- de_tx[[n]]

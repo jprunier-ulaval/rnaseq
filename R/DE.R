@@ -32,6 +32,7 @@ deseq2_analysis <- function(txi, design, formula, filter = 2) {
 #' @param dds The DESeqDataSet object returned by deseq2_analysis.
 #' @param txi The txi object returned by the import_kallisto function.
 #' @param contrast The contrast for the comparison (see ?DESeq2::results).
+#' @param digits Integer indicating the number of decimal places
 #'
 #' @return A data.frame with the anno and the merged counts values.
 #'
@@ -46,7 +47,7 @@ deseq2_analysis <- function(txi, design, formula, filter = 2) {
 #' @import tibble
 #'
 #' @export
-format_de <- function(dds, txi, contrast) {
+format_de <- function(dds, txi, contrast, digits = 4) {
     res <- results(dds, contrast = contrast) %>%
         as.data.frame() %>%
         rownames_to_column("id") %>%
@@ -62,12 +63,12 @@ format_de <- function(dds, txi, contrast) {
                   main_isoform_grp2, baseMean, lfcSE, fold_change,
                   log2FoldChange, stat)
 
-    res <- mutate(res, mean_TPM_grp1 = round(mean_TPM_grp1, 4),
-           mean_TPM_grp2 = round(mean_TPM_grp2, 4),
-           pV = round(pV, 4),
-           qV = round(qV, 4),
-           percent_grp1 = round(percent_grp1, 4),
-           percent_grp2 = round(percent_grp2, 4))
+    res <- mutate(res, mean_TPM_grp1 = round(mean_TPM_grp1, digits),
+           mean_TPM_grp2 = round(mean_TPM_grp2, digits),
+           pV = round(pV, digits),
+           qV = round(qV, digits),
+           percent_grp1 = round(percent_grp1, digits),
+           percent_grp2 = round(percent_grp2, digits))
     as.data.frame(res)
 }
 
@@ -75,7 +76,7 @@ get_mean_tpm <- function(dds, txi, group) {
     col_design <- as.character(dds@design)[2]
     samples <- dds@colData[,colnames(dds@colData) != col_design, drop = TRUE]
     samples <- samples[dds@colData[,col_design, drop = TRUE] == group]
-    mean_tpm <- round(rowMeans(txi$abundance[,samples]), 4)
+    mean_tpm <- rowMeans(txi$abundance[,samples])
     mean_tpm[names(dds)]
 }
 

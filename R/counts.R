@@ -3,6 +3,7 @@
 #' The table contains annotation and the counts (raw_counts/tpm/fpkm).
 #'
 #' @param txi The txi object returned by the import_kallisto function.
+#' @param digits Integer indicating the number of decimal places
 #'
 #' @return A data.frame with the anno and the merged counts values.
 #'
@@ -13,7 +14,7 @@
 #' @import dplyr
 #'
 #' @export
-format_counts <- function(txi) {
+format_counts <- function(txi, digits = 4) {
     names_txi <- c("abundance", "counts", "length", "countsFromAbundance",
                    "fpkm", "anno", "txOut")
     stopifnot(all(names_txi %in% names(txi)))
@@ -23,9 +24,9 @@ format_counts <- function(txi) {
     stopifnot(identical(colnames(txi$counts), colnames(txi$fpkm)))
 
     # Extract values
-    raw_counts <- round(txi$counts, 4)
-    tpm <- round(txi$abundance, 4)
-    fpkm <- round(txi$fpkm, 4)
+    raw_counts <- round(txi$counts, digits)
+    tpm <- round(txi$abundance, digits)
+    fpkm <- round(txi$fpkm, digits)
 
     # Merge values
     res <- paste(paste(raw_counts, tpm, sep = "/"), fpkm, sep = "/") %>%

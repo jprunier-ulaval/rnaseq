@@ -5,7 +5,7 @@
 \title{Produce deliverables}
 \usage{
 produce_deliverables(dir_kallisto, anno, design, contrasts, dir_output,
-  file_type = "h5")
+  file_type = "h5", digits = 4)
 }
 \arguments{
 \item{dir_kallisto}{Directory with Kallisto quantifications}
@@ -24,6 +24,8 @@ Currently available:
 \item{dir_output}{Directory where to write outputs}
 
 \item{file_type}{Abundance file format to use (h5 or tsv).}
+
+\item{digits}{Integer indicating the number of decimal places}
 }
 \value{
 Invisibly returns a list with txi_tx, txi_genes, df_tx (PCA),
