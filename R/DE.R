@@ -65,10 +65,10 @@ format_de <- function(dds, txi, contrast, digits = 4) {
 
     res <- mutate(res, mean_TPM_grp1 = round(mean_TPM_grp1, digits),
            mean_TPM_grp2 = round(mean_TPM_grp2, digits),
-           pV = round(pV, digits),
-           qV = round(qV, digits),
-           percent_grp1 = round(percent_grp1, digits),
-           percent_grp2 = round(percent_grp2, digits))
+           pV = round(pV, digits) %>% format(scientific = FALSE),
+           qV = round(qV, digits) %>% format(scientific = FALSE),
+           percent_grp1 = round(percent_grp1, digits) %>% format(scientific = FALSE),
+           percent_grp2 = round(percent_grp2, digits) %>% format(scientific = FALSE))
     as.data.frame(res)
 }
 
