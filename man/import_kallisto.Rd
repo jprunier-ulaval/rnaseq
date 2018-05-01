@@ -14,7 +14,8 @@ import_kallisto(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
 Currently available:
 * Hs.Gencode27
 * Hs.Ensembl91
-* Hs.Ensembl79}
+* Hs.Ensembl79
+* Mm.Ensembl91}
 
 \item{txOut}{Return counts and abundance at the transcript level. Default:
 FALSE}
