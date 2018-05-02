@@ -63,12 +63,18 @@ format_de <- function(dds, txi, contrast, digits = 4) {
                   main_isoform_grp2, baseMean, lfcSE, fold_change,
                   log2FoldChange, stat)
 
-    res <- mutate(res, mean_TPM_grp1 = round(mean_TPM_grp1, digits) %>% format(scientific = FALSE),
+    res <- mutate(res,
+           mean_TPM_grp1 = round(mean_TPM_grp1, digits) %>% format(scientific = FALSE),
            mean_TPM_grp2 = round(mean_TPM_grp2, digits) %>% format(scientific = FALSE),
            pV = round(pV, digits) %>% format(scientific = FALSE),
            qV = round(qV, digits) %>% format(scientific = FALSE),
            percent_grp1 = round(percent_grp1, digits) %>% format(scientific = FALSE),
-           percent_grp2 = round(percent_grp2, digits) %>% format(scientific = FALSE))
+           percent_grp2 = round(percent_grp2, digits) %>% format(scientific = FALSE),
+           baseMean = round(baseMean, digits) %>% format(scientific = FALSE),
+           lfcSE = round(lfcSE, digits) %>% format(scientific = FALSE),
+           fold_change = round(fold_change, digits) %>% format(scientific = FALSE),
+           log2FoldChange = round(log2FoldChange, digits) %>% format(scientific = FALSE),
+           stat = round(stat, digits) %>% format(scientific = FALSE))
     as.data.frame(res)
 }
 
