@@ -7,6 +7,7 @@
 #'             * Hs.Ensembl91
 #'             * Hs.Ensembl79
 #'             * Mm.Ensembl91
+#'             * Mm.Ensembl92
 #' @param txOut Return counts and abundance at the transcript level. Default:
 #'              FALSE
 #' @param ignoreTxVersion Ignore version of tx. Default = FALSE
@@ -56,7 +57,7 @@ get_anno <- function(anno, txOut) {
 }
 
 validate_anno <- function(anno) {
-    valid_anno <- c("Hs.Gencode27", "Hs.Ensembl91", "Hs.Ensembl79", "Mm.Ensembl91")
+    valid_anno <- c("Hs.Gencode27", "Hs.Ensembl91", "Hs.Ensembl79", "Mm.Ensembl91", "Mm.Ensembl92")
     stopifnot(anno %in% valid_anno)
 }
 

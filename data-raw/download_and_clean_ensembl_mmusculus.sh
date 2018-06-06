@@ -6,7 +6,7 @@ RELEASE=$1
 URL_FTP=ftp://ftp.ensembl.org/pub/release-${RELEASE}
 FILE_GTF=Mus_musculus.GRCm38.${RELEASE}.chr.gtf.gz
 
-echo wget ${URL_FTP}/gtf/mus_musculus/${FILE_GTF}
-echo Rscript scripts/prepare_anno_ensembl.R Mm ${FILE_GTF} ${RELEASE}
+wget ${URL_FTP}/gtf/mus_musculus/${FILE_GTF}
+Rscript scripts/prepare_anno_ensembl.R Mm ${FILE_GTF} ${RELEASE}
 
 rm -rf ${FILE_GTF}
