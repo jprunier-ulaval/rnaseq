@@ -39,3 +39,45 @@
 #'   \item{transcript_type}{Transcript biotype}
 #' }
 "Hs.Ensembl79"
+
+#' Annotation for Mus musculus Ensembl release 91
+#'
+#' Basics annoations for the Mus musculus Ensembl release 91
+#'
+#' @format A data.frame with 133849 rows and 5 columns:
+#' \describe{
+#'   \item{id}{Ensembl transcript id}
+#'   \item{ensembl_gene}{Ensembl gene id}
+#'   \item{symbol}{Gene symbol}
+#'   \item{entrez_id}{Entrez id}
+#'   \item{transcript_type}{Transcript biotype}
+#' }
+"Mm.Ensembl91"
+
+#' Annotation for Mus musculus Ensembl release 92
+#'
+#' Basics annoations for the Mus musculus Ensembl release 92
+#'
+#' @format A data.frame with 135181 rows and 5 columns:
+#' \describe{
+#'   \item{id}{Ensembl transcript id}
+#'   \item{ensembl_gene}{Ensembl gene id}
+#'   \item{symbol}{Gene symbol}
+#'   \item{entrez_id}{Entrez id}
+#'   \item{transcript_type}{Transcript biotype}
+#' }
+"Mm.Ensembl92"
+
+#' Annotation for Rattus norvegicus Ensembl release 92
+#'
+#' Basics annoations for the Rattus norvegicus Ensembl release 92
+#'
+#' @format A data.frame with 40808 rows and 5 columns:
+#' \describe{
+#'   \item{id}{Ensembl transcript id}
+#'   \item{ensembl_gene}{Ensembl gene id}
+#'   \item{symbol}{Gene symbol}
+#'   \item{entrez_id}{Entrez id}
+#'   \item{transcript_type}{Transcript biotype}
+#' }
+"Rn.Ensembl92"

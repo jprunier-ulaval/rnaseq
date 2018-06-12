@@ -15,7 +15,9 @@ Currently available:
 * Hs.Gencode27
 * Hs.Ensembl91
 * Hs.Ensembl79
-* Mm.Ensembl91}
+* Mm.Ensembl91
+* Mm.Ensembl92
+* Rn.Ensembl92}
 
 \item{txOut}{Return counts and abundance at the transcript level. Default:
 FALSE}
