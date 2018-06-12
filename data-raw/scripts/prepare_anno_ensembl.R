@@ -13,9 +13,10 @@ anno <- import(input) %>%
     as.data.frame %>%
     filter(type == "transcript")
 
-stopifnot(org %in% c("Hs", "Mm"))
+stopifnot(org %in% c("Hs", "Mm", "Rn"))
 if (org == "Hs") ensembl <- "hsapiens_gene_ensembl"
 if (org == "Mm") ensembl <- "mmusculus_gene_ensembl"
+if (org == "Rn") ensembl <- "rnorvegicus_gene_ensembl"
 tx_2_all <- add_refseq(anno, "gene_id", ensembl) %>%
     dplyr::select(id = transcript_id,
                   ensembl_gene = gene_id,
