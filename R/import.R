@@ -64,5 +64,5 @@ validate_anno <- function(anno) {
 }
 
 get_fpkm <- function(txi) {
-    (txi$counts * 10^6) / (colSums(txi$counts) * (txi$length))
+    (txi$counts * 10^6) / (colSums(txi$counts) * (txi$length/1000))
 }
