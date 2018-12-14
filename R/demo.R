@@ -7,10 +7,12 @@
 #'
 #' @export
 get_demo_abundance_files <- function() {
-    c(system.file("extdata/quant/a/abundance.tsv", package="rnaseq"),
+    filenames <- c(system.file("extdata/quant/a/abundance.tsv", package="rnaseq"),
       system.file("extdata/quant/b/abundance.tsv", package="rnaseq"),
       system.file("extdata/quant/c/abundance.tsv", package="rnaseq"),
       system.file("extdata/quant/d/abundance.tsv", package="rnaseq"))
+    names(filenames) <- letters[1:4]
+    filenames
 }
 
 #' Get demo txi file
