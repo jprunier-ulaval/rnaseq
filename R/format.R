@@ -11,6 +11,8 @@
 #'
 #' @import tibble
 #' @import dplyr
+#'
+#' @export
 get_raw_count_anno_df <- function(txi) {
     as.data.frame(txi$counts) %>%
         rownames_to_column("id") %>%
@@ -31,6 +33,8 @@ get_raw_count_anno_df <- function(txi) {
 #'
 #' @import tibble
 #' @import dplyr
+#'
+#' @export
 get_tpm_anno_df <- function(txi) {
     as.data.frame(txi$abundance) %>%
         rownames_to_column("id") %>%
