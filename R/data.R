@@ -82,6 +82,19 @@
 #' }
 "Mm.Ensembl94"
 
+#' Annotation for Rattus norvegicus Ensembl release 76
+#'
+#' Basics annoations for the Rattus norvegicus Ensembl release 76
+#'
+#' @format A data.frame with 29188 rows and 4 columns:
+#' \describe{
+#'   \item{id}{Ensembl transcript id}
+#'   \item{ensembl_gene}{Ensembl gene id}
+#'   \item{symbol}{Gene symbol}
+#'   \item{entrez_id}{Entrez id}
+#' }
+"Rn.Ensembl92"
+
 #' Annotation for Rattus norvegicus Ensembl release 92
 #'
 #' Basics annoations for the Rattus norvegicus Ensembl release 92

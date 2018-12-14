@@ -18,6 +18,7 @@ Currently available:
 * Mm.Ensembl91
 * Mm.Ensembl92
 * Mm.Ensembl94
+* Rn.Ensembl76
 * Rn.Ensembl92}
 
 \item{design}{The experimental design

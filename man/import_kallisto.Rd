@@ -18,6 +18,7 @@ Currently available:
 * Mm.Ensembl91
 * Mm.Ensembl92
 * Mm.Ensembl94
+* Rn.Ensembl76
 * Rn.Ensembl92}
 
 \item{txOut}{Return counts and abundance at the transcript level. Default:
