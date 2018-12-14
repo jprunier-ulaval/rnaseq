@@ -14,7 +14,10 @@ produce_deliverables(dir_kallisto, anno, design, contrasts, dir_output,
 Currently available:
 * Hs.Gencode27
 * Hs.Ensembl91
-* Hs.Ensembl79}
+* Hs.Ensembl79
+* Mm.Ensembl91
+* Mm.Ensembl92
+* Rn.Ensembl92}
 
 \item{design}{The experimental design
 (1st column: group; 2nd column: sample)}
