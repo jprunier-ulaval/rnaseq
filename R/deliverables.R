@@ -12,6 +12,7 @@
 #'             * Hs.Ensembl79
 #'             * Mm.Ensembl91
 #'             * Mm.Ensembl92
+#'             * Mm.Ensembl94
 #'             * Rn.Ensembl92
 #' @param design The experimental design
 #'               (1st column: group; 2nd column: sample)

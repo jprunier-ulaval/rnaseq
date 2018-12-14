@@ -68,6 +68,20 @@
 #' }
 "Mm.Ensembl92"
 
+#' Annotation for Mus musculus Ensembl release 94
+#'
+#' Basics annoations for the Mus musculus Ensembl release 94
+#'
+#' @format A data.frame with 137767 rows and 5 columns:
+#' \describe{
+#'   \item{id}{Ensembl transcript id}
+#'   \item{ensembl_gene}{Ensembl gene id}
+#'   \item{symbol}{Gene symbol}
+#'   \item{entrez_id}{Entrez id}
+#'   \item{transcript_type}{Transcript biotype}
+#' }
+"Mm.Ensembl94"
+
 #' Annotation for Rattus norvegicus Ensembl release 92
 #'
 #' Basics annoations for the Rattus norvegicus Ensembl release 92

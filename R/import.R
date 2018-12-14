@@ -8,6 +8,7 @@
 #'             * Hs.Ensembl79
 #'             * Mm.Ensembl91
 #'             * Mm.Ensembl92
+#'             * Mm.Ensembl94
 #'             * Rn.Ensembl92
 #' @param txOut Return counts and abundance at the transcript level. Default:
 #'              FALSE
