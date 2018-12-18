@@ -10,6 +10,7 @@
 #'             * Mm.Ensembl92
 #'             * Mm.Ensembl94
 #'             * Rn.Ensembl76
+#'             * Rn.Ensembl79
 #'             * Rn.Ensembl92
 #' @param txOut Return counts and abundance at the transcript level. Default:
 #'              FALSE
@@ -62,7 +63,7 @@ get_anno <- function(anno, txOut) {
 validate_anno <- function(anno) {
     valid_anno <- c("Hs.Gencode27", "Hs.Ensembl91", "Hs.Ensembl79",
 		    "Mm.Ensembl91", "Mm.Ensembl92", "Mm.Ensembl94",
-		    "Rn.Ensembl76", "Rn.Ensembl92")
+		    "Rn.Ensembl76", "Rn.Ensembl79", "Rn.Ensembl92")
     stopifnot(anno %in% valid_anno)
 }
 
