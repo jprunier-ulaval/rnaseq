@@ -12,6 +12,7 @@ import_kallisto(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
 
 \item{anno}{The version of the annotation to use. Default: "Hs.Ensembl91"
 Currently available:
+* Hs.Gencode19
 * Hs.Gencode27
 * Hs.Ensembl91
 * Hs.Ensembl79
