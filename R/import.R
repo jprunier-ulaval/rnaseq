@@ -63,9 +63,9 @@ get_anno <- function(anno, txOut) {
 
 validate_anno <- function(anno) {
     valid_anno <- c("Hs.Gencode19", "Hs.Gencode27", "Hs.Ensembl91",
-		    "Hs.Ensembl79", "Mm.Ensembl91", "Mm.Ensembl92",
-		    "Mm.Ensembl94", "Rn.Ensembl76", "Rn.Ensembl79",
-		    "Rn.Ensembl92")
+		    "Hs.Ensembl95", "Hs.Ensembl79", "Mm.Ensembl91",
+		    "Mm.Ensembl92", "Mm.Ensembl94", "Rn.Ensembl76",
+		    "Rn.Ensembl79", "Rn.Ensembl92")
     stopifnot(anno %in% valid_anno)
 }
 
