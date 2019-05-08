@@ -2,23 +2,27 @@
 % Please edit documentation in R/PCA.R
 \name{produce_pca}
 \alias{produce_pca}
-\title{Produce a PCA plot}
+\title{Produce a PCA plot from txi}
 \usage{
-produce_pca(txi)
+produce_pca(txi, graph = TRUE)
 }
 \arguments{
-\item{txi}{The txi object returned by the import_kallisto function.}
+\item{txi}{The \code{txi} object returned by the \code{import_kallisto}
+function.}
+
+\item{txi}{Produce the graph. \code{TRUE} or \code{FALSE}. Default:
+\code{TRUE}.}
 }
 \value{
-Produce the PCA and silently returns the data.frame used.
+Produce the PCA and silently returns the \code{data.frame} and the
+result from the \code{PCA} function as a \code{list} with 2 elements
+(\code{df} and \code{pca}).
 }
 \description{
-Produce a PCA plot
+Produce a PCA plot from txi
 }
 \examples{
 txi <- get_demo_txi()
-\dontrun{
-df <- produce_pca(txi)
-}
+df <- produce_pca(txi, graph = FALSE)
 
 }
