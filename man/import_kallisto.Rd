@@ -14,8 +14,9 @@ import_kallisto(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
 Currently available:
 * Hs.Gencode19
 * Hs.Gencode27
-* Hs.Ensembl91
 * Hs.Ensembl79
+* Hs.Ensembl91
+* Hs.Ensembl95
 * Mm.Ensembl91
 * Mm.Ensembl92
 * Mm.Ensembl94

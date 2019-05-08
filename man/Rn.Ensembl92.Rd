@@ -3,7 +3,6 @@
 \docType{data}
 \name{Rn.Ensembl92}
 \alias{Rn.Ensembl92}
-\alias{Rn.Ensembl92}
 \title{Annotation for Rattus norvegicus Ensembl release 76}
 \format{A data.frame with 29188 rows and 4 columns:
 \describe{
