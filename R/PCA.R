@@ -2,7 +2,7 @@
 #'
 #' @param txi The \code{txi} object returned by the \code{import_kallisto}
 #' function.
-#' @param txi Produce the graph. \code{TRUE} or \code{FALSE}. Default:
+#' @param graph Produce the graph. \code{TRUE} or \code{FALSE}. Default:
 #' \code{TRUE}.
 #'
 #' @return Produce the PCA and silently returns the \code{data.frame} and the
@@ -54,7 +54,9 @@ produce_pca <- function(txi, graph = TRUE) {
 
 #' Produce a PCA plot from produce_pca results
 #'
-#' @param txi The txi object returned by the import_kallisto function.
+#' @param res_pca The \code{list} returned from the produce_pca function
+#' @param color The name of the column in \code{res_pca$df} to use to color the
+#' points in the PCA. If \code{NULL}, won't add color. Default: \code{NULL}.
 #'
 #' @return Returns the \code{ggplot} object
 #'
@@ -68,9 +70,13 @@ produce_pca <- function(txi, graph = TRUE) {
 #' @import ggrepel
 #'
 #' @export
-plot_pca <- function(df, pca) {
-    ggplot(df, aes(x = Dim1, y = Dim2)) +
-        geom_point(size = 3) +
+plot_pca <- function(res_pca, color = NULL) {
+    if (is.null(color)) {
+        p <- ggplot(df, aes(x = Dim1, y = Dim2))
+    } else {
+        p <- ggplot(df, aes_string(x = "Dim1", y = "Dim2", color = color))
+    }
+    p + geom_point(size = 3) +
         geom_text_repel(aes(label = sample), color = "black", force = 10) +
         theme_bw() +
         xlab(paste0("Dim1 (", pca$eig[1,2] %>% round(2), "%)")) +

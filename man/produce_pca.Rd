@@ -10,7 +10,7 @@ produce_pca(txi, graph = TRUE)
 \item{txi}{The \code{txi} object returned by the \code{import_kallisto}
 function.}
 
-\item{txi}{Produce the graph. \code{TRUE} or \code{FALSE}. Default:
+\item{graph}{Produce the graph. \code{TRUE} or \code{FALSE}. Default:
 \code{TRUE}.}
 }
 \value{

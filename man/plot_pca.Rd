@@ -4,10 +4,13 @@
 \alias{plot_pca}
 \title{Produce a PCA plot from produce_pca results}
 \usage{
-plot_pca(df, pca)
+plot_pca(res_pca, color = NULL)
 }
 \arguments{
-\item{txi}{The txi object returned by the import_kallisto function.}
+\item{res_pca}{The \code{list} returned from the produce_pca function}
+
+\item{color}{The name of the column in \code{res_pca$df} to use to color the
+points in the PCA. If \code{NULL}, won't add color. Default: \code{NULL}.}
 }
 \value{
 Returns the \code{ggplot} object
