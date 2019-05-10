@@ -46,10 +46,12 @@ produce_pca <- function(txi, graph = TRUE) {
     df <- df %>%
         mutate(sample = rownames(df)) %>%
         tbl_df
-    p <- plot_pca(df)
-    print(p)
+    res <- list(df = df, pca = pca)
 
-    invisible(list(df = df, pca = pca))
+    p <- plot_pca(res)
+    if (graph) print(p)
+
+    invisible(res)
 }
 
 #' Produce a PCA plot from produce_pca results
