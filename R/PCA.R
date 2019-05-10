@@ -74,13 +74,13 @@ produce_pca <- function(txi, graph = TRUE) {
 #' @export
 plot_pca <- function(res_pca, color = NULL) {
     if (is.null(color)) {
-        p <- ggplot(df, aes(x = Dim1, y = Dim2))
+        p <- ggplot(res_pca$df, aes(x = Dim1, y = Dim2))
     } else {
-        p <- ggplot(df, aes_string(x = "Dim1", y = "Dim2", color = color))
+        p <- ggplot(res_pca$df, aes_string(x = "Dim1", y = "Dim2", color = color))
     }
     p + geom_point(size = 3) +
         geom_text_repel(aes(label = sample), color = "black", force = 10) +
         theme_bw() +
-        xlab(paste0("Dim1 (", pca$eig[1,2] %>% round(2), "%)")) +
-        ylab(paste0("Dim2 (", pca$eig[2,2] %>% round(2), "%)"))
+        xlab(paste0("Dim1 (", res_pca$pca$eig[1,2] %>% round(2), "%)")) +
+        ylab(paste0("Dim2 (", res_pca$pca$eig[2,2] %>% round(2), "%)"))
 }
