@@ -94,5 +94,7 @@ produce_deliverables <- function (dir_kallisto, anno, design, contrasts, dir_out
                    design = design,
                    contrasts = contrasts,
                    counts = counts,
-                   de = de))
+                   de = de,
+                   dds_genes = dds_genes,
+                   dds_tx = dds_tx))
 }
