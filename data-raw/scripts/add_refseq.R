@@ -2,7 +2,7 @@ require(biomaRt)
 add_refseq <- function(x, y, z) {
     ensembl <- useMart("ensembl")
     ensembl <- useDataset(z, mart=ensembl)
-    attr <- c("ensembl_gene_id", "entrezgene")
+    attr <- c("ensembl_gene_id", "entrezgene_id")
     all.entrezgene <- getBM(attributes = attr, values = "*", mart = ensembl) %>%
         unique %>%
         filter(!duplicated(ensembl_gene_id))

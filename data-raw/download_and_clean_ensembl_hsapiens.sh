@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Note: does not work with Ensembl release < 82
+# Note: does not work with Ensembl release < 97(?)
 
 RELEASE=$1
 URL_FTP=ftp://ftp.ensembl.org/pub/release-${RELEASE}

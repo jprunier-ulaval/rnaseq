@@ -21,7 +21,7 @@ tx_2_all <- add_refseq(anno, "gene_id", ensembl) %>%
     dplyr::select(id = transcript_id,
                   ensembl_gene = gene_id,
                   symbol = gene_name,
-                  entrez_id = entrezgene,
+                  entrez_id = entrezgene_id,
                   transcript_type = transcript_biotype)
 
 # Save results
