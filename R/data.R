@@ -150,3 +150,18 @@
 #'   \item{transcript_type}{Transcript biotype}
 #' }
 "Rn.Ensembl92"
+
+#' A custom database (Homo sapiens + Staphylococcus epidermidis)
+#'
+#' Homo sapiens: Ensembl release 97
+#' Staphylococcus epidermidis: Ensembl Genome release 44
+#'
+#' @format A data.frame with 249446 rows and 5 columns:
+#' \describe{
+#'   \item{id}{Ensembl transcript id}
+#'   \item{ensembl_gene}{Ensembl gene id}
+#'   \item{symbol}{Gene symbol}
+#'   \item{entrez_id}{Entrez id}
+#'   \item{transcript_type}{Transcript biotype}
+#' }
+"peaux_colonisees"

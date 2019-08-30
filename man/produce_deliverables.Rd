@@ -17,12 +17,14 @@ Currently available:
 * Hs.Ensembl79
 * Hs.Ensembl91
 * Hs.Ensembl95
+* Hs.Ensembl97
 * Mm.Ensembl91
 * Mm.Ensembl92
 * Mm.Ensembl94
 * Rn.Ensembl76
 * Rn.Ensembl79
-* Rn.Ensembl92}
+* Rn.Ensembl92
+* peaux_colonisees}
 
 \item{design}{The experimental design
 (1st column: group; 2nd column: sample)}
