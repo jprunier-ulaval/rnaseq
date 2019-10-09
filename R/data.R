@@ -163,7 +163,7 @@
 #'   \item{symbol}{Gene symbol}
 #'   \item{entrez_id}{Entrez id}
 #' }
-"Rn.Ensembl92"
+"Rn.Ensembl76"
 
 #' Annotation for Rattus norvegicus Ensembl release 92
 #'
@@ -178,6 +178,20 @@
 #'   \item{transcript_type}{Transcript biotype}
 #' }
 "Rn.Ensembl92"
+
+#' Annotation for Rattus norvegicus Ensembl release 92
+#'
+#' Basics annoations for the Rattus norvegicus Ensembl release 92
+#'
+#' @format A data.frame with 40808 rows and 5 columns:
+#' \describe{
+#'   \item{id}{Ensembl transcript id}
+#'   \item{ensembl_gene}{Ensembl gene id}
+#'   \item{symbol}{Gene symbol}
+#'   \item{entrez_id}{Entrez id}
+#'   \item{transcript_type}{Transcript biotype}
+#' }
+"Rn.Ensembl98"
 
 #' A custom database (Homo sapiens + Staphylococcus epidermidis)
 #'
