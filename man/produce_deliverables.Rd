@@ -18,6 +18,7 @@ Currently available:
 * Hs.Ensembl91
 * Hs.Ensembl95
 * Hs.Ensembl97
+* Hs.Ensembl98
 * Mm.Ensembl91
 * Mm.Ensembl92
 * Mm.Ensembl94
