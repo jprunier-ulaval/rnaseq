@@ -14,6 +14,7 @@ produce_deliverables(dir_kallisto, anno, design, contrasts, dir_output,
 Currently available:
 * Hs.Gencode19
 * Hs.Gencode27
+* Hs.Gencode32
 * Hs.Ensembl79
 * Hs.Ensembl91
 * Hs.Ensembl95
@@ -22,9 +23,11 @@ Currently available:
 * Mm.Ensembl91
 * Mm.Ensembl92
 * Mm.Ensembl94
+* Mm.Ensembl97
 * Rn.Ensembl76
 * Rn.Ensembl79
 * Rn.Ensembl92
+* Rn.Ensembl98
 * peaux_colonisees}
 
 \item{design}{The experimental design

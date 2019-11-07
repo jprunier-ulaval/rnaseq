@@ -26,6 +26,20 @@
 #' }
 "Hs.Gencode27"
 
+#' Annotation for Homo sapiens Gencode release 32
+#'
+#' Basics annoations for the Homo sapiens Gencode release 32
+#'
+#' @format A data.frame with 227301 rows and 5 columns:
+#' \describe{
+#'   \item{id}{Ensembl transcript id}
+#'   \item{ensembl_gene}{Ensembl gene id}
+#'   \item{symbol}{Gene symbol}
+#'   \item{entrez_id}{Entrez id}
+#'   \item{transcript_type}{Transcript biotype}
+#' }
+"Hs.Gencode32"
+
 #' Annotation for Homo sapiens Ensembl release 91
 #'
 #' Basics annoations for the Homo sapiens Ensembl release 91
@@ -138,6 +152,20 @@
 #' }
 "Mm.Ensembl94"
 
+#' Annotation for Mus musculus Ensembl release 97
+#'
+#' Basics annoations for the Mus musculus Ensembl release 97
+#'
+#' @format A data.frame with 142238 rows and 5 columns:
+#' \describe{
+#'   \item{id}{Ensembl transcript id}
+#'   \item{ensembl_gene}{Ensembl gene id}
+#'   \item{symbol}{Gene symbol}
+#'   \item{entrez_id}{Entrez id}
+#'   \item{transcript_type}{Transcript biotype}
+#' }
+"Mm.Ensembl97"
+
 #' Annotation for Rattus norvegicus Ensembl release 76
 #'
 #' Basics annoations for the Rattus norvegicus Ensembl release 76
@@ -148,6 +176,20 @@
 #'   \item{ensembl_gene}{Ensembl gene id}
 #'   \item{symbol}{Gene symbol}
 #'   \item{entrez_id}{Entrez id}
+#' }
+"Rn.Ensembl76"
+
+#' Annotation for Rattus norvegicus Ensembl release 92
+#'
+#' Basics annoations for the Rattus norvegicus Ensembl release 92
+#'
+#' @format A data.frame with 40808 rows and 5 columns:
+#' \describe{
+#'   \item{id}{Ensembl transcript id}
+#'   \item{ensembl_gene}{Ensembl gene id}
+#'   \item{symbol}{Gene symbol}
+#'   \item{entrez_id}{Entrez id}
+#'   \item{transcript_type}{Transcript biotype}
 #' }
 "Rn.Ensembl92"
 
@@ -163,7 +205,7 @@
 #'   \item{entrez_id}{Entrez id}
 #'   \item{transcript_type}{Transcript biotype}
 #' }
-"Rn.Ensembl92"
+"Rn.Ensembl98"
 
 #' A custom database (Homo sapiens + Staphylococcus epidermidis)
 #'
