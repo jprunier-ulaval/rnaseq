@@ -4,9 +4,9 @@
 
 RELEASE=$1
 URL_FTP=ftp://ftp.ensembl.org/pub/release-${RELEASE}
-FILE_GTF=Homo_sapiens.GRCh38.${RELEASE}.chr.gtf.gz
+FILE_FASTA=Homo_sapiens.GRCh38.cdna.all.fa.gz
 
-wget ${URL_FTP}/gtf/homo_sapiens/${FILE_GTF}
-Rscript scripts/prepare_anno_ensembl.R Hs ${FILE_GTF} ${RELEASE}
+#wget ${URL_FTP}/fasta/homo_sapiens/cdna/${FILE_FASTA}
+Rscript scripts/prepare_anno_ensembl_fasta.R Hs ${FILE_FASTA} ${RELEASE}
 
-rm -rf ${FILE_GTF}
+#rm -rf ${FILE_GTF}

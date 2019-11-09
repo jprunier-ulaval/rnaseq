@@ -30,8 +30,8 @@ df <- tibble(full_name = names(fa)) %>%
     separate(full_name, into = col_names, sep = "\\|") %>%
     mutate(no_version = str_replace(ensembl_gene, "\\..*$", ""))
 
-df <- add_refseq(df, "no_version") %>%
-    dplyr::select(id, ensembl_gene, symbol, entrez_id = entrezgene,
+df <- add_refseq(df, "no_version", "hsapiens_gene_ensembl") %>%
+    dplyr::select(id, ensembl_gene, symbol, entrez_id = entrezgene_id,
                   transcript_type)
 
 # Save results
