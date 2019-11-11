@@ -20,6 +20,7 @@
 #' @export
 deseq2_analysis <- function(txi, design, formula, filter = 2) {
     stopifnot(ncol(design) == 2)
+    stopifnot(colnames(design) != c("sample", "group"))
     dds <- DESeqDataSetFromTximport(txi, design, formula)
     dds <- dds[rowSums(counts(dds)) >= filter]
     dds <- DESeq(dds)
@@ -79,9 +80,8 @@ format_de <- function(dds, txi, contrast, digits = 4) {
 }
 
 get_mean_tpm <- function(dds, txi, group) {
-    col_design <- as.character(dds@design)[2]
-    samples <- dds@colData[,colnames(dds@colData) != col_design, drop = TRUE]
-    samples <- samples[dds@colData[,col_design, drop = TRUE] == group]
+    samples <- dds@colData[,"sample", drop = TRUE]
+    samples <- samples[dds@colData[,"group", drop = TRUE] == group]
     mean_tpm <- rowMeans(txi$abundance[,samples])
     mean_tpm[names(dds)]
 }
