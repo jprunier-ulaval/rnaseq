@@ -73,7 +73,7 @@ validate_anno <- function(anno) {
                     "Hs.Ensembl91", "Hs.Ensembl95", "Hs.Ensembl97",
                     "Hs.Ensembl98", "Mm.Ensembl91", "Mm.Ensembl92",
                     "Mm.Ensembl94", "Rn.Ensembl76", "Rn.Ensembl79",
-                    "Rn.Ensembl92", "peaux_colonisees")
+                    "Rn.Ensembl92", "Rn.Ensembl98", "peaux_colonisees")
     stopifnot(anno %in% valid_anno)
 }
 

@@ -193,9 +193,9 @@
 #' }
 "Rn.Ensembl92"
 
-#' Annotation for Rattus norvegicus Ensembl release 92
+#' Annotation for Rattus norvegicus Ensembl release 98
 #'
-#' Basics annoations for the Rattus norvegicus Ensembl release 92
+#' Basics annoations for the Rattus norvegicus Ensembl release 98
 #'
 #' @format A data.frame with 40808 rows and 5 columns:
 #' \describe{
