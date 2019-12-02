@@ -21,6 +21,7 @@
 deseq2_analysis <- function(txi, design, formula, filter = 2) {
     stopifnot(ncol(design) == 2)
     stopifnot(all(colnames(design) == c("sample", "group")))
+    stopifnot(identical(colnames(txi$counts), as.character(design$sample)))
     dds <- DESeqDataSetFromTximport(txi, design, formula)
     dds <- dds[rowSums(counts(dds)) >= filter]
     dds <- DESeq(dds)
