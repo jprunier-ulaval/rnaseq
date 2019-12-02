@@ -59,7 +59,7 @@ import_kallisto <- function(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
     } else {
         row_names_txi_fpkm <- str_replace(rownames(txi$fpkm), "\\..*$", "")
         txi_anno_id <- str_replace(txi$anno_id, "\\..*$", "")
-        stopifnot(all(row_names_txi_fpkm, txi_anno_if))
+        stopifnot(all(row_names_txi_fpkm, txi_anno_id))
     }
     txi
 }
