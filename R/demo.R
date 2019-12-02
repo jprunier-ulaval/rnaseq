@@ -39,7 +39,7 @@ get_demo_txi <- function() {
 #'
 #' @export
 get_demo_design <- function() {
-    data.frame(group = c("A", "A", "B", "B"), sample = letters[1:4])
+    data.frame(sample = letters[1:4], group = c("A", "A", "B", "B"))
 }
 
 #' Get demo kallisto quant dir

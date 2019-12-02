@@ -68,8 +68,8 @@ produce_deliverables <- function (dir_kallisto, anno, design, contrasts,
 
     # Import quantifications
     txi_tx <- import_kallisto(files, anno = anno, txOut = TRUE, ignoreTxVersion = ignoreTxVersion)
-    txi_genes <- summarizeToGene(txi_tx, tx2gene = anno, ignoreTxVersion = ignoreTxVersion)
-    stopifnot(identical(colnames(txi_genes$counts), design$sample))
+    txi_genes <- summarize_to_gene(txi_tx, anno = anno, ignoreTxVersion = ignoreTxVersion)
+    stopifnot(identical(colnames(txi_genes$counts), as.character(design$sample)))
 
     # PCA
     pdf(file.path(dir_output, "PCA_genes.pdf"))

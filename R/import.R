@@ -58,7 +58,21 @@ import_kallisto <- function(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
     txi
 }
 
-get_anno <- function(anno, txOut) {
+summarize_to_gene <- function(txi_tx, anno, ignoreTxVersion = FALSE) {
+    stopifnot(ignoreTxVersion %in% c(TRUE, FALSE))
+
+    tx2gene <- get_anno(anno) %>%
+        dplyr::select(TXNAME = id, GENEID = ensembl_gene)
+
+    txi <- summarizeToGene(txi_tx, tx2gene = tx2gene, ignoreTxVersion = ignoreTxVersion)
+    txi$fpkm <- get_fpkm(txi)
+    txi$anno <- get_anno(anno, txOut = FALSE)
+    txi$txOut <- FALSE
+    stopifnot(all(rownames(txi$fpkm) %in% txi$anno$id))
+    txi
+}
+
+get_anno <- function(anno, txOut = TRUE) {
     validate_anno(anno)
     anno <- get(anno)
     if (!txOut) {
