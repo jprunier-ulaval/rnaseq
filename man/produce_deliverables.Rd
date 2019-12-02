@@ -31,7 +31,7 @@ Currently available:
 * peaux_colonisees}
 
 \item{design}{The experimental design
-(1st column: group; 2nd column: sample)}
+(1st column: sample; 2nd column: group)}
 
 \item{contrasts}{List of contrasts}
 

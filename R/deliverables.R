@@ -25,7 +25,7 @@
 #'             * Rn.Ensembl98
 #'             * peaux_colonisees
 #' @param design The experimental design
-#'               (1st column: group; 2nd column: sample)
+#'               (1st column: sample; 2nd column: group)
 #' @param contrasts List of contrasts
 #' @param dir_output Directory where to write outputs
 #' @param file_type Abundance file format to use (h5 or tsv).
@@ -52,6 +52,7 @@ produce_deliverables <- function (dir_kallisto, anno, design, contrasts, dir_out
     stopifnot(dir.exists(dir_kallisto))
     stopifnot(dir.exists(dir_output))
     stopifnot(file_type %in% c("tsv", "h5"))
+    stopifnot(colnames(design) == c("sample", "group"))
     validate_anno(anno)
 
     file_type <-paste0(file_type, "$")
@@ -61,6 +62,7 @@ produce_deliverables <- function (dir_kallisto, anno, design, contrasts, dir_out
     # Import quantifications
     txi_genes <- import_kallisto(files, anno = anno, txOut = FALSE)
     txi_tx <- import_kallisto(files, anno = anno, txOut = TRUE)
+    stopifnot(identical(rownames(txi_genes$counts), design$sample))
 
     # PCA
     pdf(file.path(dir_output, "PCA_genes.pdf"))
