@@ -30,6 +30,8 @@
 #' @param dir_output Directory where to write outputs
 #' @param file_type Abundance file format to use (h5 or tsv).
 #' @param digits Integer indicating the number of decimal places
+#' @param ignoreTxVersion Should the version number in the IDs be ignored
+#'        during import. Default: \code{FALSE}.
 #'
 #' @return Invisibly returns a list with txi_tx, txi_genes, df_tx (PCA),
 #'         df_genes (PCA), design, contrasts, counts and de values.
@@ -43,26 +45,31 @@
 #'                      design = design,
 #'                      contrast = contrasts,
 #'                      dir_output = ".",
-#'                      file_type = "tsv")
+#'                      file_type = "tsv",
+#'                      ignoreTxVersion = FALSE)
 #'
 #' @import purrr
 #'
 #' @export
-produce_deliverables <- function (dir_kallisto, anno, design, contrasts, dir_output, file_type = "h5", digits = 4) {
+produce_deliverables <- function (dir_kallisto, anno, design, contrasts,
+                                  dir_output, file_type = "h5", digits = 4,
+                                  ignoreTxVersion = FALSE) {
+
     stopifnot(dir.exists(dir_kallisto))
     stopifnot(dir.exists(dir_output))
     stopifnot(file_type %in% c("tsv", "h5"))
     stopifnot(colnames(design) == c("sample", "group"))
     validate_anno(anno)
+    stopifnot(is.logical(ignoreTxVersion))
 
     file_type <-paste0(file_type, "$")
     files <- dir(dir_kallisto, pattern = file_type, recursive = TRUE, full.names = TRUE)
     names(files) <- basename(dirname(files))
 
     # Import quantifications
-    txi_genes <- import_kallisto(files, anno = anno, txOut = FALSE)
-    txi_tx <- import_kallisto(files, anno = anno, txOut = TRUE)
-    stopifnot(identical(rownames(txi_genes$counts), design$sample))
+    txi_tx <- import_kallisto(files, anno = anno, txOut = TRUE, ignoreTxVersion = ignoreTxVersion)
+    txi_genes <- summarizeToGene(txi_tx, tx2gene = anno, ignoreTxVersion = ignoreTxVersion)
+    stopifnot(identical(colnames(txi_genes$counts), design$sample))
 
     # PCA
     pdf(file.path(dir_output, "PCA_genes.pdf"))

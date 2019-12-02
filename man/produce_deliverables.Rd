@@ -5,7 +5,7 @@
 \title{Produce deliverables}
 \usage{
 produce_deliverables(dir_kallisto, anno, design, contrasts, dir_output,
-  file_type = "h5", digits = 4)
+  file_type = "h5", digits = 4, ignoreTxVersion = FALSE)
 }
 \arguments{
 \item{dir_kallisto}{Directory with Kallisto quantifications}
@@ -40,6 +40,9 @@ Currently available:
 \item{file_type}{Abundance file format to use (h5 or tsv).}
 
 \item{digits}{Integer indicating the number of decimal places}
+
+\item{ignoreTxVersion}{Should the version number in the IDs be ignored
+during import. Default: \code{FALSE}.}
 }
 \value{
 Invisibly returns a list with txi_tx, txi_genes, df_tx (PCA),
@@ -59,6 +62,7 @@ produce_deliverables(dir_kallisto,
                      design = design,
                      contrast = contrasts,
                      dir_output = ".",
-                     file_type = "tsv")
+                     file_type = "tsv",
+                     ignoreTxVersion = FALSE)
 
 }
