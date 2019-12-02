@@ -49,6 +49,7 @@
 #'                      ignoreTxVersion = FALSE)
 #'
 #' @import purrr
+#' @import dplyr
 #'
 #' @export
 produce_deliverables <- function (dir_kallisto, anno, design, contrasts,
@@ -69,6 +70,11 @@ produce_deliverables <- function (dir_kallisto, anno, design, contrasts,
     # Import quantifications
     txi_tx <- import_kallisto(files, anno = anno, txOut = TRUE, ignoreTxVersion = ignoreTxVersion)
     txi_genes <- summarize_to_gene(txi_tx, anno = anno, ignoreTxVersion = ignoreTxVersion)
+
+    # Make sure design is in correct order
+    stopifnot(all(as.character(design$sample) %in% colnames(txi_genes$counts)))
+    design <- mutate(design, sample = factor(sample, levels = colnames(txi_genes$counts))) %>%
+                     arrange(sample)
     stopifnot(identical(colnames(txi_genes$counts), as.character(design$sample)))
 
     # PCA
