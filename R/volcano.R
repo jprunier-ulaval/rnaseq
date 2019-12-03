@@ -24,6 +24,9 @@ produce_volcano <- function(de_res, fc_threshold = 3, graph = TRUE) {
     blue <- "#0020F5"
     grey <- "#7C7C7C"
 
+    # Remove NA padj
+    de_res <- dplyr::filter(de_res, !is.na(padj))
+
     # Rename qV to padj
     i <- str_detect(colnames(de_res), "qV")
     stopifnot(sum(i) %in% c(0,1))
