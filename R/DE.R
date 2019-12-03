@@ -34,6 +34,7 @@ deseq2_analysis <- function(txi, design, formula, filter = 2) {
 #' @param dds The DESeqDataSet object returned by deseq2_analysis.
 #' @param txi The txi object returned by the import_kallisto function.
 #' @param contrast The contrast for the comparison (see ?DESeq2::results).
+#' @param ignoreTxVersion Should the transcript version be ignored for anno mapping.
 #' @param digits Integer indicating the number of decimal places
 #'
 #' @return A data.frame with the anno and the merged counts values.
@@ -49,15 +50,20 @@ deseq2_analysis <- function(txi, design, formula, filter = 2) {
 #' @import tibble
 #'
 #' @export
-format_de <- function(dds, txi, contrast, digits = 4) {
+format_de <- function(dds, txi, contrast, ignoreTxVersion, digits = 4) {
     res <- results(dds, contrast = contrast) %>%
         as.data.frame() %>%
-        rownames_to_column("id") %>%
-        left_join(txi$anno, by = "id") %>%
-        mutate(mean_TPM_grp1 = get_mean_tpm(dds, txi, contrast[2]),
-               mean_TPM_grp2 = get_mean_tpm(dds, txi, contrast[3]),
-               fold_change = 2^log2FoldChange) %>%
-        splicing_analysis(txi)
+        rownames_to_column("id")
+    if (!ignoreTxVersion) {
+        res <- left_join(res, txi$anno, by = "id")
+    } else {
+        res$id <- str_replace(res$id, "\\..*$", "")
+        res <- left_join(res, mutate(txi$anno, id = str_replace(id, "\\..*$", "")), by = "id")
+    }
+    res <- mutate(res, mean_TPM_grp1 = get_mean_tpm(dds, txi, contrast[2]),
+           mean_TPM_grp2 = get_mean_tpm(dds, txi, contrast[3]),
+           fold_change = 2^log2FoldChange) %>%
+           splicing_analysis(txi)
 
     res <- dplyr::select(res, id, ensembl_gene, symbol, entrez_id, transcript_type,
                   mean_TPM_grp1, mean_TPM_grp2, pV = pvalue, qV = padj,

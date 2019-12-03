@@ -95,8 +95,8 @@ produce_deliverables <- function (dir_kallisto, anno, design, contrasts,
     dds_genes <- deseq2_analysis(txi_genes, design, ~ group)
     dds_tx <- deseq2_analysis(txi_tx, design, ~ group)
 
-    de_genes <- map(contrasts, ~ format_de(dds_genes, txi_genes, .x, digits = digits))
-    de_tx <- map(contrasts, ~ format_de(dds_tx, txi_tx, .x, digits = digits))
+    de_genes <- map(contrasts, ~ format_de(dds_genes, txi_genes, .x, ignoreTxVersion, digits = digits))
+    de_tx <- map(contrasts, ~ format_de(dds_tx, txi_tx, .x, ignoreTxVersion, digits = digits))
 
     rbind_df <- function(n) {
         tx <- de_tx[[n]]
