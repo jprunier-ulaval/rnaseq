@@ -4,8 +4,16 @@
 \alias{produce_deliverables}
 \title{Produce deliverables}
 \usage{
-produce_deliverables(dir_kallisto, anno, design, contrasts, dir_output,
-  file_type = "h5", digits = 4, ignoreTxVersion = FALSE)
+produce_deliverables(
+  dir_kallisto,
+  anno,
+  design,
+  contrasts,
+  dir_output,
+  file_type = "h5",
+  digits = 4,
+  ignoreTxVersion = FALSE
+)
 }
 \arguments{
 \item{dir_kallisto}{Directory with Kallisto quantifications}
@@ -28,6 +36,7 @@ Currently available:
 * Rn.Ensembl79
 * Rn.Ensembl92
 * Rn.Ensembl98
+* Bt.Ensembl99
 * peaux_colonisees}
 
 \item{design}{The experimental design

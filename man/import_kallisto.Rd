@@ -4,8 +4,12 @@
 \alias{import_kallisto}
 \title{Import quantifications from Kallisto}
 \usage{
-import_kallisto(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
-  ignoreTxVersion = FALSE)
+import_kallisto(
+  filenames,
+  anno = "Hs.Ensembl91",
+  txOut = FALSE,
+  ignoreTxVersion = FALSE
+)
 }
 \arguments{
 \item{filenames}{Paths to the abundance files.}
@@ -28,6 +32,7 @@ Currently available:
 * Rn.Ensembl79
 * Rn.Ensembl92
 * Rn.Ensembl98
+* Bt.Ensembl99
 * peaux_colonisees}
 
 \item{txOut}{Return counts and abundance at the transcript level. Default:

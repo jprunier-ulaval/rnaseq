@@ -4,7 +4,7 @@
 \alias{format_de}
 \title{Prepare formated DE table.}
 \usage{
-format_de(dds, txi, contrast, digits = 4)
+format_de(dds, txi, contrast, ignoreTxVersion, digits = 4)
 }
 \arguments{
 \item{dds}{The DESeqDataSet object returned by deseq2_analysis.}
@@ -12,6 +12,8 @@ format_de(dds, txi, contrast, digits = 4)
 \item{txi}{The txi object returned by the import_kallisto function.}
 
 \item{contrast}{The contrast for the comparison (see ?DESeq2::results).}
+
+\item{ignoreTxVersion}{Should the transcript version be ignored for anno mapping.}
 
 \item{digits}{Integer indicating the number of decimal places}
 }

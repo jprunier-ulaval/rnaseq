@@ -14,8 +14,12 @@
 }}
 \usage{
 Rn.Ensembl98
+
+Rn.Ensembl98
 }
 \description{
 Basics annoations for the Rattus norvegicus Ensembl release 98
+
+Basics annoations for the Bos taurus Ensembl release 99
 }
 \keyword{datasets}
