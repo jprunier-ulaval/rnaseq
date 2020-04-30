@@ -17,7 +17,8 @@ Default: \code{TRUE}.}
 \code{true}.}
 }
 \value{
-produce the volcano plot and silently returns the \code{ggplot} object.
+produce the volcano plot and silently returns the \code{ggplot}
+object and the data.frame used.
 }
 \description{
 produce a volcano plot from DESeq2 results

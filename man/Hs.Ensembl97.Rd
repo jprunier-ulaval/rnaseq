@@ -4,14 +4,16 @@
 \name{Hs.Ensembl97}
 \alias{Hs.Ensembl97}
 \title{Annotation for Homo sapiens Ensembl release 97}
-\format{A data.frame with 226721 rows and 5 columns:
+\format{
+A data.frame with 226721 rows and 5 columns:
 \describe{
   \item{id}{Ensembl transcript id}
   \item{ensembl_gene}{Ensembl gene id}
   \item{symbol}{Gene symbol}
   \item{entrez_id}{Entrez id}
   \item{transcript_type}{Transcript biotype}
-}}
+}
+}
 \usage{
 Hs.Ensembl97
 }

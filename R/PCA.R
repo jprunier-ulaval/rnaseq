@@ -20,7 +20,7 @@
 #' @import ggrepel
 #'
 #' @export
-produce_pca <- function(txi, graph = TRUE) {
+produce_pca <- function(txi, design = NULL, color = FALSE, graph = TRUE) {
     tpm <- as.data.frame(txi$abundance) %>%
         mutate(ensembl_gene = rownames(txi$abundance)) %>%
         tidyr::gather(sample, tpm, -ensembl_gene) %>%

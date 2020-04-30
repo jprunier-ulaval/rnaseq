@@ -7,7 +7,8 @@
 #' @param graph produce the graph. \code{true} or \code{false}. default:
 #' \code{true}.
 #'
-#' @return produce the volcano plot and silently returns the \code{ggplot} object.
+#' @return produce the volcano plot and silently returns the \code{ggplot}
+#' object and the data.frame used.
 #'
 #' @examples
 #' txi <- get_demo_txi()
@@ -70,5 +71,5 @@ produce_volcano <- function(de_res, fc_threshold = 3, graph = TRUE) {
     if (isTRUE(graph)) {
         print(p)
     }
-    invisible(p)
+    invisible(list(p = p, df = de_res))
 }
