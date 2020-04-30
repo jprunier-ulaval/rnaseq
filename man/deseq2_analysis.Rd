@@ -4,7 +4,7 @@
 \alias{deseq2_analysis}
 \title{DESeq2 analysis}
 \usage{
-deseq2_analysis(txi, design, formula, filter = 2)
+deseq2_analysis(txi, design, formula, filter = 2, ...)
 }
 \arguments{
 \item{txi}{The txi object returned by the import_kallisto function.}
@@ -16,6 +16,8 @@ deseq2_analysis(txi, design, formula, filter = 2)
 
 \item{filter}{The minimum number of reads detected for a feature across all
 samples. Default: 2}
+
+\item{...}{Extract param for the DESeq2::DESeq function}
 }
 \value{
 A DESeqDataSet object.

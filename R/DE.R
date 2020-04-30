@@ -6,6 +6,7 @@
 #'                ?DESeqDataSetFromTximport).
 #' @param filter The minimum number of reads detected for a feature across all
 #'               samples. Default: 2
+#' @param ... Extract param for the DESeq2::DESeq function
 #'
 #' @return A DESeqDataSet object.
 #'
@@ -18,13 +19,14 @@
 #' @import DESeq2
 #'
 #' @export
-deseq2_analysis <- function(txi, design, formula, filter = 2) {
+deseq2_analysis <- function(txi, design, formula, filter = 2, ...) {
     stopifnot(ncol(design) == 2)
     stopifnot(all(colnames(design) == c("sample", "group")))
     stopifnot(identical(colnames(txi$counts), as.character(design$sample)))
     dds <- DESeqDataSetFromTximport(txi, design, formula)
     dds <- dds[rowSums(counts(dds)) >= filter]
-    dds <- DESeq(dds)
+    dds <- DESeq(dds, ...)
+    dds
 }
 
 #' Prepare formated DE table.
