@@ -49,7 +49,8 @@ import_kallisto <- function(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
     tx2gene <- get(anno) %>%
         dplyr::select(TXNAME = id, GENEID = ensembl_gene)
     if (ercc92 == TRUE) {
-        tx2gene <- rbind(tx2gene, ERCC92)
+        tx2gene_ercc92 <- dplyr::select(ERCC92, TXNAME = id, GENEID = ensembl_gene) 
+        tx2gene <- rbind(tx2gene, tx2gene_ercc92)
     }
     if (txOut == TRUE) {
         txi <- tximport(filenames, type = "kallisto", tx2gene = tx2gene, txOut = TRUE,
@@ -60,6 +61,9 @@ import_kallisto <- function(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
     }
     txi$fpkm <- get_fpkm(txi)
     txi$anno <- get_anno(anno, txOut)
+    if (ercc92 == TRUE) {
+        txi$anno <- rbind(txi$anno, ERCC92)
+    }
     txi$txOut <- txOut
     if (!ignoreTxVersion) {
         stopifnot(all(rownames(txi$fpkm) %in% txi$anno$id))
