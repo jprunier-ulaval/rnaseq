@@ -8,7 +8,8 @@ import_kallisto(
   filenames,
   anno = "Hs.Ensembl91",
   txOut = FALSE,
-  ignoreTxVersion = FALSE
+  ignoreTxVersion = FALSE,
+  ercc92 = FALSE
 )
 }
 \arguments{
@@ -41,6 +42,8 @@ Currently available:
 FALSE}
 
 \item{ignoreTxVersion}{Ignore version of tx. Default = FALSE}
+
+\item{ercc92}{Include ERCC92 annotation when importing. Default = FALSE}
 }
 \value{
 A txi object.

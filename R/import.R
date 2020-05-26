@@ -26,6 +26,7 @@
 #' @param txOut Return counts and abundance at the transcript level. Default:
 #'              FALSE
 #' @param ignoreTxVersion Ignore version of tx. Default = FALSE
+#' @param ercc92 Include ERCC92 annotation when importing. Default = FALSE
 #'
 #' @return A txi object.
 #'
@@ -40,13 +41,16 @@
 #'
 #' @export
 import_kallisto <- function(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
-                            ignoreTxVersion = FALSE) {
+                            ignoreTxVersion = FALSE, ercc92 = FALSE) {
     stopifnot(all(file.exists(filenames)))
     stopifnot(txOut %in% c(TRUE, FALSE))
     stopifnot(ignoreTxVersion %in% c(TRUE, FALSE))
 
     tx2gene <- get(anno) %>%
         dplyr::select(TXNAME = id, GENEID = ensembl_gene)
+    if (ercc92 == TRUE) {
+        tx2gene <- rbind(tx2gene, ERCC92)
+    }
     if (txOut == TRUE) {
         txi <- tximport(filenames, type = "kallisto", tx2gene = tx2gene, txOut = TRUE,
                  ignoreTxVersion = ignoreTxVersion)
