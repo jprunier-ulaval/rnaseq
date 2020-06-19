@@ -15,6 +15,7 @@
 #'             * Hs.Ensembl95
 #'             * Hs.Ensembl97
 #'             * Hs.Ensembl98
+#'             * Hs.Ensembl100
 #'             * Mm.Ensembl91
 #'             * Mm.Ensembl92
 #'             * Mm.Ensembl94
