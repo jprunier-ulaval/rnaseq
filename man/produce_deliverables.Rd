@@ -34,6 +34,7 @@ Currently available:
 * Mm.Ensembl94
 * Mm.Ensembl97
 * Mm.Ensembl99
+* Mm.Ensembl100
 * Rn.Ensembl76
 * Rn.Ensembl79
 * Rn.Ensembl92
