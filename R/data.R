@@ -96,6 +96,20 @@
 #' }
 "Hs.Ensembl98"
 
+#' Annotation for Homo sapiens Ensembl release 100
+#'
+#' Basics annoations for the Homo sapiens Ensembl release 100
+#'
+#' @format A data.frame with 190522 rows and 5 columns:
+#' \describe{
+#'   \item{id}{Ensembl transcript id}
+#'   \item{ensembl_gene}{Ensembl gene id}
+#'   \item{symbol}{Gene symbol}
+#'   \item{entrez_id}{Entrez id}
+#'   \item{transcript_type}{Transcript biotype}
+#' }
+"Hs.Ensembl100"
+
 #' Annotation for Homo sapiens Ensembl release 79
 #'
 #' Basics annoations for the Homo sapiens Ensembl release 79
@@ -166,6 +180,34 @@
 #' }
 "Mm.Ensembl97"
 
+#' Annotation for Mus musculus Ensembl release 99
+#'
+#' Basics annoations for the Mus musculus Ensembl release 99
+#'
+#' @format A data.frame with 119353 rows and 5 columns:
+#' \describe{
+#'   \item{id}{Ensembl transcript id}
+#'   \item{ensembl_gene}{Ensembl gene id}
+#'   \item{symbol}{Gene symbol}
+#'   \item{entrez_id}{Entrez id}
+#'   \item{transcript_type}{Transcript biotype}
+#' }
+"Mm.Ensembl99"
+
+#' Annotation for Mus musculus Ensembl release 100
+#'
+#' Basics annoations for the Mus musculus Ensembl release 100
+#'
+#' @format A data.frame with 119414 rows and 5 columns:
+#' \describe{
+#'   \item{id}{Ensembl transcript id}
+#'   \item{ensembl_gene}{Ensembl gene id}
+#'   \item{symbol}{Gene symbol}
+#'   \item{entrez_id}{Entrez id}
+#'   \item{transcript_type}{Transcript biotype}
+#' }
+"Mm.Ensembl100"
+
 #' Annotation for Rattus norvegicus Ensembl release 76
 #'
 #' Basics annoations for the Rattus norvegicus Ensembl release 76
@@ -235,3 +277,18 @@
 #'   \item{transcript_type}{Transcript biotype}
 #' }
 "peaux_colonisees"
+
+#' ERCC92 data description
+#'
+#' Downloaded from:
+#' https://www.thermofisher.com/order/catalog/product/4456739#/4456739 
+#'
+#' @format A data.frame with 92 rows and 5 columns:
+#' \describe{
+#'   \item{id}{Ensembl transcript id}
+#'   \item{ensembl_gene}{Ensembl gene id}
+#'   \item{symbol}{Gene symbol}
+#'   \item{entrez_id}{Entrez id}
+#'   \item{transcript_type}{Transcript biotype}
+#' }
+"ERCC92"

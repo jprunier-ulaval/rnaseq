@@ -8,6 +8,7 @@
 #'               samples. Default: 2
 #' @param use_ruv Use RUVg normalization? Needs to be pre-computed using the
 #'                \code{ruvg_normalization} function.
+#' @param ... Extract param for the DESeq2::DESeq function
 #'
 #' @return A DESeqDataSet object.
 #'
@@ -20,7 +21,7 @@
 #' @import DESeq2
 #'
 #' @export
-deseq2_analysis <- function(txi, design, formula, filter = 2, use_ruv = FALSE) {
+deseq2_analysis <- function(txi, design, formula, filter = 2, use_ruv = FALSE, ...) {
     stopifnot(ncol(design) == 2)
     stopifnot(all(colnames(design) == c("sample", "group")))
     stopifnot(identical(colnames(txi$counts), as.character(design$sample)))
@@ -34,7 +35,8 @@ deseq2_analysis <- function(txi, design, formula, filter = 2, use_ruv = FALSE) {
         dds <- DESeq2::DESeqDataSetFromTximport(txi, design, formula)
     }
     dds <- dds[rowSums(counts(dds)) >= filter]
-    dds <- DESeq2::DESeq(dds)
+    dds <- DESeq2::DESeq(dds, ...)
+    dds
 }
 
 #' Prepare formated DE table.

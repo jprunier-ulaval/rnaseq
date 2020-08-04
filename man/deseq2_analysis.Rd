@@ -4,7 +4,7 @@
 \alias{deseq2_analysis}
 \title{DESeq2 analysis}
 \usage{
-deseq2_analysis(txi, design, formula, filter = 2, use_ruv = FALSE)
+deseq2_analysis(txi, design, formula, filter = 2, use_ruv = FALSE, ...)
 }
 \arguments{
 \item{txi}{The txi object returned by the import_kallisto function.}
@@ -19,6 +19,8 @@ samples. Default: 2}
 
 \item{use_ruv}{Use RUVg normalization? Needs to be pre-computed using the
 \code{ruvg_normalization} function.}
+
+\item{...}{Extract param for the DESeq2::DESeq function}
 }
 \value{
 A DESeqDataSet object.
