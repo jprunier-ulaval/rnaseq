@@ -4,7 +4,7 @@
 \alias{produce_pca}
 \title{Produce a PCA plot from txi}
 \usage{
-produce_pca(txi, graph = TRUE)
+produce_pca(txi, graph = TRUE, use_ruv = FALSE)
 }
 \arguments{
 \item{txi}{The \code{txi} object returned by the \code{import_kallisto}
