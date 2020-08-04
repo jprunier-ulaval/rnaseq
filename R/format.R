@@ -42,6 +42,29 @@ get_tpm_anno_df <- function(txi) {
         dplyr::select(one_of(colnames(txi$anno)), everything())
 }
 
+#' Extract RUVg counts with annotation data.frame from txi
+#'
+#' @param txi: The txi object returned from the `import_kallisto` function and
+#'             the `ruvg_normalisation` function
+#'
+#' @return A `data.frame` object.
+#'
+#' @examples
+#' txi <- get_demo_txi()
+#' txi_ruv <- ruvg_normalisation(txi)
+#' ruvg <- get_ruvg_anno_df(txi_ruv)
+#'
+#' @import tibble
+#' @import dplyr
+#'
+#' @export
+get_ruvg_anno_df <- function(txi) {
+    as.data.frame(txi$ruvg_counts) %>%
+        rownames_to_column("id") %>%
+        left_join(txi$anno, by = "id") %>%
+        dplyr::select(one_of(colnames(txi$anno)), everything())
+}
+
 #' Extract FPKM with annotation data.frame from txi
 #'
 #' @param txi: The txi object returned from the `import_kallisto` function
@@ -64,3 +87,5 @@ get_anno_df <- function(txi, col_name) {
         left_join(txi$anno, by = "id") %>%
         dplyr::select(one_of(colnames(txi$anno)), everything())
 }
+
+

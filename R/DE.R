@@ -6,6 +6,8 @@
 #'                ?DESeqDataSetFromTximport).
 #' @param filter The minimum number of reads detected for a feature across all
 #'               samples. Default: 2
+#' @param use_ruv Use RUVg normalization? Needs to be pre-computed using the
+#'                \code{ruvg_normalization} function.
 #'
 #' @return A DESeqDataSet object.
 #'
@@ -18,13 +20,21 @@
 #' @import DESeq2
 #'
 #' @export
-deseq2_analysis <- function(txi, design, formula, filter = 2) {
+deseq2_analysis <- function(txi, design, formula, filter = 2, use_ruv = FALSE) {
     stopifnot(ncol(design) == 2)
     stopifnot(all(colnames(design) == c("sample", "group")))
     stopifnot(identical(colnames(txi$counts), as.character(design$sample)))
-    dds <- DESeqDataSetFromTximport(txi, design, formula)
+    stopifnot(is(use_ruv, "logical"))
+
+    if (use_ruv) {
+        stopifnot("ruvg_counts" %in% names(txi))
+        stopifnot(is(txi$ruvg_counts, "matrix"))
+        dds <- DESeq2::DESeqDataSetFromMatrix(txi$ruvg_counts, design, formula)
+    } else {
+        dds <- DESeq2::DESeqDataSetFromTximport(txi, design, formula)
+    }
     dds <- dds[rowSums(counts(dds)) >= filter]
-    dds <- DESeq(dds)
+    dds <- DESeq2::DESeq(dds)
 }
 
 #' Prepare formated DE table.

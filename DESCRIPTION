@@ -10,7 +10,7 @@ Depends: R (>= 3.5.0)
 License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.1
 Imports:
     readr,
     dplyr,
@@ -23,4 +23,6 @@ Imports:
     DESeq2,
     tibble,
     purrr,
-    rhdf5
+    rhdf5,
+    magrittr,
+    RUVSeq
