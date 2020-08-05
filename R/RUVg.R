@@ -32,6 +32,7 @@ get_human_hsk <- function() {
 #' txi_ruv <- ruvg_normalization(txi)
 #'
 #' @import RUVSeq
+#' @import EDASeq
 #' @import magrittr
 #' @import stringr
 #' @import dplyr
