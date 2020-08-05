@@ -1,6 +1,6 @@
 Package: rnaseq
 Title: Wrapper Functions for RNA-Seq Post-Processing
-Version: 0.0.77
+Version: 0.0.78
 Authors@R: person("Charles", "Joly Beauparlant", email =
                   "Charles.Joly-Beauparlant@crchul.ulaval.ca",
                   role = c("aut", "cre"))
@@ -20,10 +20,11 @@ Imports:
     FactoMineR,
     ggplot2,
     ggrepel,
-    DESeq2,
     tibble,
     purrr,
     rhdf5,
     magrittr,
-    RUVSeq,
     EDASeq
+Depends:
+    DESeq2
+    RUVSeq
