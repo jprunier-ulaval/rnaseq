@@ -19,3 +19,9 @@ devtools::install_github("CharlesJB/rnaseq")
 * `deseq2_analysis`
 
 Please see documentation using the `?` (i.e.: `?import_kallisto`)
+
+## RUVg normalization
+
+* `ruvg_normalization`
+
+See also the `use_ruv` parameter of the `deseq2_analysis` function.
