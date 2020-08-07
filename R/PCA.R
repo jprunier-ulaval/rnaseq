@@ -24,7 +24,7 @@ produce_pca <- function(txi, graph = TRUE) {
     tpm <- as.data.frame(txi$abundance) %>%
         mutate(ensembl_gene = rownames(txi$abundance)) %>%
         tidyr::gather(sample, tpm, -ensembl_gene) %>%
-        tbl_df
+        as_tibble
 
     min_tpm <- group_by(tpm, ensembl_gene) %>%
         summarize(tpm = sum(tpm)) %>%
@@ -45,7 +45,7 @@ produce_pca <- function(txi, graph = TRUE) {
     df <- data.frame(Dim1 = coord[,1], Dim2 = coord[,2], Dim3 = coord[,3])
     df <- df %>%
         mutate(sample = rownames(df)) %>%
-        tbl_df
+        as_tibble
     res <- list(df = df, pca = pca)
 
     p <- plot_pca(res)
