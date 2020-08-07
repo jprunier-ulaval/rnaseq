@@ -6,7 +6,10 @@ Authors@R: person("Charles", "Joly Beauparlant", email =
                   role = c("aut", "cre"))
 Description: Wrapper functions to import quantification data, to process the
              results (normalization and DE) and to produce deliverables.
-Depends: R (>= 3.5.0)
+Depends:
+    R (>= 3.5.0),
+    DESeq2 (>= 1.28.0),
+    RUVSeq (>= 1.22.0)
 License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
@@ -25,6 +28,3 @@ Imports:
     rhdf5,
     magrittr,
     EDASeq
-Depends:
-    DESeq2 (>= 1.28.0)
-    RUVSeq (>= 1.22.0)
