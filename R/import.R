@@ -12,6 +12,7 @@
 #'             * Hs.Ensembl97
 #'             * Hs.Ensembl98
 #'             * Hs.Ensembl100
+#'             * Hs.Ensembl101
 #'             * Mm.Ensembl91
 #'             * Mm.Ensembl92
 #'             * Mm.Ensembl94
@@ -105,11 +106,12 @@ get_anno <- function(anno, txOut = TRUE) {
 validate_anno <- function(anno) {
     valid_anno <- c("Hs.Gencode19", "Hs.Gencode27", "Hs.Ensembl79",
                     "Hs.Ensembl91", "Hs.Ensembl95", "Hs.Ensembl97",
-                    "Hs.Ensembl98", "Hs.Ensembl100", "Mm.Ensembl91",
-                    "Mm.Ensembl92", "Mm.Ensembl94", "Mm.Ensembl99",
-                    "Mm.Ensembl100", "Mm.Ensembl101", "Rn.Ensembl76",
-                    "Rn.Ensembl79", "Rn.Ensembl92", "Rn.Ensembl98",
-                    "Bt.Ensembl99", "Mmu.Ensembl101", "peaux_colonisees")
+                    "Hs.Ensembl98", "Hs.Ensembl100", "Hs.Ensembl101",
+                    "Mm.Ensembl91", "Mm.Ensembl92", "Mm.Ensembl94",
+                    "Mm.Ensembl99", "Mm.Ensembl100", "Mm.Ensembl101",
+                    "Rn.Ensembl76", "Rn.Ensembl79", "Rn.Ensembl92",
+                    "Rn.Ensembl98", "Bt.Ensembl99", "Mmu.Ensembl101",
+                    "peaux_colonisees")
     stopifnot(anno %in% valid_anno)
 }
 
