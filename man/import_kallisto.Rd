@@ -38,6 +38,7 @@ Currently available:
 * Rn.Ensembl92
 * Rn.Ensembl98
 * Bt.Ensembl99
+* Mmu.Ensembl101
 * peaux_colonisees}
 
 \item{txOut}{Return counts and abundance at the transcript level. Default:

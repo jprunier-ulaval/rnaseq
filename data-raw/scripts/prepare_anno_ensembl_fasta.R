@@ -21,10 +21,11 @@ tx_2_all <- tibble(id = id,
                   symbol = symbol,
                   transcript_type = transcript_type)
 
-stopifnot(org %in% c("Hs", "Mm", "Rn"))
+stopifnot(org %in% c("Hs", "Mm", "Rn", "Mmu"))
 if (org == "Hs") ensembl <- "hsapiens_gene_ensembl"
 if (org == "Mm") ensembl <- "mmusculus_gene_ensembl"
 if (org == "Rn") ensembl <- "rnorvegicus_gene_ensembl"
+if (org == "Mmu") ensembl <- "mmulatta_gene_ensembl"
 entrez_id <- fetch_refseq(ensembl)
 tx_2_all <- left_join(tx_2_all, entrez_id, by = c("ensembl_gene" = "ensembl_gene_id")) %>%
     dplyr::select(id:symbol, entrez_id = entrezgene_id, transcript_type)

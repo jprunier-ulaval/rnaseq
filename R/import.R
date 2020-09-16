@@ -24,6 +24,7 @@
 #'             * Rn.Ensembl92
 #'             * Rn.Ensembl98
 #'             * Bt.Ensembl99
+#'             * Mmu.Ensembl101
 #'             * peaux_colonisees
 #' @param txOut Return counts and abundance at the transcript level. Default:
 #'              FALSE
@@ -108,7 +109,7 @@ validate_anno <- function(anno) {
                     "Mm.Ensembl92", "Mm.Ensembl94", "Mm.Ensembl99",
                     "Mm.Ensembl100", "Mm.Ensembl101", "Rn.Ensembl76",
                     "Rn.Ensembl79", "Rn.Ensembl92", "Rn.Ensembl98",
-                    "Bt.Ensembl99", "peaux_colonisees")
+                    "Bt.Ensembl99", "Mmu.Ensembl101", "peaux_colonisees")
     stopifnot(anno %in% valid_anno)
 }
 

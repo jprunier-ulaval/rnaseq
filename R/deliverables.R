@@ -28,6 +28,7 @@
 #'             * Rn.Ensembl92
 #'             * Rn.Ensembl98
 #'             * Bt.Ensembl99
+#'             * Mmu.Ensembl101
 #'             * peaux_colonisees
 #' @param design The experimental design
 #'               (1st column: sample; 2nd column: group)
