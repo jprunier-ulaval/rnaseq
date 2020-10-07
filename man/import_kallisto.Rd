@@ -20,6 +20,7 @@ Currently available:
 * Hs.Gencode19
 * Hs.Gencode27
 * Hs.Gencode32
+* Hs.Gencode35
 * Hs.Ensembl79
 * Hs.Ensembl91
 * Hs.Ensembl95

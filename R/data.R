@@ -40,6 +40,20 @@
 #' }
 "Hs.Gencode32"
 
+#' Annotation for Homo sapiens Gencode release 35
+#'
+#' Basics annoations for the Homo sapiens Gencode release 35
+#'
+#' @format A data.frame with 229420 rows and 5 columns:
+#' \describe{
+#'   \item{id}{Ensembl transcript id}
+#'   \item{ensembl_gene}{Ensembl gene id}
+#'   \item{symbol}{Gene symbol}
+#'   \item{entrez_id}{Entrez id}
+#'   \item{transcript_type}{Transcript biotype}
+#' }
+"Hs.Gencode35"
+
 #' Annotation for Homo sapiens Ensembl release 91
 #'
 #' Basics annoations for the Homo sapiens Ensembl release 91
