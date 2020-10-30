@@ -10,6 +10,7 @@
 #'             * Hs.Gencode19
 #'             * Hs.Gencode27
 #'             * Hs.Gencode32
+#'             * Hs.Gencode35
 #'             * Hs.Ensembl79
 #'             * Hs.Ensembl91
 #'             * Hs.Ensembl95
@@ -23,11 +24,13 @@
 #'             * Mm.Ensembl97
 #'             * Mm.Ensembl99
 #'             * Mm.Ensembl100
+#'             * Mm.Ensembl101
 #'             * Rn.Ensembl76
 #'             * Rn.Ensembl79
 #'             * Rn.Ensembl92
 #'             * Rn.Ensembl98
 #'             * Bt.Ensembl99
+#'             * Mmu.Ensembl101
 #'             * peaux_colonisees
 #' @param design The experimental design
 #'               (1st column: sample; 2nd column: group)

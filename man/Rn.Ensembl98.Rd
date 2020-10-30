@@ -13,24 +13,11 @@ A data.frame with 40808 rows and 5 columns:
   \item{entrez_id}{Entrez id}
   \item{transcript_type}{Transcript biotype}
 }
-
-A data.frame with 43549 rows and 5 columns:
-\describe{
-  \item{id}{Ensembl transcript id}
-  \item{ensembl_gene}{Ensembl gene id}
-  \item{symbol}{Gene symbol}
-  \item{entrez_id}{Entrez id}
-  \item{transcript_type}{Transcript biotype}
-}
 }
 \usage{
-Rn.Ensembl98
-
 Rn.Ensembl98
 }
 \description{
 Basics annoations for the Rattus norvegicus Ensembl release 98
-
-Basics annoations for the Bos taurus Ensembl release 99
 }
 \keyword{datasets}
