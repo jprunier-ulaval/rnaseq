@@ -4,6 +4,8 @@
 #' function.
 #' @param graph Produce the graph. \code{TRUE} or \code{FALSE}. Default:
 #' \code{TRUE}.
+#' @param use_ruv Use RUVg normalization? Needs to be pre-computed using the
+#'                \code{ruvg_normalization} function. Default: \code{FALSE}.
 #'
 #' @return Produce the PCA and silently returns the \code{data.frame} and the
 #' result from the \code{PCA} function as a \code{list} with 2 elements
@@ -20,11 +22,18 @@
 #' @import ggrepel
 #'
 #' @export
-produce_pca <- function(txi, graph = TRUE) {
-    tpm <- as.data.frame(txi$abundance) %>%
-        mutate(ensembl_gene = rownames(txi$abundance)) %>%
-        tidyr::gather(sample, tpm, -ensembl_gene) %>%
-        as_tibble
+produce_pca <- function(txi, graph = TRUE, use_ruv = FALSE) {
+    if (!use_ruv) {
+        tpm <- as.data.frame(txi$abundance)
+    } else {
+        stopifnot("ruvg_counts" %in% names(txi))
+        stopifnot(is(txi$ruvg_counts, "matrix"))
+        tpm <- as.data.frame(txi$ruvg_counts)
+    }
+    tpm <- tpm %>%
+            mutate(ensembl_gene = rownames(txi$abundance)) %>%
+            tidyr::gather(sample, tpm, -ensembl_gene) %>%
+            as_tibble
 
     min_tpm <- group_by(tpm, ensembl_gene) %>%
         summarize(tpm = sum(tpm)) %>%

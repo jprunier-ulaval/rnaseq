@@ -24,6 +24,7 @@ get_human_hsk <- function() {
 #'            function.
 #' @param housekeeping_genes A \code{vector} of gene symbols
 #' @param ignoreTxVersion Ignore version of tx. Default = FALSE
+#' @param txOut txi was produced at tx level?. Default = FALSE
 #'
 #' @return The original txi object with a \code{$ruvg_counts} element added.
 #'
@@ -39,7 +40,7 @@ get_human_hsk <- function() {
 #'
 #' @export
 ruvg_normalization <- function(txi, housekeeping_genes = get_human_hsk(),
-                               ignoreTxVersion = FALSE) {
+                               ignoreTxVersion = FALSE, txOut = FALSE) {
     stopifnot(is(housekeeping_genes, "character"))
     stopifnot(ignoreTxVersion %in% c(TRUE, FALSE))
 
@@ -52,8 +53,12 @@ ruvg_normalization <- function(txi, housekeeping_genes = get_human_hsk(),
     stopifnot(all(housekeeping_genes %in% txi$anno$symbol))
 
     hskList <- data.frame(symbol = housekeeping_genes) %>%
-        dplyr::left_join(txi$anno, by = "symbol") %>%
-        dplyr::pull(ensembl_gene)
+            dplyr::left_join(txi$anno, by = "symbol")
+    if (txOut) {
+            hskList <- dplyr::pull(hskList, id)
+    } else {
+            hskList <- dplyr::pull(hskList, ensembl_gene) %>% unique
+    }
 
     filter <- apply(MyData, 1, function(x) length(x[x>1])>=2)
     MyData <-  MyData[filter,]

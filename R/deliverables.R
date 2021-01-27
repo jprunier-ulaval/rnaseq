@@ -40,6 +40,8 @@
 #' @param digits Integer indicating the number of decimal places
 #' @param ignoreTxVersion Should the version number in the IDs be ignored
 #'        during import. Default: \code{FALSE}.
+#' @param use_ruv Use RUVg normalization. Default: \code{FALSE}.
+#' @param housekeeping_genes A \code{vector} of gene symbols
 #'
 #' @return Invisibly returns a list with txi_tx, txi_genes, df_tx (PCA),
 #'         df_genes (PCA), design, contrasts, counts and de values.
@@ -62,7 +64,8 @@
 #' @export
 produce_deliverables <- function (dir_kallisto, anno, design, contrasts,
                                   dir_output, file_type = "h5", digits = 4,
-                                  ignoreTxVersion = FALSE) {
+                                  ignoreTxVersion = FALSE, use_ruv = FALSE,
+                                  housekeeping_genes = get_human_hsk()) {
 
     stopifnot(dir.exists(dir_kallisto))
     stopifnot(dir.exists(dir_output))
@@ -70,6 +73,7 @@ produce_deliverables <- function (dir_kallisto, anno, design, contrasts,
     stopifnot(colnames(design) == c("sample", "group"))
     validate_anno(anno)
     stopifnot(is.logical(ignoreTxVersion))
+    stopifnot(is.logical(use_ruv))
 
     file_type <-paste0(file_type, "$")
     files <- dir(dir_kallisto, pattern = file_type, recursive = TRUE, full.names = TRUE)
@@ -78,6 +82,16 @@ produce_deliverables <- function (dir_kallisto, anno, design, contrasts,
     # Import quantifications
     txi_tx <- import_kallisto(files, anno = anno, txOut = TRUE, ignoreTxVersion = ignoreTxVersion)
     txi_genes <- summarize_to_gene(txi_tx, anno = anno, ignoreTxVersion = ignoreTxVersion)
+
+    # RUV
+    if (use_ruv) {
+        txi_tx <- ruvg_normalization(txi_tx,
+                                     housekeeping_genes = housekeeping_genes,
+                                     ignoreTxVersion = TRUE)
+        txi_genes <- ruvg_normalization(txi_genes,
+                                        housekeeping_genes = housekeeping_genes,
+                                        ignoreTxVersion = TRUE)
+    }
 
     # Make sure design is in correct order
     stopifnot(all(as.character(design$sample) %in% colnames(txi_genes$counts)))
