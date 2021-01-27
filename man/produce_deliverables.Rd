@@ -12,7 +12,9 @@ produce_deliverables(
   dir_output,
   file_type = "h5",
   digits = 4,
-  ignoreTxVersion = FALSE
+  ignoreTxVersion = FALSE,
+  use_ruv = FALSE,
+  housekeeping_genes = get_human_hsk()
 )
 }
 \arguments{
@@ -59,6 +61,10 @@ Currently available:
 
 \item{ignoreTxVersion}{Should the version number in the IDs be ignored
 during import. Default: \code{FALSE}.}
+
+\item{use_ruv}{Use RUVg normalization. Default: \code{FALSE}.}
+
+\item{housekeeping_genes}{A \code{vector} of gene symbols}
 }
 \value{
 Invisibly returns a list with txi_tx, txi_genes, df_tx (PCA),

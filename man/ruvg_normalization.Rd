@@ -7,7 +7,8 @@
 ruvg_normalization(
   txi,
   housekeeping_genes = get_human_hsk(),
-  ignoreTxVersion = FALSE
+  ignoreTxVersion = FALSE,
+  txOut = FALSE
 )
 }
 \arguments{
@@ -17,6 +18,8 @@ function.}
 \item{housekeeping_genes}{A \code{vector} of gene symbols}
 
 \item{ignoreTxVersion}{Ignore version of tx. Default = FALSE}
+
+\item{txOut}{txi was produced at tx level?. Default = FALSE}
 }
 \value{
 The original txi object with a \code{$ruvg_counts} element added.

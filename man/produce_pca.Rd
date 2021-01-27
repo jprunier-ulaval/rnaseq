@@ -4,7 +4,7 @@
 \alias{produce_pca}
 \title{Produce a PCA plot from txi}
 \usage{
-produce_pca(txi, graph = TRUE)
+produce_pca(txi, graph = TRUE, use_ruv = FALSE)
 }
 \arguments{
 \item{txi}{The \code{txi} object returned by the \code{import_kallisto}
@@ -12,6 +12,9 @@ function.}
 
 \item{graph}{Produce the graph. \code{TRUE} or \code{FALSE}. Default:
 \code{TRUE}.}
+
+\item{use_ruv}{Use RUVg normalization? Needs to be pre-computed using the
+\code{ruvg_normalization} function. Default: \code{FALSE}.}
 }
 \value{
 Produce the PCA and silently returns the \code{data.frame} and the
