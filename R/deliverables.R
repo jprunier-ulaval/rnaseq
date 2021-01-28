@@ -101,10 +101,10 @@ produce_deliverables <- function (dir_kallisto, anno, design, contrasts,
 
     # PCA
     pdf(file.path(dir_output, "PCA_genes.pdf"))
-    df_genes <- produce_pca(txi_genes)
+    df_genes <- produce_pca(txi_genes, use_ruv = use_ruv)
     dev.off()
     pdf(file.path(dir_output, "PCA_tx.pdf"))
-    df_tx <- produce_pca(txi_tx)
+    df_tx <- produce_pca(txi_tx, use_ruv = use_ruv)
     dev.off()
 
     # Produce counts
@@ -114,8 +114,8 @@ produce_deliverables <- function (dir_kallisto, anno, design, contrasts,
     write_csv(counts, file.path(dir_output, "counts.csv"))
 
     # Produce DE
-    dds_genes <- deseq2_analysis(txi_genes, design, ~ group)
-    dds_tx <- deseq2_analysis(txi_tx, design, ~ group)
+    dds_genes <- deseq2_analysis(txi_genes, design, ~ group, use_ruv = use_ruv)
+    dds_tx <- deseq2_analysis(txi_tx, design, ~ group, use_ruv = use_ruv)
 
     de_genes <- map(contrasts, ~ format_de(dds_genes, txi_genes, .x, ignoreTxVersion, digits = digits))
     de_tx <- map(contrasts, ~ format_de(dds_tx, txi_tx, .x, ignoreTxVersion, digits = digits))

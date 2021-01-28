@@ -4,6 +4,8 @@
 #'
 #' @param txi The txi object returned by the import_kallisto function.
 #' @param digits Integer indicating the number of decimal places
+#' @param use_ruv Use RUVg normalization? Needs to be pre-computed using the
+#'                \code{ruvg_normalization} function. Default: \code{FALSE}.
 #'
 #' @return A data.frame with the anno and the merged counts values.
 #'
@@ -14,7 +16,7 @@
 #' @import dplyr
 #'
 #' @export
-format_counts <- function(txi, digits = 4) {
+format_counts <- function(txi, digits = 4, use_ruv = FALSE) {
     names_txi <- c("abundance", "counts", "length", "countsFromAbundance",
                    "fpkm", "anno", "txOut")
     stopifnot(all(names_txi %in% names(txi)))
@@ -22,9 +24,17 @@ format_counts <- function(txi, digits = 4) {
     stopifnot(identical(colnames(txi$counts), colnames(txi$abundance)))
     stopifnot(identical(rownames(txi$counts), rownames(txi$fpkm)))
     stopifnot(identical(colnames(txi$counts), colnames(txi$fpkm)))
+    if (use_ruv) {
+        stopifnot(identical(rownames(txi$counts), rownames(txi$ruvg_counts)))
+        stopifnot(identical(colnames(txi$counts), colnames(txi$ruvg_counts)))
+    }
 
     # Extract values
-    raw_counts <- round(txi$counts, digits)
+    if (!use_ruv) {
+        raw_counts <- round(txi$counts, digits)
+    } else {
+        raw_counts <- round(txi$ruvg_counts, digits)
+    }
     tpm <- round(txi$abundance, digits)
     fpkm <- round(txi$fpkm, digits)
 
