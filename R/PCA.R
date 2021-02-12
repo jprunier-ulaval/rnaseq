@@ -55,8 +55,7 @@ produce_pca <- function(txi, graph = TRUE, use_ruv = FALSE) {
                      Dim2 = coord[,2],
                      Dim3 = coord[,3],
                      Dim4 = coord[,4],
-                     Dim5 = coord[,5],
-                     Dim6 = coord[,6])
+                     Dim5 = coord[,5])
     df <- df %>%
         mutate(sample = rownames(df)) %>%
         as_tibble
