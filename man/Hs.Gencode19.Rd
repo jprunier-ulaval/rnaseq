@@ -4,16 +4,14 @@
 \name{Hs.Gencode19}
 \alias{Hs.Gencode19}
 \title{Annotation for Homo sapiens Gencode release 19}
-\format{
-A data.frame with 196485 rows and 5 columns:
+\format{A data.frame with 196485 rows and 5 columns:
 \describe{
   \item{id}{Ensembl transcript id}
   \item{ensembl_gene}{Ensembl gene id}
   \item{symbol}{Gene symbol}
   \item{entrez_id}{Entrez id}
   \item{transcript_type}{Transcript biotype}
-}
-}
+}}
 \usage{
 Hs.Gencode19
 }

@@ -4,15 +4,13 @@
 \name{Rn.Ensembl76}
 \alias{Rn.Ensembl76}
 \title{Annotation for Rattus norvegicus Ensembl release 76}
-\format{
-A data.frame with 29188 rows and 4 columns:
+\format{A data.frame with 29188 rows and 4 columns:
 \describe{
   \item{id}{Ensembl transcript id}
   \item{ensembl_gene}{Ensembl gene id}
   \item{symbol}{Gene symbol}
   \item{entrez_id}{Entrez id}
-}
-}
+}}
 \usage{
 Rn.Ensembl76
 }
