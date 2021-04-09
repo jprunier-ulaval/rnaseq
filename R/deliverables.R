@@ -11,6 +11,7 @@
 #'             * Hs.Gencode27
 #'             * Hs.Gencode32
 #'             * Hs.Gencode35
+#'             * Hs.Gencode37
 #'             * Hs.Ensembl79
 #'             * Hs.Ensembl91
 #'             * Hs.Ensembl95
