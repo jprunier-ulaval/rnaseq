@@ -4,14 +4,16 @@
 \name{Mm.Ensembl94}
 \alias{Mm.Ensembl94}
 \title{Annotation for Mus musculus Ensembl release 94}
-\format{A data.frame with 137767 rows and 5 columns:
+\format{
+A data.frame with 137767 rows and 5 columns:
 \describe{
   \item{id}{Ensembl transcript id}
   \item{ensembl_gene}{Ensembl gene id}
   \item{symbol}{Gene symbol}
   \item{entrez_id}{Entrez id}
   \item{transcript_type}{Transcript biotype}
-}}
+}
+}
 \usage{
 Mm.Ensembl94
 }

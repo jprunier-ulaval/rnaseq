@@ -21,6 +21,7 @@ Currently available:
 * Hs.Gencode27
 * Hs.Gencode32
 * Hs.Gencode35
+* Hs.Gencode37
 * Hs.Ensembl79
 * Hs.Ensembl91
 * Hs.Ensembl95
@@ -41,6 +42,7 @@ Currently available:
 * Rn.Ensembl98
 * Bt.Ensembl99
 * Mmu.Ensembl101
+* Mmu.Ensembl103
 * peaux_colonisees}
 
 \item{txOut}{Return counts and abundance at the transcript level. Default:

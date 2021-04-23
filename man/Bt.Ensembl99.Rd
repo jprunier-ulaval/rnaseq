@@ -4,14 +4,16 @@
 \name{Bt.Ensembl99}
 \alias{Bt.Ensembl99}
 \title{Annotation for Bos taurus Ensembl release 99}
-\format{A data.frame with 43549 rows and 5 columns:
+\format{
+A data.frame with 43549 rows and 5 columns:
 \describe{
   \item{id}{Ensembl transcript id}
   \item{ensembl_gene}{Ensembl gene id}
   \item{symbol}{Gene symbol}
   \item{entrez_id}{Entrez id}
   \item{transcript_type}{Transcript biotype}
-}}
+}
+}
 \usage{
 Bt.Ensembl99
 }
