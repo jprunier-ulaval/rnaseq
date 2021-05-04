@@ -9,7 +9,8 @@ import_kallisto(
   anno = "Hs.Ensembl91",
   txOut = FALSE,
   ignoreTxVersion = FALSE,
-  ercc92 = FALSE
+  ercc92 = FALSE,
+  file_anno = NULL
 )
 }
 \arguments{
@@ -51,6 +52,12 @@ FALSE}
 \item{ignoreTxVersion}{Ignore version of tx. Default = FALSE}
 
 \item{ercc92}{Include ERCC92 annotation when importing. Default = FALSE}
+
+\item{file_anno}{Filename containing a valid annotation for the experiment.
+Must have the following columns: id, ensembl_gene, symbol,
+entrez_id and transcript_type. Values can be NA except for
+id and ensembl_gene. If \code{NULL}, use the \code{anno} param
+value, otherwise it overwrite this param. Default: \code{NULL}.}
 }
 \value{
 A txi object.
