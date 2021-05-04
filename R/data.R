@@ -54,6 +54,20 @@
 #' }
 "Hs.Gencode35"
 
+#' Annotation for Homo sapiens Gencode release 37
+#'
+#' Basics annoations for the Homo sapiens Gencode release 37
+#'
+#' @format A data.frame with 234326 rows and 5 columns:
+#' \describe{
+#'   \item{id}{Ensembl transcript id}
+#'   \item{ensembl_gene}{Ensembl gene id}
+#'   \item{symbol}{Gene symbol}
+#'   \item{entrez_id}{Entrez id}
+#'   \item{transcript_type}{Transcript biotype}
+#' }
+"Hs.Gencode37"
+
 #' Annotation for Homo sapiens Ensembl release 91
 #'
 #' Basics annoations for the Homo sapiens Ensembl release 91
@@ -318,6 +332,20 @@
 #'   \item{transcript_type}{Transcript biotype}
 #' }
 "Mmu.Ensembl101"
+
+#' Annotation for Macaca mulatta Ensembl release 103
+#'
+#' Basics annoations for the Bos taurus Ensembl release 103
+#'
+#' @format A data.frame with 49537 rows and 5 columns:
+#' \describe{
+#'   \item{id}{Ensembl transcript id}
+#'   \item{ensembl_gene}{Ensembl gene id}
+#'   \item{symbol}{Gene symbol}
+#'   \item{entrez_id}{Entrez id}
+#'   \item{transcript_type}{Transcript biotype}
+#' }
+"Mmu.Ensembl103"
 
 #' A custom database (Homo sapiens + Staphylococcus epidermidis)
 #'
