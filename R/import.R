@@ -32,6 +32,11 @@
 #'              FALSE
 #' @param ignoreTxVersion Ignore version of tx. Default = FALSE
 #' @param ercc92 Include ERCC92 annotation when importing. Default = FALSE
+#' @param file_anno Filename containing a valid annotation for the experiment.
+#'                  Must have the following columns: id, ensembl_gene, symbol,
+#'                  entrez_id and transcript_type. Values can be NA except for
+#'                  id and ensembl_gene. If \code{NULL}, use the \code{anno} param
+#'                  value, otherwise it overwrite this param. Default: \code{NULL}.
 #'
 #' @return A txi object.
 #'
@@ -46,13 +51,19 @@
 #'
 #' @export
 import_kallisto <- function(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
-                            ignoreTxVersion = FALSE, ercc92 = FALSE) {
+                            ignoreTxVersion = FALSE, ercc92 = FALSE, file_anno = NULL) {
     stopifnot(all(file.exists(filenames)))
     stopifnot(txOut %in% c(TRUE, FALSE))
     stopifnot(ignoreTxVersion %in% c(TRUE, FALSE))
 
-    tx2gene <- get(anno) %>%
-        dplyr::select(TXNAME = id, GENEID = ensembl_gene)
+    if (!is.null(file_anno)) {
+        tx2gene <- get(anno) %>%
+            dplyr::select(TXNAME = id, GENEID = ensembl_gene)
+    } else {
+        stopifnot(file.exists(file_anno))
+        anno <- readr::read_csv(file_anno) %>% as.data.frame
+        tx2gene <- dplyr::select(TXNAME = id, GENEID = ensembl_gene)
+    }
     if (ercc92 == TRUE) {
         tx2gene_ercc92 <- dplyr::select(ERCC92, TXNAME = id, GENEID = ensembl_gene) 
         tx2gene <- rbind(tx2gene, tx2gene_ercc92)
@@ -65,7 +76,9 @@ import_kallisto <- function(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
                  ignoreTxVersion = ignoreTxVersion)
     }
     txi$fpkm <- get_fpkm(txi)
-    txi$anno <- get_anno(anno, txOut)
+    if (!is.null(file_anno)) {
+        txi$anno <- get_anno(anno, txOut)
+    }
     if (ercc92 == TRUE) {
         txi$anno <- rbind(txi$anno, ERCC92)
     }
@@ -94,6 +107,7 @@ summarize_to_gene <- function(txi_tx, anno, ignoreTxVersion = FALSE) {
     txi
 }
 
+# TODO: select the most acceptable trancript_type (i.e.: protein_coding > NMD)
 get_anno <- function(anno, txOut = TRUE) {
     validate_anno(anno)
     anno <- get(anno)
