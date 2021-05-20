@@ -59,13 +59,17 @@ import_kallisto <- function(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
     stopifnot(txOut %in% c(TRUE, FALSE))
     stopifnot(ignoreTxVersion %in% c(TRUE, FALSE))
 
-    if (!is.null(file_anno)) {
+    if (is.null(file_anno)) {
         tx2gene <- get(anno) %>%
             dplyr::select(TXNAME = id, GENEID = ensembl_gene)
     } else {
         stopifnot(file.exists(file_anno))
-        anno <- readr::read_csv(file_anno) %>% as.data.frame
-        tx2gene <- dplyr::select(TXNAME = id, GENEID = ensembl_gene)
+        anno <- readr::read_csv(file_anno, col_types = "ccccc") %>% as.data.frame
+
+        expected_colnames <- c("id" , "ensembl_gene", "symbol", "entrez_id", "transcript_type") 
+        stopifnot(identical(colnames(anno), expected_colnames))
+
+        tx2gene <- dplyr::select(anno, TXNAME = id, GENEID = ensembl_gene)
     }
     if (ercc92 == TRUE) {
         tx2gene_ercc92 <- dplyr::select(ERCC92, TXNAME = id, GENEID = ensembl_gene) 
@@ -79,8 +83,14 @@ import_kallisto <- function(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
                  ignoreTxVersion = ignoreTxVersion)
     }
     txi$fpkm <- get_fpkm(txi)
-    if (!is.null(file_anno)) {
+    if (is.null(file_anno)) {
         txi$anno <- get_anno(anno, txOut)
+    } else {
+        if (!txOut) {
+            anno <- mutate(anno, id = ensembl_gene) %>%
+                filter(!duplicated(ensembl_gene))
+        }
+        txi$anno <- anno
     }
     if (ercc92 == TRUE) {
         txi$anno <- rbind(txi$anno, ERCC92)
@@ -89,9 +99,12 @@ import_kallisto <- function(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
     if (!ignoreTxVersion) {
         stopifnot(all(rownames(txi$fpkm) %in% txi$anno$id))
     } else {
-        row_names_txi_fpkm <- str_replace(rownames(txi$fpkm), "\\..*$", "")
-        txi_anno_id <- str_replace(txi$anno$id, "\\..*$", "")
-        stopifnot(all(row_names_txi_fpkm %in% txi_anno_id))
+        rownames(txi$counts) <- stringr::str_extract(rownames(txi$counts), "^[^\\.]*")
+        rownames(txi$abundance) <- stringr::str_extract(rownames(txi$abundance), "^[^\\.]*")
+        rownames(txi$fpkm) <- stringr::str_extract(rownames(txi$fpkm), "^[^\\.]*")
+        txi$anno$id <- stringr::str_extract(txi$anno$id, "^[^\\.]*")
+        txi$anno$ensembl_gene <- stringr::str_extract(txi$anno$ensembl_gene, "^[^\\.]*")
+        stopifnot(all(rownames(txi$fpkm) %in% txi$anno$id))
     }
     txi
 }
@@ -112,7 +125,7 @@ summarize_to_gene <- function(txi_tx, anno, ignoreTxVersion = FALSE) {
 
 # TODO: select the most acceptable trancript_type (i.e.: protein_coding > NMD)
 get_anno <- function(anno, txOut = TRUE) {
-    validate_anno(anno)
+#    validate_anno(anno)
     anno <- get(anno)
     if (!txOut) {
         anno <- mutate(anno, id = ensembl_gene) %>%
