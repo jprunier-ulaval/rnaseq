@@ -52,7 +52,6 @@
 #' @import tximport
 #'
 #' @export
-# TODO: ignoreTxVersion should remove the version
 import_kallisto <- function(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
                             ignoreTxVersion = FALSE, ercc92 = FALSE, file_anno = NULL) {
     stopifnot(all(file.exists(filenames)))
@@ -88,6 +87,7 @@ import_kallisto <- function(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
     } else {
         if (!txOut) {
             anno <- mutate(anno, id = ensembl_gene) %>%
+                arrange_anno %>%
                 filter(!duplicated(ensembl_gene))
         }
         txi$anno <- anno
@@ -124,11 +124,34 @@ summarize_to_gene <- function(txi_tx, anno, ignoreTxVersion = FALSE) {
 }
 
 # TODO: select the most acceptable trancript_type (i.e.: protein_coding > NMD)
+arrange_anno <- function(anno) {
+    lvls <- c("protein_coding", "IG_C_gene", "IG_D_gene", "IG_J_gene",
+              "IG_V_gene", "TR_C_gene", "TR_D_gene", "TR_J_gene",
+              "TR_V_gene", "processed_transcript",
+              "translated_processed_pseudogene",
+              "translated_unprocessed_pseudogene",
+              "transcribed_processed_pseudogene",
+              "transcribed_unitary_pseudogene",
+              "transcribed_unprocessed_pseudogene", "pseudogene",
+              "unitary_pseudogene", "unprocessed_pseudogene",
+              "polymorphic_pseudogene", "processed_pseudogene",
+              "IG_J_pseudogene", "IG_V_pseudogene", "IG_pseudogene",
+              "IG_C_pseudogene", "TR_J_pseudogene", "TR_V_pseudogene",
+              "rRNA_pseudogene", "retained_intron", "non_stop_decay",
+              "nonsense_mediated_decay", "TEC")
+    stopifnot(all(anno$transcript_type %in% lvls))
+
+    mutate(anno, transcript_type = factor(transcript_type, levels = lvls)) %>%
+            arrange(id, transcript_type) %>%
+            mutate(transcript_type = as.character(transcript_type))
+}
+
 get_anno <- function(anno, txOut = TRUE) {
 #    validate_anno(anno)
     anno <- get(anno)
     if (!txOut) {
         anno <- mutate(anno, id = ensembl_gene) %>%
+            arrange_anno %>%
             filter(!duplicated(ensembl_gene))
     }
     anno
@@ -149,4 +172,27 @@ validate_anno <- function(anno) {
 
 get_fpkm <- function(txi) {
     (txi$counts * 10^6) / (colSums(txi$counts) * (txi$length/1000))
+}
+
+#' Parse kallisto quant directory to retrieve filenames
+#'
+#' @param dir_kallisto Kallisto quantification base directory
+#' @param file_extension The extension to parse (h5 or tsv). Default: h5
+#'
+#' @return A named list of the abundance files.
+#'
+#' @examples
+#' dir_kallisto <- get_demo_kallisto_dir()
+#' filenames <- get_filenames(dir_kallisto, file_extension = "tsv")
+#'
+#' @export
+get_filenames <- function(dir_kallisto, file_extension = "h5") {
+    stopifnot(dir.exists(dir_kallisto))
+    stopifnot(file_extension %in% c("h5", "tsv"))
+    filenames <- dir(dir_kallisto,
+                     pattern = file_extension,
+                     full.names = TRUE, recursive = TRUE)
+    stopifnot(length(filenames) >= 1)
+    names(filenames) <- basename(dirname(filenames))
+    filenames
 }
