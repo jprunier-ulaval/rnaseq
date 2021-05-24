@@ -46,7 +46,8 @@ deseq2_analysis <- function(txi, design, formula, filter = 2, use_ruv = FALSE, .
 #' @param dds The DESeqDataSet object returned by deseq2_analysis.
 #' @param txi The txi object returned by the import_kallisto function.
 #' @param contrast The contrast for the comparison (see ?DESeq2::results).
-#' @param ignoreTxVersion Should the transcript version be ignored for anno mapping.
+#' @param ignoreTxVersion Should the transcript version be ignored for anno
+#' mapping. Default: \code{FALSE}.
 #' @param digits Integer indicating the number of decimal places
 #'
 #' @return A data.frame with the anno and the merged counts values.
@@ -62,7 +63,7 @@ deseq2_analysis <- function(txi, design, formula, filter = 2, use_ruv = FALSE, .
 #' @import tibble
 #'
 #' @export
-format_de <- function(dds, txi, contrast, ignoreTxVersion, digits = 4) {
+format_de <- function(dds, txi, contrast, ignoreTxVersion = FALSE, digits = 4) {
     res <- results(dds, contrast = contrast) %>%
         as.data.frame() %>%
         rownames_to_column("id")
