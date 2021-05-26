@@ -21,7 +21,10 @@ Produce RUVSeq recommended graph to evaluate normalization
 }
 \examples{
 txi <- get_demo_txi()
-txi_ruv <- ruvg_normalization(txi)
+# For this demo, we use a subset of housekeeping genes. In a real example,
+# It is recommended to use the default value or a complete set of
+# housekeeping genes.
+txi_ruv <- ruvg_normalization(txi, housekeeping_genes = c("RPL9", "RPL24"))
 \dontrun{
    produce_RUVSeq_graphs(txi_ruv)
 }
