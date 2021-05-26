@@ -17,8 +17,9 @@ A `data.frame` object.
 Extract RUVg counts with annotation data.frame from txi
 }
 \examples{
-txi <- get_demo_txi()
-txi_ruv <- ruvg_normalisation(txi)
-ruvg <- get_ruvg_anno_df(txi_ruv)
+abundances <- get_demo_abundance_files()
+file_anno <- get_demo_anno_file()
+txi <- import_kallisto(abundances, anno = file_anno)
+ruvg <- get_ruvg_anno_df(txi)
 
 }

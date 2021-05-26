@@ -1,7 +1,7 @@
 #' Import quantifications from Kallisto
 #'
 #' @param filenames Paths to the abundance files.
-#' @param anno The version of the annotation to use. Default: "Hs.Ensembl91"
+#' @param anno The version of the annotation to use or a filename.
 #'             Currently available:
 #'             * Hs.Gencode19
 #'             * Hs.Gencode27
@@ -30,21 +30,21 @@
 #'             * Mmu.Ensembl101
 #'             * Mmu.Ensembl103
 #'             * peaux_colonisees
+#'  If it is a filename, it must have the following columns: id, ensembl_gene,
+#'  symbol, entrez_id and transcript_type. Values can be NA except for id and
+#'  ensembl_gene. If \code{NULL}, use the \code{anno} param value, otherwise it
+#'  overwrite this param.
 #' @param txOut Return counts and abundance at the transcript level. Default:
 #'              FALSE
 #' @param ignoreTxVersion Ignore version of tx. Default = FALSE
 #' @param ercc92 Include ERCC92 annotation when importing. Default = FALSE
-#' @param file_anno Filename containing a valid annotation for the experiment.
-#'                  Must have the following columns: id, ensembl_gene, symbol,
-#'                  entrez_id and transcript_type. Values can be NA except for
-#'                  id and ensembl_gene. If \code{NULL}, use the \code{anno} param
-#'                  value, otherwise it overwrite this param. Default: \code{NULL}.
 #'
 #' @return A txi object.
 #'
 #' @examples
 #' abundances <- get_demo_abundance_files()
-#' txi <- import_kallisto(abundances, anno = "Hs.Ensembl79")
+#' file_anno <- get_demo_anno_file()
+#' txi <- import_kallisto(abundances, anno = file_anno)
 #'
 #' @import readr
 #' @import dplyr
@@ -52,26 +52,23 @@
 #' @import tximport
 #'
 #' @export
-import_kallisto <- function(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
-                            ignoreTxVersion = FALSE, ercc92 = FALSE, file_anno = NULL) {
+import_kallisto <- function(filenames, anno, txOut = FALSE,
+                            ignoreTxVersion = FALSE, ercc92 = FALSE) {
     stopifnot(all(file.exists(filenames)))
     stopifnot(txOut %in% c(TRUE, FALSE))
     stopifnot(ignoreTxVersion %in% c(TRUE, FALSE))
+    stopifnot(ercc92 %in% c(TRUE, FALSE))
 
-    if (is.null(file_anno)) {
+    if (!file.exists(anno)) {
         tx2gene <- get(anno) %>%
             dplyr::select(TXNAME = id, GENEID = ensembl_gene)
     } else {
-        stopifnot(file.exists(file_anno))
-        anno <- readr::read_csv(file_anno, col_types = "ccccc") %>% as.data.frame
-
-        expected_colnames <- c("id" , "ensembl_gene", "symbol", "entrez_id", "transcript_type") 
-        stopifnot(identical(colnames(anno), expected_colnames))
-
-        tx2gene <- dplyr::select(anno, TXNAME = id, GENEID = ensembl_gene)
+        tx2gene <- readr::read_csv(anno, col_types = "ccccc") %>%
+            as.data.frame %>%
+            dplyr::select(TXNAME = id, GENEID = ensembl_gene)
     }
     if (ercc92 == TRUE) {
-        tx2gene_ercc92 <- dplyr::select(ERCC92, TXNAME = id, GENEID = ensembl_gene) 
+        tx2gene_ercc92 <- dplyr::select(ERCC92, TXNAME = id, GENEID = ensembl_gene)
         tx2gene <- rbind(tx2gene, tx2gene_ercc92)
     }
     if (txOut == TRUE) {
@@ -82,16 +79,24 @@ import_kallisto <- function(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
                  ignoreTxVersion = ignoreTxVersion)
     }
     txi$fpkm <- get_fpkm(txi)
-    if (is.null(file_anno)) {
+    if (!file.exists(anno)) {
         txi$anno <- get_anno(anno, txOut)
     } else {
+        anno <- readr::read_csv(anno, col_types = "ccccc")
         if (!txOut) {
             anno <- mutate(anno, id = ensembl_gene) %>%
                 arrange_anno %>%
                 filter(!duplicated(ensembl_gene))
         }
-        txi$anno <- anno
+        txi$anno <- as.data.frame(anno)
     }
+    expected_colnames <- c("id" , "ensembl_gene", "symbol", "entrez_id", "transcript_type")
+    
+    stopifnot(identical(colnames(txi$anno), expected_colnames))
+    stopifnot(sum(is.na(txi$anno$id)) == 0)
+    stopifnot(sum(is.na(txi$anno$ensembl_gene)) == 0)
+    stopifnot(length(unique(txi$anno$id)) == length(txi$anno$id))
+    
     if (ercc92 == TRUE) {
         txi$anno <- rbind(txi$anno, ERCC92)
     }
@@ -106,6 +111,10 @@ import_kallisto <- function(filenames, anno = "Hs.Ensembl91", txOut = FALSE,
         txi$anno$ensembl_gene <- stringr::str_extract(txi$anno$ensembl_gene, "^[^\\.]*")
         stopifnot(all(rownames(txi$fpkm) %in% txi$anno$id))
     }
+    stopifnot(identical(nrow(txi$counts), nrow(txi$anno)))
+    stopifnot(all(rownames(txi$counts) %in% txi$anno$id))
+    stopifnot(all(txi$anno$id %in% rownames(txi$counts)))
+
     txi
 }
 
@@ -123,12 +132,14 @@ summarize_to_gene <- function(txi_tx, anno, ignoreTxVersion = FALSE) {
     txi
 }
 
-# TODO: select the most acceptable trancript_type (i.e.: protein_coding > NMD)
 arrange_anno <- function(anno) {
-    lvls <- c("protein_coding", "IG_C_gene", "IG_D_gene", "IG_J_gene",
-              "IG_V_gene", "TR_C_gene", "TR_D_gene", "TR_J_gene",
-              "TR_V_gene", "processed_transcript",
-              "translated_processed_pseudogene",
+    lvls <- c("protein_coding", "miRNA", "lincRNA", "antisense", "snRNA",
+              "sense_intronic", "misc_RNA", "snoRNA", "scaRNA", "rRNA",
+              "3prime_overlapping_ncrna", "sense_overlapping", "sRNA",
+              "ribozyme", "vaultRNA", "non_coding", "macro_lncRNA", "Mt_tRNA",
+              "Mt_rRNA", "IG_C_gene", "IG_D_gene", "IG_J_gene", "IG_V_gene",
+              "TR_C_gene", "TR_D_gene", "TR_J_gene", "TR_V_gene",
+              "processed_transcript", "translated_processed_pseudogene",
               "translated_unprocessed_pseudogene",
               "transcribed_processed_pseudogene",
               "transcribed_unitary_pseudogene",

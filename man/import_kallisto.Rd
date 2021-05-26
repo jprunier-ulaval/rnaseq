@@ -6,45 +6,48 @@
 \usage{
 import_kallisto(
   filenames,
-  anno = "Hs.Ensembl91",
+  anno,
   txOut = FALSE,
   ignoreTxVersion = FALSE,
-  ercc92 = FALSE,
-  file_anno = NULL
+  ercc92 = FALSE
 )
 }
 \arguments{
 \item{filenames}{Paths to the abundance files.}
 
-\item{anno}{The version of the annotation to use. Default: "Hs.Ensembl91"
-Currently available:
-* Hs.Gencode19
-* Hs.Gencode27
-* Hs.Gencode32
-* Hs.Gencode35
-* Hs.Gencode37
-* Hs.Ensembl79
-* Hs.Ensembl91
-* Hs.Ensembl95
-* Hs.Ensembl97
-* Hs.Ensembl98
-* Hs.Ensembl100
-* Hs.Ensembl101
-* Mm.Ensembl91
-* Mm.Ensembl92
-* Mm.Ensembl94
-* Mm.Ensembl97
-* Mm.Ensembl99
-* Mm.Ensembl100
-* Mm.Ensembl101
-* Rn.Ensembl76
-* Rn.Ensembl79
-* Rn.Ensembl92
-* Rn.Ensembl98
-* Bt.Ensembl99
-* Mmu.Ensembl101
-* Mmu.Ensembl103
-* peaux_colonisees}
+\item{anno}{The version of the annotation to use or a filename.
+           Currently available:
+           * Hs.Gencode19
+           * Hs.Gencode27
+           * Hs.Gencode32
+           * Hs.Gencode35
+           * Hs.Gencode37
+           * Hs.Ensembl79
+           * Hs.Ensembl91
+           * Hs.Ensembl95
+           * Hs.Ensembl97
+           * Hs.Ensembl98
+           * Hs.Ensembl100
+           * Hs.Ensembl101
+           * Mm.Ensembl91
+           * Mm.Ensembl92
+           * Mm.Ensembl94
+           * Mm.Ensembl97
+           * Mm.Ensembl99
+           * Mm.Ensembl100
+           * Mm.Ensembl101
+           * Rn.Ensembl76
+           * Rn.Ensembl79
+           * Rn.Ensembl92
+           * Rn.Ensembl98
+           * Bt.Ensembl99
+           * Mmu.Ensembl101
+           * Mmu.Ensembl103
+           * peaux_colonisees
+If it is a filename, it must have the following columns: id, ensembl_gene,
+symbol, entrez_id and transcript_type. Values can be NA except for id and
+ensembl_gene. If \code{NULL}, use the \code{anno} param value, otherwise it
+overwrite this param.}
 
 \item{txOut}{Return counts and abundance at the transcript level. Default:
 FALSE}
@@ -52,12 +55,6 @@ FALSE}
 \item{ignoreTxVersion}{Ignore version of tx. Default = FALSE}
 
 \item{ercc92}{Include ERCC92 annotation when importing. Default = FALSE}
-
-\item{file_anno}{Filename containing a valid annotation for the experiment.
-Must have the following columns: id, ensembl_gene, symbol,
-entrez_id and transcript_type. Values can be NA except for
-id and ensembl_gene. If \code{NULL}, use the \code{anno} param
-value, otherwise it overwrite this param. Default: \code{NULL}.}
 }
 \value{
 A txi object.
@@ -67,6 +64,7 @@ Import quantifications from Kallisto
 }
 \examples{
 abundances <- get_demo_abundance_files()
-txi <- import_kallisto(abundances, anno = "Hs.Ensembl79")
+file_anno <- get_demo_anno_file()
+txi <- import_kallisto(abundances, anno = file_anno)
 
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/format.R
 \name{get_anno_df}
 \alias{get_anno_df}
-\title{Extract FPKM with annotation data.frame from txi}
+\title{Extract counts with annotation data.frame from txi}
 \usage{
 get_anno_df(txi, col_name)
 }
@@ -15,11 +15,15 @@ get_anno_df(txi, col_name)
 A `data.frame` object.
 }
 \description{
-Extract FPKM with annotation data.frame from txi
+Extract counts with annotation data.frame from txi
 }
 \examples{
 abundances <- get_demo_abundance_files()
-txi <- import_kallisto(abundances, anno = "Hs.Ensembl79")
-fpkm <- get_fpkm_anno_df(txi)
+file_anno <- get_demo_anno_file()
+txi <- import_kallisto(abundances, anno = file_anno)
+raw_counts <- get_anno_df(txi, "raw_count")
+tpm <- get_anno_df(txi, "tpm")
+fpkm <- get_anno_df(txi, "fpkm")
+ruvg <- get_anno_df(txi, "ruvg")
 
 }

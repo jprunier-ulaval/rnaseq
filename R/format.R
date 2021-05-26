@@ -6,7 +6,8 @@
 #'
 #' @examples
 #' abundances <- get_demo_abundance_files()
-#' txi <- import_kallisto(abundances, anno = "Hs.Ensembl79")
+#' file_anno <- get_demo_anno_file()
+#' txi <- import_kallisto(abundances, anno = file_anno)
 #' raw_counts <- get_raw_count_anno_df(txi)
 #'
 #' @import tibble
@@ -28,7 +29,8 @@ get_raw_count_anno_df <- function(txi) {
 #'
 #' @examples
 #' abundances <- get_demo_abundance_files()
-#' txi <- import_kallisto(abundances, anno = "Hs.Ensembl79")
+#' file_anno <- get_demo_anno_file()
+#' txi <- import_kallisto(abundances, anno = file_anno)
 #' tpm <- get_tpm_anno_df(txi)
 #'
 #' @import tibble
@@ -50,9 +52,10 @@ get_tpm_anno_df <- function(txi) {
 #' @return A `data.frame` object.
 #'
 #' @examples
-#' txi <- get_demo_txi()
-#' txi_ruv <- ruvg_normalisation(txi)
-#' ruvg <- get_ruvg_anno_df(txi_ruv)
+#' abundances <- get_demo_abundance_files()
+#' file_anno <- get_demo_anno_file()
+#' txi <- import_kallisto(abundances, anno = file_anno)
+#' ruvg <- get_ruvg_anno_df(txi)
 #'
 #' @import tibble
 #' @import dplyr
@@ -65,7 +68,7 @@ get_ruvg_anno_df <- function(txi) {
         dplyr::select(one_of(colnames(txi$anno)), everything())
 }
 
-#' Extract FPKM with annotation data.frame from txi
+#' Extract counts with annotation data.frame from txi
 #'
 #' @param txi: The txi object returned from the `import_kallisto` function
 #' @param colname: The txi object returned from the `import_kallisto` function
@@ -74,8 +77,12 @@ get_ruvg_anno_df <- function(txi) {
 #'
 #' @examples
 #' abundances <- get_demo_abundance_files()
-#' txi <- import_kallisto(abundances, anno = "Hs.Ensembl79")
-#' fpkm <- get_fpkm_anno_df(txi)
+#' file_anno <- get_demo_anno_file()
+#' txi <- import_kallisto(abundances, anno = file_anno)
+#' raw_counts <- get_anno_df(txi, "raw_count")
+#' tpm <- get_anno_df(txi, "tpm")
+#' fpkm <- get_anno_df(txi, "fpkm")
+#' ruvg <- get_anno_df(txi, "ruvg")
 #'
 #' @import tibble
 #' @import dplyr
@@ -87,5 +94,3 @@ get_anno_df <- function(txi, col_name) {
         left_join(txi$anno, by = "id") %>%
         dplyr::select(one_of(colnames(txi$anno)), everything())
 }
-
-

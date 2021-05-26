@@ -21,12 +21,19 @@ validate_txi <- function(txi) {
                                        "entrez_id", "transcript_type"))
 }
 
+test_that("Demo data works correctly", {
+    abundances <- get_demo_abundance_files()
+    file_anno <- get_demo_anno_file()
+    txi <- import_kallisto(abundances, file_anno)
+    validate_txi(txi)
+})
+
 test_that("Custom anno expected transcript_type order", {
     anno_filename <- "extdata/valid_anno_multiple_transcript_type_expected_order.csv"
     anno_filename <- system.file(anno_filename, package = "rnaseq")
     dir_kallisto <- system.file("extdata/quant_test_valid", package = "rnaseq")
     filenames <- get_filenames(dir_kallisto, "tsv")
-    txi <- import_kallisto(filenames, file_anno = anno_filename)
+    txi <- import_kallisto(filenames, anno = anno_filename)
     validate_txi(txi)
     expect_equal(txi$anno$id, c("gene1", "gene2", "gene3"))
     expect_equal(txi$anno$ensembl_gene, c("gene1", "gene2", "gene3"))
@@ -40,7 +47,7 @@ test_that("Custom anno unexpected transcript_type order", {
     anno_filename <- system.file(anno_filename, package = "rnaseq")
     dir_kallisto <- system.file("extdata/quant_test_valid", package = "rnaseq")
     filenames <- get_filenames(dir_kallisto, "tsv")
-    txi <- import_kallisto(filenames, file_anno = anno_filename)
+    txi <- import_kallisto(filenames, anno = anno_filename)
     validate_txi(txi)
     expect_equal(txi$anno$id, c("gene1", "gene2", "gene3"))
     expect_equal(txi$anno$ensembl_gene, c("gene1", "gene2", "gene3"))
@@ -48,3 +55,5 @@ test_that("Custom anno unexpected transcript_type order", {
     expect_equal(txi$anno$entrez_id, c("123", "456", "789"))
     expect_equal(txi$anno$transcript_type, rep("protein_coding", 3))
 })
+
+## TODO: test invalid cases (NA, etc...)

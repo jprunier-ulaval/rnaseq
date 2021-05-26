@@ -17,7 +17,8 @@ Extract raw counts with annotation data.frame from txi
 }
 \examples{
 abundances <- get_demo_abundance_files()
-txi <- import_kallisto(abundances, anno = "Hs.Ensembl79")
+file_anno <- get_demo_anno_file()
+txi <- import_kallisto(abundances, anno = file_anno)
 raw_counts <- get_raw_count_anno_df(txi)
 
 }
