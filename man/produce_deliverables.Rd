@@ -81,8 +81,9 @@ de_*.csv: DE analysis at the gene level and at the transcript level for
 dir_kallisto <- get_demo_kallisto_dir()
 contrasts <- list(comp = c("group", "A", "B"))
 design <- get_demo_design()
+file_anno <- get_demo_anno_file()
 produce_deliverables(dir_kallisto,
-                     anno = "Hs.Ensembl79",
+                     anno = file_anno,
                      design = design,
                      contrast = contrasts,
                      dir_output = ".",

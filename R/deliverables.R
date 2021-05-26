@@ -52,8 +52,9 @@
 #' dir_kallisto <- get_demo_kallisto_dir()
 #' contrasts <- list(comp = c("group", "A", "B"))
 #' design <- get_demo_design()
+#' file_anno <- get_demo_anno_file()
 #' produce_deliverables(dir_kallisto,
-#'                      anno = "Hs.Ensembl79",
+#'                      anno = file_anno,
 #'                      design = design,
 #'                      contrast = contrasts,
 #'                      dir_output = ".",
@@ -73,7 +74,9 @@ produce_deliverables <- function (dir_kallisto, anno, design, contrasts,
     stopifnot(dir.exists(dir_output))
     stopifnot(file_type %in% c("tsv", "h5"))
     stopifnot(colnames(design) == c("sample", "group"))
-    validate_anno(anno)
+    if (!file.exists(anno)) {
+        validate_anno(anno)
+    }
     stopifnot(is.logical(ignoreTxVersion))
     stopifnot(is.logical(use_ruv))
 

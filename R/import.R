@@ -79,17 +79,7 @@ import_kallisto <- function(filenames, anno, txOut = FALSE,
                  ignoreTxVersion = ignoreTxVersion)
     }
     txi$fpkm <- get_fpkm(txi)
-    if (!file.exists(anno)) {
-        txi$anno <- get_anno(anno, txOut)
-    } else {
-        anno <- readr::read_csv(anno, col_types = "ccccc")
-        if (!txOut) {
-            anno <- mutate(anno, id = ensembl_gene) %>%
-                arrange_anno %>%
-                filter(!duplicated(ensembl_gene))
-        }
-        txi$anno <- as.data.frame(anno)
-    }
+    txi$anno <- get_anno(anno, txOut)
     expected_colnames <- c("id" , "ensembl_gene", "symbol", "entrez_id", "transcript_type")
     
     stopifnot(identical(colnames(txi$anno), expected_colnames))
@@ -121,8 +111,14 @@ import_kallisto <- function(filenames, anno, txOut = FALSE,
 summarize_to_gene <- function(txi_tx, anno, ignoreTxVersion = FALSE) {
     stopifnot(ignoreTxVersion %in% c(TRUE, FALSE))
 
-    tx2gene <- get_anno(anno) %>%
-        dplyr::select(TXNAME = id, GENEID = ensembl_gene)
+    if (!file.exists(anno)) {
+        tx2gene <- get(anno) %>%
+            dplyr::select(TXNAME = id, GENEID = ensembl_gene)
+    } else {
+        tx2gene <- readr::read_csv(anno, col_types = "ccccc") %>%
+            as.data.frame %>%
+            dplyr::select(TXNAME = id, GENEID = ensembl_gene)
+    }
 
     txi <- summarizeToGene(txi_tx, tx2gene = tx2gene, ignoreTxVersion = ignoreTxVersion)
     txi$fpkm <- get_fpkm(txi)
@@ -159,7 +155,11 @@ arrange_anno <- function(anno) {
 
 get_anno <- function(anno, txOut = TRUE) {
 #    validate_anno(anno)
-    anno <- get(anno)
+    if (!file.exists(anno)) {
+        anno <- get(anno)
+    } else {
+        anno <- readr::read_csv(anno, col_types = "ccccc")
+    }
     if (!txOut) {
         anno <- mutate(anno, id = ensembl_gene) %>%
             arrange_anno %>%
