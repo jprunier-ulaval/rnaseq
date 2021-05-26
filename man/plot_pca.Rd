@@ -21,6 +21,6 @@ Produce a PCA plot from produce_pca results
 \examples{
 txi <- get_demo_txi()
 res_pca <- produce_pca(txi, graph = FALSE)
-p <- plot_pca(res_pca$df, res_pca$pca)
+p <- plot_pca(res_pca)
 
 }
