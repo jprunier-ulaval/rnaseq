@@ -71,7 +71,11 @@ get_ruvg_anno_df <- function(txi) {
 #' Extract counts with annotation data.frame from txi
 #'
 #' @param txi: The txi object returned from the `import_kallisto` function
-#' @param colname: The txi object returned from the `import_kallisto` function
+#' @param table_name: The name of the count table to return. Tolerated values:
+#'            * For raw counts: counts, raw_counts, count and raw_count
+#'            * For TPM: abundance, TPM and tpm
+#'            * For RUVg: ruvg_counts, ruvg, RUVg, RUV and ruv
+#'            * For FPKM: fpkm and FPKM
 #'
 #' @return A `data.frame` object.
 #'
@@ -80,16 +84,29 @@ get_ruvg_anno_df <- function(txi) {
 #' file_anno <- get_demo_anno_file()
 #' txi <- import_kallisto(abundances, anno = file_anno)
 #' raw_counts <- get_anno_df(txi, "raw_count")
-#' tpm <- get_anno_df(txi, "tpm")
-#' fpkm <- get_anno_df(txi, "fpkm")
-#' ruvg <- get_anno_df(txi, "ruvg")
 #'
 #' @import tibble
 #' @import dplyr
 #'
 #' @export
-get_anno_df <- function(txi, col_name) {
-    as.data.frame(txi$fpkm) %>%
+get_anno_df <- function(txi, colname) {
+    valid_colname <- c("count", "raw_count", "counts", "raw_counts", "tpm",
+                       "abundance", "TPM", "ruvg", "RUVg", "RUV", "ruv",
+                       "ruvg_counts", "fpkm", "FPKM")
+    stopifnot(colname %in% valid_colname)
+    if (colname %in% c("count", "raw_count", "counts", "raw_counts")) {
+        colname <- "counts"
+    }
+    if (colname %in% c("tpm", "abundance", "TPM")) {
+        colname <- "abundance"
+    }
+    if (colname %in% c("ruvg_counts", "ruvg", "RUVg", "RUV", "ruv")) {
+        colname <- "ruvg_counts"
+    }
+    if (colname %in% c("fpkm", "FPKM")) {
+        colname <- "fpkm"
+    }
+    as.data.frame(txi[[colname]]) %>%
         rownames_to_column("id") %>%
         left_join(txi$anno, by = "id") %>%
         dplyr::select(one_of(colnames(txi$anno)), everything())
