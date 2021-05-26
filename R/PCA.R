@@ -51,11 +51,12 @@ produce_pca <- function(txi, graph = TRUE, use_ruv = FALSE) {
 
     pca <- PCA(m, graph = FALSE)
     coord <- pca$ind$coord
-    df <- data.frame(Dim1 = coord[,1],
-                     Dim2 = coord[,2],
-                     Dim3 = coord[,3],
-                     Dim4 = coord[,4],
-                     Dim5 = coord[,5])
+    dims <- str_extract(colnames(coord), "[0-9]*$") %>% as.numeric
+    max_dim <- min(tail(dims, 1), 5)
+    df <- data.frame(Dim1 = coord[,1])
+    for (i in seq(2, max_dim)) {
+        df[[paste0("Dim", i)]] <- coord[,i]
+    }
     df <- df %>%
         mutate(sample = rownames(df)) %>%
         as_tibble
@@ -78,7 +79,7 @@ produce_pca <- function(txi, graph = TRUE, use_ruv = FALSE) {
 #' @examples
 #' txi <- get_demo_txi()
 #' res_pca <- produce_pca(txi, graph = FALSE)
-#' p <- plot_pca(res_pca$df, res_pca$pca)
+#' p <- plot_pca(res_pca)
 #'
 #' @import tidyr
 #' @import ggplot2
