@@ -165,7 +165,7 @@ get_anno <- function(anno, txOut = TRUE) {
             arrange_anno %>%
             filter(!duplicated(ensembl_gene))
     }
-    anno
+    as.data.frame(anno)
 }
 
 validate_anno <- function(anno) {
