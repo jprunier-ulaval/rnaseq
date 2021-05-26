@@ -26,6 +26,9 @@ produce_volcano <- function(de_res, fc_threshold = 3, graph = TRUE) {
     grey <- "#7C7C7C"
 
     # Remove NA padj
+    if (!is.data.frame(de_res)) {
+        de_res <- as.data.frame(de_res)
+    }
     de_res <- dplyr::filter(de_res, !is.na(padj))
 
     # Rename qV to padj
