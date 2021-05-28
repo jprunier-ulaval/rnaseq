@@ -4,12 +4,16 @@
 \alias{get_anno_df}
 \title{Extract counts with annotation data.frame from txi}
 \usage{
-get_anno_df(txi, col_name)
+get_anno_df(txi, colname)
 }
 \arguments{
 \item{txi:}{The txi object returned from the `import_kallisto` function}
 
-\item{colname:}{The txi object returned from the `import_kallisto` function}
+\item{table_name:}{The name of the count table to return. Tolerated values:
+* For raw counts: counts, raw_counts, count and raw_count
+* For TPM: abundance, TPM and tpm
+* For RUVg: ruvg_counts, ruvg, RUVg, RUV and ruv
+* For FPKM: fpkm and FPKM}
 }
 \value{
 A `data.frame` object.
@@ -22,8 +26,5 @@ abundances <- get_demo_abundance_files()
 file_anno <- get_demo_anno_file()
 txi <- import_kallisto(abundances, anno = file_anno)
 raw_counts <- get_anno_df(txi, "raw_count")
-tpm <- get_anno_df(txi, "tpm")
-fpkm <- get_anno_df(txi, "fpkm")
-ruvg <- get_anno_df(txi, "ruvg")
 
 }
