@@ -27,7 +27,14 @@ Imports:
     purrr,
     rhdf5,
     magrittr,
-    EDASeq
+    EDASeq,
+    tools,
+    Biostrings,
+    AnnotationDbi,
+    org.Hs.eg.db,
+    org.Mm.eg.db,
+    org.Rn.eg.db,
+    org.Mmu.eg.db
 Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
