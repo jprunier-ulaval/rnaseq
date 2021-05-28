@@ -8,8 +8,9 @@
 #' @examples
 #' human_hsk <- get_human_hsk()
 #'
-#' @import readr
-#' @import dplyr
+#' @importFrom magrittr %>%
+#' @importFrom readr read_csv
+#' @importFrom dplyr pull
 #'
 #' @export
 get_human_hsk <- function() {
@@ -35,11 +36,14 @@ get_human_hsk <- function() {
 #' # housekeeping genes.
 #' txi_ruv <- ruvg_normalization(txi, housekeeping_genes = c("RPL9", "RPL24"))
 #'
-#' @import RUVSeq
-#' @import EDASeq
-#' @import magrittr
-#' @import stringr
-#' @import dplyr
+#' @importFrom EDASeq newSeqExpressionSet
+#' @importFrom EDASeq betweenLaneNormalization
+#' @importFrom EDASeq normCounts
+#' @importFrom RUVSeq RUVg
+#' @importFrom magrittr %>%
+#' @importFrom stringr str_replace
+#' @importFrom dplyr left_join
+#' @importFrom dplyr pull
 #'
 #' @export
 ruvg_normalization <- function(txi, housekeeping_genes = get_human_hsk(),
@@ -98,7 +102,8 @@ ruvg_normalization <- function(txi, housekeeping_genes = get_human_hsk(),
 #'    produce_RUVSeq_graphs(txi_ruv)
 #' }
 #'
-#' @import RUVSeq
+#' @importFrom EDASeq plotRLE
+#' @importFrom EDASeq plotPCA
 #'
 #' @export
 produce_RUVSeq_graphs <- function(txi, output = "RUVg_graphs.pdf") {

@@ -10,15 +10,20 @@
 #' txi <- import_kallisto(abundances, anno = file_anno)
 #' raw_counts <- get_raw_count_anno_df(txi)
 #'
-#' @import tibble
-#' @import dplyr
+#' @importFrom magrittr %>%
+#' @importFrom tibble rownames_to_column
+#' @importFrom dplyr left_join 
+#' @importFrom dplyr select 
+#' @importFrom dplyr one_of 
+#' @importFrom dplyr everything 
 #'
 #' @export
 get_raw_count_anno_df <- function(txi) {
     as.data.frame(txi$counts) %>%
-        rownames_to_column("id") %>%
-        left_join(txi$anno, by = "id") %>%
-        dplyr::select(one_of(colnames(txi$anno)), everything())
+        tibble::rownames_to_column("id") %>%
+        dplyr::left_join(txi$anno, by = "id") %>%
+        dplyr::select(dplyr::one_of(colnames(txi$anno)),
+                      dplyr::everything())
 }
 
 #' Extract TPM with annotation data.frame from txi
@@ -33,15 +38,20 @@ get_raw_count_anno_df <- function(txi) {
 #' txi <- import_kallisto(abundances, anno = file_anno)
 #' tpm <- get_tpm_anno_df(txi)
 #'
-#' @import tibble
-#' @import dplyr
+#' @importFrom magrittr %>%
+#' @importFrom tibble rownames_to_column
+#' @importFrom dplyr left_join
+#' @importFrom dplyr select 
+#' @importFrom dplyr one_of 
+#' @importFrom dplyr everything 
 #'
 #' @export
 get_tpm_anno_df <- function(txi) {
     as.data.frame(txi$abundance) %>%
-        rownames_to_column("id") %>%
-        left_join(txi$anno, by = "id") %>%
-        dplyr::select(one_of(colnames(txi$anno)), everything())
+        tibble::rownames_to_column("id") %>%
+        dplyr::left_join(txi$anno, by = "id") %>%
+        dplyr::select(dplyr::one_of(colnames(txi$anno)),
+                      dplyr::everything())
 }
 
 #' Extract RUVg counts with annotation data.frame from txi
@@ -57,15 +67,20 @@ get_tpm_anno_df <- function(txi) {
 #' txi <- import_kallisto(abundances, anno = file_anno)
 #' ruvg <- get_ruvg_anno_df(txi)
 #'
-#' @import tibble
-#' @import dplyr
+#' @importFrom magrittr %>%
+#' @importFrom tibble rownames_to_column
+#' @importFrom dplyr left_join
+#' @importFrom dplyr select 
+#' @importFrom dplyr one_of 
+#' @importFrom dplyr everything 
 #'
 #' @export
 get_ruvg_anno_df <- function(txi) {
     as.data.frame(txi$ruvg_counts) %>%
-        rownames_to_column("id") %>%
-        left_join(txi$anno, by = "id") %>%
-        dplyr::select(one_of(colnames(txi$anno)), everything())
+        tibble::rownames_to_column("id") %>%
+        dplyr::left_join(txi$anno, by = "id") %>%
+        dplyr::select(dplyr::one_of(colnames(txi$anno)),
+                      dplyr::everything())
 }
 
 #' Extract counts with annotation data.frame from txi
@@ -85,8 +100,12 @@ get_ruvg_anno_df <- function(txi) {
 #' txi <- import_kallisto(abundances, anno = file_anno)
 #' raw_counts <- get_anno_df(txi, "raw_count")
 #'
-#' @import tibble
-#' @import dplyr
+#' @importFrom magrittr %>%
+#' @importFrom tibble rownames_to_column
+#' @importFrom dplyr left_join
+#' @importFrom dplyr select
+#' @importFrom dplyr one_of
+#' @importFrom dplyr everything
 #'
 #' @export
 get_anno_df <- function(txi, colname) {
@@ -107,7 +126,8 @@ get_anno_df <- function(txi, colname) {
         colname <- "fpkm"
     }
     as.data.frame(txi[[colname]]) %>%
-        rownames_to_column("id") %>%
-        left_join(txi$anno, by = "id") %>%
-        dplyr::select(one_of(colnames(txi$anno)), everything())
+        tibble::rownames_to_column("id") %>%
+        dplyr::left_join(txi$anno, by = "id") %>%
+        dplyr::select(dplyr::one_of(colnames(txi$anno)),
+                      dplyr::everything())
 }

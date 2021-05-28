@@ -18,7 +18,9 @@
 #' dds <- deseq2_analysis(txi, design, ~ group)
 #' de <- DESeq2::results(dds, contrast = c("group", "A", "B"))
 #'
-#' @import DESeq2
+#' @importFrom DESeq2 DESeqDataSetFromMatrix
+#' @importFrom DESeq2 DESeqDataSetFromTximport
+#' @importFrom DESeq2 DESeq
 #'
 #' @export
 deseq2_analysis <- function(txi, design, formula, filter = 2, use_ruv = FALSE, ...) {
@@ -58,25 +60,34 @@ deseq2_analysis <- function(txi, design, formula, filter = 2, use_ruv = FALSE, .
 #' dds <- deseq2_analysis(txi, design, ~ group)
 #' de <- format_de(dds, txi, c("group", "A", "B"))
 #'
-#' @import DESeq2
-#' @import dplyr
-#' @import tibble
+#' @importFrom magrittr %>%
+#' @importFrom DESeq2 results
+#' @importFrom tibble rownames_to_column
+#' @importFrom dplyr left_join
+#' @importFrom dplyr mutate
+#' @importFrom dplyr group_by
+#' @importFrom dplyr summarize
+#' @importFrom stringr str_replace
 #'
 #' @export
 format_de <- function(dds, txi, contrast, ignoreTxVersion = FALSE, digits = 4) {
-    res <- results(dds, contrast = contrast) %>%
+    res <- DESeq2::results(dds, contrast = contrast) %>%
         as.data.frame() %>%
-        rownames_to_column("id")
+        tibble::rownames_to_column("id")
     if (!ignoreTxVersion) {
-        res <- left_join(res, txi$anno, by = "id")
+        res <- dplyr::left_join(res, txi$anno, by = "id")
     } else {
-        res$id <- str_replace(res$id, "\\..*$", "")
-        res <- left_join(res, mutate(txi$anno, id = str_replace(id, "\\..*$", "")), by = "id")
+        res$id <- stringr::str_replace(res$id, "\\..*$", "")
+        res <- dplyr::left_join(res,
+                                dplyr::mutate(txi$anno,
+                                              id = str_replace(id, "\\..*$", "")),
+                                by = "id")
     }
-    res <- mutate(res, mean_TPM_grp1 = get_mean_tpm(dds, txi, contrast[2]),
-           mean_TPM_grp2 = get_mean_tpm(dds, txi, contrast[3]),
-           fold_change = 2^log2FoldChange) %>%
-           splicing_analysis(txi)
+    res <- dplyr::mutate(res,
+               mean_TPM_grp1 = get_mean_tpm(dds, txi, contrast[2]),
+               mean_TPM_grp2 = get_mean_tpm(dds, txi, contrast[3]),
+               fold_change = 2^log2FoldChange) %>%
+               splicing_analysis(txi)
 
     res <- dplyr::select(res, id, ensembl_gene, symbol, entrez_id, transcript_type,
                   mean_TPM_grp1, mean_TPM_grp2, pV = pvalue, qV = padj,
@@ -84,7 +95,7 @@ format_de <- function(dds, txi, contrast, ignoreTxVersion = FALSE, digits = 4) {
                   main_isoform_grp2, baseMean, lfcSE, fold_change,
                   log2FoldChange, stat)
 
-    res <- mutate(res,
+    res <- dplyr::mutate(res,
            mean_TPM_grp1 = round(mean_TPM_grp1, digits) %>% format(scientific = FALSE),
            mean_TPM_grp2 = round(mean_TPM_grp2, digits) %>% format(scientific = FALSE),
            pV = round(pV, digits) %>% format(scientific = FALSE),
@@ -109,22 +120,22 @@ get_mean_tpm <- function(dds, txi, group) {
 splicing_analysis <- function(res, txi) {
     is.max <- function(x) seq_along(x) == which.max(x)
     if (txi$txOut) {
-        sums <- group_by(res, ensembl_gene) %>%
-            summarize(sum_g1 = sum(mean_TPM_grp1),
+        sums <- dplyr::group_by(res, ensembl_gene) %>%
+            dplyr::summarize(sum_g1 = sum(mean_TPM_grp1),
             sum_g2 = sum(mean_TPM_grp2))
-        left_join(res, sums, by = "ensembl_gene") %>%
-            group_by(ensembl_gene) %>%
-            mutate(percent_grp1 = mean_TPM_grp1 / sum_g1,
+        dplyr::left_join(res, sums, by = "ensembl_gene") %>%
+            dplyr::group_by(ensembl_gene) %>%
+            dplyr::mutate(percent_grp1 = mean_TPM_grp1 / sum_g1,
                    percent_grp2 = mean_TPM_grp2 / sum_g2) %>%
-            mutate(percent_grp1 = if_else(is.nan(percent_grp1),
+            dplyr::mutate(percent_grp1 = if_else(is.nan(percent_grp1),
                                           0, percent_grp1),
                    percent_grp2 = if_else(is.nan(percent_grp2),
                                           0, percent_grp2)) %>%
-            mutate(main_isoform_grp1 = is.max(mean_TPM_grp1),
+            dplyr::mutate(main_isoform_grp1 = is.max(mean_TPM_grp1),
                    main_isoform_grp2 = is.max(mean_TPM_grp2)) %>%
             dplyr::select(-sum_g1, -sum_g2)
     } else {
-        mutate(res,
+        dplyr::mutate(res,
                percent_grp1 = NA,
                percent_grp2 = NA,
                main_isoform_grp1 = NA,

@@ -38,6 +38,7 @@
 #'                release = 103)
 #' }
 #'
+#' @importFrom magrittr %>%
 #' @importFrom Biostrings readDNAStringSet
 #' @importFrom Biostrings writeXStringSet
 #' @importFrom stringr str_extract

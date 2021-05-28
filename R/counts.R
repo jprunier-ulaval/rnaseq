@@ -13,7 +13,11 @@
 #' txi <- get_demo_txi()
 #' counts <- format_counts(txi)
 #'
-#' @import dplyr
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr left_join
+#' @importFrom dplyr select
+#' @importFrom dplyr everything
 #'
 #' @export
 format_counts <- function(txi, digits = 4, use_ruv = FALSE) {
@@ -43,9 +47,9 @@ format_counts <- function(txi, digits = 4, use_ruv = FALSE) {
         matrix(ncol = ncol(raw_counts)) %>%
         as.data.frame %>%
         setNames(colnames(raw_counts)) %>%
-        mutate(id = rownames(raw_counts))
+        dplyr::mutate(id = rownames(raw_counts))
 
     # Add anno
-    left_join(res, txi$anno, by = "id") %>%
-        dplyr::select(id:transcript_type, everything())
+    dplyr::left_join(res, txi$anno, by = "id") %>%
+        dplyr::select(id:transcript_type, dplyr::everything())
 }

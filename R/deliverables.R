@@ -61,8 +61,12 @@
 #'                      file_type = "tsv",
 #'                      ignoreTxVersion = FALSE)
 #'
-#' @import purrr
-#' @import dplyr
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
+#' @importFrom dplyr arrange
+#' @importFrom purrr map
+#' @importFrom purrr iwalk
+#' @importFrom readr write_csv
 #'
 #' @export
 produce_deliverables <- function (dir_kallisto, anno, design, contrasts,
@@ -100,8 +104,8 @@ produce_deliverables <- function (dir_kallisto, anno, design, contrasts,
 
     # Make sure design is in correct order
     stopifnot(all(as.character(design$sample) %in% colnames(txi_genes$counts)))
-    design <- mutate(design, sample = factor(sample, levels = colnames(txi_genes$counts))) %>%
-                     arrange(sample)
+    design <- dplyr::mutate(design, sample = factor(sample, levels = colnames(txi_genes$counts))) %>%
+                     dplyr::arrange(sample)
     stopifnot(identical(colnames(txi_genes$counts), as.character(design$sample)))
 
     # PCA
@@ -116,24 +120,24 @@ produce_deliverables <- function (dir_kallisto, anno, design, contrasts,
     counts_genes <- format_counts(txi_genes, digits = digits)
     counts_tx <- format_counts(txi_tx, digits = digits)
     counts <- rbind(counts_tx, counts_genes)
-    write_csv(counts, file.path(dir_output, "counts.csv"))
+    readr::write_csv(counts, file.path(dir_output, "counts.csv"))
 
     # Produce DE
     dds_genes <- deseq2_analysis(txi_genes, design, ~ group, use_ruv = use_ruv)
     dds_tx <- deseq2_analysis(txi_tx, design, ~ group, use_ruv = use_ruv)
 
-    de_genes <- map(contrasts, ~ format_de(dds_genes, txi_genes, .x, ignoreTxVersion, digits = digits))
-    de_tx <- map(contrasts, ~ format_de(dds_tx, txi_tx, .x, ignoreTxVersion, digits = digits))
+    de_genes <- purrr::map(contrasts, ~ format_de(dds_genes, txi_genes, .x, ignoreTxVersion, digits = digits))
+    de_tx <- purrr::map(contrasts, ~ format_de(dds_tx, txi_tx, .x, ignoreTxVersion, digits = digits))
 
     rbind_df <- function(n) {
         tx <- de_tx[[n]]
         genes <- de_genes[[n]]
         rbind(tx, genes)
     }
-    de <- map(names(de_tx), rbind_df)
+    de <- purrr::map(names(de_tx), rbind_df)
     names(de) <- names(de_tx)
 
-    iwalk(de, ~ write_csv(.x, file.path(dir_output, paste0(.y, ".csv"))))
+    purrr::iwalk(de, ~ readr::write_csv(.x, file.path(dir_output, paste0(.y, ".csv"))))
 
     invisible(list(txi_tx = txi_tx,
                    txi_genes = txi_genes,

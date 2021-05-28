@@ -4,13 +4,7 @@
 \alias{import_kallisto}
 \title{Import quantifications from Kallisto}
 \usage{
-import_kallisto(
-  filenames,
-  anno,
-  txOut = FALSE,
-  ignoreTxVersion = FALSE,
-  ercc92 = FALSE
-)
+import_kallisto(filenames, anno, txOut = FALSE, ignoreTxVersion = FALSE)
 }
 \arguments{
 \item{filenames}{Paths to the abundance files.}
@@ -53,8 +47,6 @@ overwrite this param.}
 FALSE}
 
 \item{ignoreTxVersion}{Ignore version of tx. Default = FALSE}
-
-\item{ercc92}{Include ERCC92 annotation when importing. Default = FALSE}
 }
 \value{
 A txi object.

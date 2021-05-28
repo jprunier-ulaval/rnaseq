@@ -37,7 +37,6 @@
 #' @param txOut Return counts and abundance at the transcript level. Default:
 #'              FALSE
 #' @param ignoreTxVersion Ignore version of tx. Default = FALSE
-#' @param ercc92 Include ERCC92 annotation when importing. Default = FALSE
 #'
 #' @return A txi object.
 #'
@@ -46,18 +45,22 @@
 #' file_anno <- get_demo_anno_file()
 #' txi <- import_kallisto(abundances, anno = file_anno)
 #'
-#' @import readr
-#' @import dplyr
-#' @import stringr
-#' @import tximport
+#' @importFrom magrittr %>%
+#' @importFrom stringr str_extract
+#' @importFrom dplyr select
+#' @importFrom dplyr mutate
+#' @importFrom dplyr arrange
+#' @importFrom dplyr filter
+#' @importFrom readr read_csv
+#' @importFrom tximport tximport
+#' @importFrom tximport summarizeToGene
 #'
 #' @export
 import_kallisto <- function(filenames, anno, txOut = FALSE,
-                            ignoreTxVersion = FALSE, ercc92 = FALSE) {
+                            ignoreTxVersion = FALSE) {
     stopifnot(all(file.exists(filenames)))
     stopifnot(txOut %in% c(TRUE, FALSE))
     stopifnot(ignoreTxVersion %in% c(TRUE, FALSE))
-    stopifnot(ercc92 %in% c(TRUE, FALSE))
 
     if (!file.exists(anno)) {
         tx2gene <- get(anno) %>%
@@ -67,16 +70,14 @@ import_kallisto <- function(filenames, anno, txOut = FALSE,
             as.data.frame %>%
             dplyr::select(TXNAME = id, GENEID = ensembl_gene)
     }
-    if (ercc92 == TRUE) {
-        tx2gene_ercc92 <- dplyr::select(ERCC92, TXNAME = id, GENEID = ensembl_gene)
-        tx2gene <- rbind(tx2gene, tx2gene_ercc92)
-    }
     if (txOut == TRUE) {
-        txi <- tximport(filenames, type = "kallisto", tx2gene = tx2gene, txOut = TRUE,
-                 ignoreTxVersion = ignoreTxVersion)
+        txi <- tximport::tximport(filenames, type = "kallisto",
+                                  tx2gene = tx2gene, txOut = TRUE,
+                                  ignoreTxVersion = ignoreTxVersion)
     } else {
-        txi <- tximport(filenames, type = "kallisto", tx2gene = tx2gene,
-                 ignoreTxVersion = ignoreTxVersion)
+        txi <- tximport::tximport(filenames, type = "kallisto",
+                                  tx2gene = tx2gene,
+                                  ignoreTxVersion = ignoreTxVersion)
     }
     txi$fpkm <- get_fpkm(txi)
     txi$anno <- get_anno(anno, txOut)
@@ -87,9 +88,6 @@ import_kallisto <- function(filenames, anno, txOut = FALSE,
     stopifnot(sum(is.na(txi$anno$ensembl_gene)) == 0)
     stopifnot(length(unique(txi$anno$id)) == length(txi$anno$id))
     
-    if (ercc92 == TRUE) {
-        txi$anno <- rbind(txi$anno, ERCC92)
-    }
     txi$txOut <- txOut
     if (!ignoreTxVersion) {
         stopifnot(all(rownames(txi$fpkm) %in% txi$anno$id))
@@ -120,7 +118,8 @@ summarize_to_gene <- function(txi_tx, anno, ignoreTxVersion = FALSE) {
             dplyr::select(TXNAME = id, GENEID = ensembl_gene)
     }
 
-    txi <- summarizeToGene(txi_tx, tx2gene = tx2gene, ignoreTxVersion = ignoreTxVersion)
+    txi <- tximport::summarizeToGene(txi_tx, tx2gene = tx2gene,
+                                     ignoreTxVersion = ignoreTxVersion)
     txi$fpkm <- get_fpkm(txi)
     txi$anno <- get_anno(anno, txOut = FALSE)
     txi$txOut <- FALSE
@@ -148,9 +147,10 @@ arrange_anno <- function(anno) {
               "nonsense_mediated_decay", "TEC")
     stopifnot(all(anno$transcript_type %in% lvls))
 
-    mutate(anno, transcript_type = factor(transcript_type, levels = lvls)) %>%
-            arrange(id, transcript_type) %>%
-            mutate(transcript_type = as.character(transcript_type))
+    dplyr::mutate(anno, transcript_type = factor(transcript_type,
+                                                 levels = lvls)) %>%
+            dplyr::arrange(id, transcript_type) %>%
+            dplyr::mutate(transcript_type = as.character(transcript_type))
 }
 
 get_anno <- function(anno, txOut = TRUE) {
@@ -161,9 +161,9 @@ get_anno <- function(anno, txOut = TRUE) {
         anno <- readr::read_csv(anno, col_types = "ccccc")
     }
     if (!txOut) {
-        anno <- mutate(anno, id = ensembl_gene) %>%
+        anno <- dplyr::mutate(anno, id = ensembl_gene) %>%
             arrange_anno %>%
-            filter(!duplicated(ensembl_gene))
+            dplyr::filter(!duplicated(ensembl_gene))
     }
     as.data.frame(anno)
 }
