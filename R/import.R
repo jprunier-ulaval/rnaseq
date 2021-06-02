@@ -129,6 +129,7 @@ summarize_to_gene <- function(txi_tx, anno, ignoreTxVersion = FALSE) {
 
 arrange_anno <- function(anno) {
     lvls <- c("protein_coding", "miRNA", "lincRNA", "antisense", "snRNA",
+              "lncRNA", "scRNA", "vault_RNA", "Spike-in",
               "sense_intronic", "misc_RNA", "snoRNA", "scaRNA", "rRNA",
               "3prime_overlapping_ncrna", "sense_overlapping", "sRNA",
               "ribozyme", "vaultRNA", "non_coding", "macro_lncRNA", "Mt_tRNA",
