@@ -101,6 +101,8 @@ prepare_anno <- function(prefix, org, db, release,
 
     # Import and clean
     ref_fasta <- Biostrings::readDNAStringSet(raw_ref_filename)
+    ref_fasta <- ref_fasta[!stringr::str_detect(names(ref_fasta), "PAR_Y")]
+    ref_fasta <- ref_fasta[width(ref_fasta) != 0]
     anno <- extract_anno(ref_fasta, org, db, removeTxVersion)
     if (removeTxVersion) {
         names(ref_fasta) <- stringr::str_extract(names(ref_fasta),
@@ -213,9 +215,6 @@ extract_anno <- function(raw_ref, org, db, removeTxVersion) {
     stopifnot(is(raw_ref, "DNAStringSet"))
     stopifnot(db %in% c("Gencode", "Ensembl"))
     if (db == "Gencode") {
-        raw_ref <- raw_ref[!stringr::str_detect(raw_ref, "PAR_Y")]
-        raw_ref <- raw_ref[width(raw_ref) != 0]
-
         col_names <- c("id",
                    "ensembl_gene",
                    "havana_gene",
