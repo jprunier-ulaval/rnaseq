@@ -14,6 +14,20 @@
 #' parameters used. Finally, there will be a <prefix>.csv that contains the
 #' annotation formated correctly for the rnaseq packages.
 #'
+#' The <prefix>.info file contains the following columns:
+#'    * prefix: The prefix of the file. Must match filename (i.e.: prefix of
+#'              Hs.Gencode38.csv is Hs.Gencode38).
+#'    * org: The organism name (i.e.: Homo sapiens)
+#'    * db: Database where the annotation was downloaded.
+#'    * release: The version of the database.
+#'    * rnaseq_pkg_version: The rnaseq package version, if the rnaseq package
+#'    was used to download the annotation.
+#'    * download_date: The date the annotation was downloaded.
+#'    * download_url: The URL that was used to download the annotation.
+#'    * md5_raw_ref: md5sum of the raw transcriptome file.
+#'    * md5_clean_ref: md5sum of the cleaned transcriptome.
+#'    * md5_anno: md5sum of the annotation file.
+#'
 #' @param prefix The prefix to be used for the files that will be produced.
 #' @param org The organism name. Currently accepted:
 #'                * Homo sapiens (Ensembl and Gencode)
@@ -51,6 +65,7 @@
 #' @importFrom tidyr separate
 #' @importFrom utils download.file
 #' @importFrom utils packageVersion
+#' @importFrom GenomeInfoDb genomeStyles
 #' @import org.Hs.eg.db
 #' @import org.Mm.eg.db
 #' @import org.Rn.eg.db
@@ -101,7 +116,14 @@ prepare_anno <- function(prefix, org, db, release,
 
     # Import and clean
     ref_fasta <- Biostrings::readDNAStringSet(raw_ref_filename)
-    ref_fasta <- ref_fasta[!stringr::str_detect(names(ref_fasta), "PAR_Y")]
+    if (db == "Gencode") {
+        ref_fasta <- ref_fasta[!stringr::str_detect(names(ref_fasta), "PAR_Y")]
+    }
+    if (db == "Ensembl") {
+        chromosomes <- names(ref_fasta) %>% str_extract("chromosome:[^:]*:[^:]*") %>% str_extract("[^:]*$")
+        std_chr <- GenomeInfoDb::genomeStyles(org)$NCBI
+        ref_fasta <- ref_fasta[chromosomes %in% std_chr]
+    }
     ref_fasta <- ref_fasta[width(ref_fasta) != 0]
     anno <- extract_anno(ref_fasta, org, db, removeTxVersion)
     if (removeTxVersion) {
@@ -251,9 +273,8 @@ extract_anno <- function(raw_ref, org, db, removeTxVersion) {
         symbol <- stringr::str_extract(names(raw_ref), "gene_symbol:[^ ]*") %>%
             stringr::str_replace("gene_symbol:", "")
         transcript_type <- stringr::str_extract(names(raw_ref),
-                                       "transcript_biotype:.*gene_symbol:") %>%
-            stringr::str_replace("transcript_biotype:", "") %>%
-            stringr::str_replace(" gene_symbol:", "")
+                                       "transcript_biotype:[^ ]*") %>%
+            stringr::str_replace("transcript_biotype:", "")
         if (org == "Homo sapiens") org_db <- org.Hs.eg.db
         if (org == "Mus musculus") org_db <- org.Mm.eg.db
         if (org == "Rattus norvegicus") org_db <- org.Rn.eg.db
