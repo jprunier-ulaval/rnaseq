@@ -86,14 +86,15 @@ format_de <- function(dds, txi, contrast, ignoreTxVersion = FALSE, digits = 4) {
     res <- dplyr::mutate(res,
                mean_TPM_grp1 = get_mean_tpm(dds, txi, contrast[2]),
                mean_TPM_grp2 = get_mean_tpm(dds, txi, contrast[3]),
-               fold_change = 2^log2FoldChange) %>%
+               ratio = 2^log2FoldChange,
+               fold_change = if_else(ratio < 1, -1 * (1/ratio), ratio)) %>%
                splicing_analysis(txi)
 
     res <- dplyr::select(res, id, ensembl_gene, symbol, entrez_id, transcript_type,
                   mean_TPM_grp1, mean_TPM_grp2, pV = pvalue, qV = padj,
                   percent_grp1, percent_grp2, main_isoform_grp1,
-                  main_isoform_grp2, baseMean, lfcSE, fold_change,
-                  log2FoldChange, stat)
+                  main_isoform_grp2, baseMean, lfcSE, log2FoldChange,
+                  fold_change, ratio, stat)
 
     res <- dplyr::mutate(res,
            mean_TPM_grp1 = round(mean_TPM_grp1, digits) %>% format(scientific = FALSE),

@@ -14,7 +14,8 @@ produce_deliverables(
   digits = 4,
   ignoreTxVersion = FALSE,
   use_ruv = FALSE,
-  housekeeping_genes = get_human_hsk()
+  housekeeping_genes = get_human_hsk(),
+  ncores = 1
 )
 }
 \arguments{
@@ -67,6 +68,8 @@ during import. Default: \code{FALSE}.}
 \item{use_ruv}{Use RUVg normalization. Default: \code{FALSE}.}
 
 \item{housekeeping_genes}{A \code{vector} of gene symbols}
+
+\item{ncores}{Number of cores to use for de analysis. Default \code{1}.}
 }
 \value{
 Invisibly returns a list with txi_tx, txi_genes, df_tx (PCA),

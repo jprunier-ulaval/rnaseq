@@ -44,6 +44,7 @@
 #'        during import. Default: \code{FALSE}.
 #' @param use_ruv Use RUVg normalization. Default: \code{FALSE}.
 #' @param housekeeping_genes A \code{vector} of gene symbols
+#' @param ncores Number of cores to use for de analysis. Default \code{1}.
 #'
 #' @return Invisibly returns a list with txi_tx, txi_genes, df_tx (PCA),
 #'         df_genes (PCA), design, contrasts, counts and de values.
@@ -72,7 +73,8 @@
 produce_deliverables <- function (dir_kallisto, anno, design, contrasts,
                                   dir_output, file_type = "h5", digits = 4,
                                   ignoreTxVersion = FALSE, use_ruv = FALSE,
-                                  housekeeping_genes = get_human_hsk()) {
+                                  housekeeping_genes = get_human_hsk(),
+                                  ncores = 1) {
 
     stopifnot(dir.exists(dir_kallisto))
     stopifnot(dir.exists(dir_output))
@@ -83,6 +85,9 @@ produce_deliverables <- function (dir_kallisto, anno, design, contrasts,
     }
     stopifnot(is.logical(ignoreTxVersion))
     stopifnot(is.logical(use_ruv))
+    stopifnot(is.numeric(ncores))
+    stopifnot(as.integer(ncores) == ncores)
+    stopifnot(ncores > 0)
 
     file_type <-paste0(file_type, "$")
     files <- dir(dir_kallisto, pattern = file_type, recursive = TRUE, full.names = TRUE)
@@ -123,11 +128,22 @@ produce_deliverables <- function (dir_kallisto, anno, design, contrasts,
     readr::write_csv(counts, file.path(dir_output, "counts.csv"))
 
     # Produce DE
-    dds_genes <- deseq2_analysis(txi_genes, design, ~ group, use_ruv = use_ruv)
-    dds_tx <- deseq2_analysis(txi_tx, design, ~ group, use_ruv = use_ruv)
+    dds <- list()
+    if (ncores == 1) {
+        dds[["genes"]] <- deseq2_analysis(txi_genes, design, ~ group, use_ruv = use_ruv)
+        dds[["tx"]] <- deseq2_analysis(txi_tx, design, ~ group, use_ruv = use_ruv)
+    } else {
+        dds <- mclapply(list(txi_genes, txi_tx), function(x) deseq2_analysis(x, design, ~ group, use_ruv = use_ruv), mc.cores = 2)
+        names(dds) <- c("genes", "tx")
+    }
 
-    de_genes <- purrr::map(contrasts, ~ format_de(dds_genes, txi_genes, .x, ignoreTxVersion, digits = digits))
-    de_tx <- purrr::map(contrasts, ~ format_de(dds_tx, txi_tx, .x, ignoreTxVersion, digits = digits))
+    if (ncores == 1) {
+        de_genes <- purrr::map(contrasts, ~ format_de(dds$genes, txi_genes, .x, ignoreTxVersion, digits = digits))
+        de_tx <- purrr::map(contrasts, ~ format_de(dds$tx, txi_tx, .x, ignoreTxVersion, digits = digits))
+    } else {
+        de_genes <- parallel::mclapply(contrasts, function(x) format_de(dds$genes, txi_genes, x, ignoreTxVersion, digits = digits), mc.cores = ncores)
+        de_tx <- parallel::mclapply(contrasts, function(x) format_de(dds$tx, txi_tx, x, ignoreTxVersion, digits = digits), mc.cores = ncores)
+    }
 
     rbind_df <- function(n) {
         tx <- de_tx[[n]]
@@ -147,6 +163,6 @@ produce_deliverables <- function (dir_kallisto, anno, design, contrasts,
                    contrasts = contrasts,
                    counts = counts,
                    de = de,
-                   dds_genes = dds_genes,
-                   dds_tx = dds_tx))
+                   dds_genes = dds$genes,
+                   dds_tx = dds$tx))
 }
