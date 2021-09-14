@@ -156,7 +156,7 @@ produce_de <- function(txi, design, contrasts, formula = ~ group, use_ruv = FALS
     }
 
     if (ncores == 1) {
-        de_genes <- purrr::map(contrasts, ~ format_de(dds$genes, txiDgenes, .x, ignoreTxVersion, digits = digits))
+        de_genes <- purrr::map(contrasts, ~ format_de(dds$genes, txi_genes, .x, ignoreTxVersion, digits = digits))
         de_tx <- purrr::map(contrasts, ~ format_de(dds$tx, txi$tx, .x, ignoreTxVersion, digits = digits))
     } else {
         de_genes <- parallel::mclapply(contrasts, function(x) format_de(dds$genes, txi$genes, x, ignoreTxVersion, digits = digits), mc.cores = ncores)
