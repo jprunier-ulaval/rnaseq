@@ -183,7 +183,7 @@ produce_de <- function(txi, design, formula = ~ group, use_ruv = FALSE, ncores =
 #' @return A list with the txi objects at the gene and at the transcript level
 #'
 #' @export
-produce_txi <- function(files, anno, ignoreTxVersion = TRUE) {
+produce_txi <- function(files, anno, ignoreTxVersion = TRUE, use_ruv = FALSE) {
     txi <- list()
     txi$tx <- import_kallisto(files, anno = anno, txOut = TRUE, ignoreTxVersion = ignoreTxVersion)
     txi$genes <- summarize_to_gene(txi_tx, anno = anno, ignoreTxVersion = ignoreTxVersion)
