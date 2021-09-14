@@ -89,51 +89,69 @@ produce_deliverables <- function (dir_kallisto, anno, design, contrasts,
     stopifnot(as.integer(ncores) == ncores)
     stopifnot(ncores > 0)
 
-    file_type <-paste0(file_type, "$")
-    files <- dir(dir_kallisto, pattern = file_type, recursive = TRUE, full.names = TRUE)
-    names(files) <- basename(dirname(files))
-
     # Import quantifications
-    txi_tx <- import_kallisto(files, anno = anno, txOut = TRUE, ignoreTxVersion = ignoreTxVersion)
-    txi_genes <- summarize_to_gene(txi_tx, anno = anno, ignoreTxVersion = ignoreTxVersion)
-
-    # RUV
-    if (use_ruv) {
-        txi_tx <- ruvg_normalization(txi_tx,
-                                     housekeeping_genes = housekeeping_genes,
-                                     ignoreTxVersion = TRUE)
-        txi_genes <- ruvg_normalization(txi_genes,
-                                        housekeeping_genes = housekeeping_genes,
-                                        ignoreTxVersion = TRUE)
-    }
-
-    # Make sure design is in correct order
-    stopifnot(all(as.character(design$sample) %in% colnames(txi_genes$counts)))
-    design <- dplyr::mutate(design, sample = factor(sample, levels = colnames(txi_genes$counts))) %>%
-                     dplyr::arrange(sample)
-    stopifnot(identical(colnames(txi_genes$counts), as.character(design$sample)))
+    files <- get_filenames(dir_kallisto, file_type)
+    txi <- produce_txi(files = files, anno = anno, ignoreTxVersion = ignoreTxVersion)
 
     # PCA
     pdf(file.path(dir_output, "PCA_genes.pdf"))
-    df_genes <- produce_pca(txi_genes, use_ruv = use_ruv)
+    df_genes <- produce_pca(txi$genes, use_ruv = use_ruv)
     dev.off()
     pdf(file.path(dir_output, "PCA_tx.pdf"))
-    df_tx <- produce_pca(txi_tx, use_ruv = use_ruv)
+    df_tx <- produce_pca(txi$tx, use_ruv = use_ruv)
     dev.off()
 
     # Produce counts
-    counts_genes <- format_counts(txi_genes, digits = digits)
-    counts_tx <- format_counts(txi_tx, digits = digits)
+    counts_genes <- format_counts(txi$genes, digits = digits)
+    counts_tx <- format_counts(txi$tx, digits = digits)
     counts <- rbind(counts_tx, counts_genes)
     readr::write_csv(counts, file.path(dir_output, "counts.csv"))
 
     # Produce DE
+    de <- produce_de(txi, design,  ~ group, use_ruv = use_ruv, ncores = ncores)
+    purrr::iwalk(de, ~ readr::write_csv(.x, file.path(dir_output, paste0(.y, ".csv"))))
+
+    invisible(list(txi_tx = txi$tx,
+                   txi_genes = txi$genes,
+                   df_tx = df_tx,
+                   df_genes = df_genes,
+                   design = design,
+                   contrasts = contrasts,
+                   counts = counts,
+                   de = de,
+                   dds_genes = dds$genes,
+                   dds_tx = dds$tx))
+}
+
+# TODO: params
+# TODO: example
+# TODO: stopifnot
+#' Produce DE table
+#'
+#' The differential expression (DE) table will be produced by merging results
+#' at the gene and transcripts level.
+#'
+#' @return A data.frame with the gene and tx DE merged in a single table
+#'
+#' @importFrom dplyr mutate
+#' @importFrom dplyr arrange
+#' @importFrom purrr map
+#' @importFrom parallel mclapply
+#'
+#' @export
+produce_de <- function(txi, design, formula = ~ group, use_ruv = FALSE, ncores = 1) {
+    # Make sure design is in correct order
+    stopifnot(all(as.character(design$sample) %in% colnames(txi$genes$counts)))
+    design <- dplyr::mutate(design, sample = factor(sample, levels = colnames(txi$genes$counts))) %>%
+                     dplyr::arrange(sample)
+    stopifnot(identical(colnames(txi$genes$counts), as.character(design$sample)))
+
     dds <- list()
     if (ncores == 1) {
-        dds[["genes"]] <- deseq2_analysis(txi_genes, design, ~ group, use_ruv = use_ruv)
-        dds[["tx"]] <- deseq2_analysis(txi_tx, design, ~ group, use_ruv = use_ruv)
+        dds[["genes"]] <- deseq2_analysis(txi_genes, design, formula, use_ruv = use_ruv)
+        dds[["tx"]] <- deseq2_analysis(txi_tx, design, formula, use_ruv = use_ruv)
     } else {
-        dds <- mclapply(list(txi_genes, txi_tx), function(x) deseq2_analysis(x, design, ~ group, use_ruv = use_ruv), mc.cores = 2)
+        dds <- parallel::mclapply(list(txi_genes, txi_tx), function(x) deseq2_analysis(x, design, formula, use_ruv = use_ruv), mc.cores = 2)
         names(dds) <- c("genes", "tx")
     }
 
@@ -152,17 +170,32 @@ produce_deliverables <- function (dir_kallisto, anno, design, contrasts,
     }
     de <- purrr::map(names(de_tx), rbind_df)
     names(de) <- names(de_tx)
+    de
+}
 
-    purrr::iwalk(de, ~ readr::write_csv(.x, file.path(dir_output, paste0(.y, ".csv"))))
+# TODO: params
+# TODO: example
+# TODO: stopifnot
+#' Produce txi objects
+#'
+#' Produce the txi objects at the gene and at the transcript level.
+#'
+#' @return A list with the txi objects at the gene and at the transcript level
+#'
+#' @export
+produce_txi <- function(files, anno, ignoreTxVersion = TRUE) {
+    txi <- list()
+    txi$tx <- import_kallisto(files, anno = anno, txOut = TRUE, ignoreTxVersion = ignoreTxVersion)
+    txi$genes <- summarize_to_gene(txi_tx, anno = anno, ignoreTxVersion = ignoreTxVersion)
 
-    invisible(list(txi_tx = txi_tx,
-                   txi_genes = txi_genes,
-                   df_tx = df_tx,
-                   df_genes = df_genes,
-                   design = design,
-                   contrasts = contrasts,
-                   counts = counts,
-                   de = de,
-                   dds_genes = dds$genes,
-                   dds_tx = dds$tx))
+    # RUV
+    if (use_ruv) {
+        txi$tx <- ruvg_normalization(txi$tx,
+                                     housekeeping_genes = housekeeping_genes,
+                                     ignoreTxVersion = ignoreTxVersion)
+        txi$genes <- ruvg_normalization(txi$genes,
+                                        housekeeping_genes = housekeeping_genes,
+                                        ignoreTxVersion = ignoreTxVersion)
+    }
+    txi
 }
