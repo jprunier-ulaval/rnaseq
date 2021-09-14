@@ -24,8 +24,7 @@
 #'
 #' @export
 deseq2_analysis <- function(txi, design, formula, filter = 2, use_ruv = FALSE, ...) {
-    stopifnot(ncol(design) == 2)
-    stopifnot(all(colnames(design) == c("sample", "group")))
+    stopifnot(all(c("sample", "group") %in% colnames(design)))
     stopifnot(identical(colnames(txi$counts), as.character(design$sample)))
     stopifnot(is(use_ruv, "logical"))
 
