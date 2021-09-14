@@ -148,19 +148,19 @@ produce_de <- function(txi, design, formula = ~ group, use_ruv = FALSE, ncores =
 
     dds <- list()
     if (ncores == 1) {
-        dds[["genes"]] <- deseq2_analysis(txi_genes, design, formula, use_ruv = use_ruv)
-        dds[["tx"]] <- deseq2_analysis(txi_tx, design, formula, use_ruv = use_ruv)
+        dds[["genes"]] <- deseq2_analysis(txi$genes, design, formula, use_ruv = use_ruv)
+        dds[["tx"]] <- deseq2_analysis(txi$tx, design, formula, use_ruv = use_ruv)
     } else {
-        dds <- parallel::mclapply(list(txi_genes, txi_tx), function(x) deseq2_analysis(x, design, formula, use_ruv = use_ruv), mc.cores = 2)
+        dds <- parallel::mclapply(list(txi$genes, txi$tx), function(x) deseq2_analysis(x, design, formula, use_ruv = use_ruv), mc.cores = 2)
         names(dds) <- c("genes", "tx")
     }
 
     if (ncores == 1) {
-        de_genes <- purrr::map(contrasts, ~ format_de(dds$genes, txi_genes, .x, ignoreTxVersion, digits = digits))
-        de_tx <- purrr::map(contrasts, ~ format_de(dds$tx, txi_tx, .x, ignoreTxVersion, digits = digits))
+        de_genes <- purrr::map(contrasts, ~ format_de(dds$genes, txiDgenes, .x, ignoreTxVersion, digits = digits))
+        de_tx <- purrr::map(contrasts, ~ format_de(dds$tx, txi$tx, .x, ignoreTxVersion, digits = digits))
     } else {
-        de_genes <- parallel::mclapply(contrasts, function(x) format_de(dds$genes, txi_genes, x, ignoreTxVersion, digits = digits), mc.cores = ncores)
-        de_tx <- parallel::mclapply(contrasts, function(x) format_de(dds$tx, txi_tx, x, ignoreTxVersion, digits = digits), mc.cores = ncores)
+        de_genes <- parallel::mclapply(contrasts, function(x) format_de(dds$genes, txi$genes, x, ignoreTxVersion, digits = digits), mc.cores = ncores)
+        de_tx <- parallel::mclapply(contrasts, function(x) format_de(dds$tx, txi$tx, x, ignoreTxVersion, digits = digits), mc.cores = ncores)
     }
 
     rbind_df <- function(n) {
@@ -186,7 +186,7 @@ produce_de <- function(txi, design, formula = ~ group, use_ruv = FALSE, ncores =
 produce_txi <- function(files, anno, ignoreTxVersion = TRUE, use_ruv = FALSE) {
     txi <- list()
     txi$tx <- import_kallisto(files, anno = anno, txOut = TRUE, ignoreTxVersion = ignoreTxVersion)
-    txi$genes <- summarize_to_gene(txi_tx, anno = anno, ignoreTxVersion = ignoreTxVersion)
+    txi$genes <- summarize_to_gene(txi$tx, anno = anno, ignoreTxVersion = ignoreTxVersion)
 
     # RUV
     if (use_ruv) {
