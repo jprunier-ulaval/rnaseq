@@ -97,17 +97,17 @@ format_de <- function(dds, txi, contrast, ignoreTxVersion = FALSE, digits = 4) {
                   fold_change, ratio, stat)
 
     res <- dplyr::mutate(res,
-           mean_TPM_grp1 = round(mean_TPM_grp1, digits) %>% format(scientific = FALSE),
-           mean_TPM_grp2 = round(mean_TPM_grp2, digits) %>% format(scientific = FALSE),
-           pV = round(pV, digits) %>% format(scientific = FALSE),
-           qV = round(qV, digits) %>% format(scientific = FALSE),
-           percent_grp1 = round(percent_grp1, digits) %>% format(scientific = FALSE),
-           percent_grp2 = round(percent_grp2, digits) %>% format(scientific = FALSE),
-           baseMean = round(baseMean, digits) %>% format(scientific = FALSE),
-           lfcSE = round(lfcSE, digits) %>% format(scientific = FALSE),
-           fold_change = round(fold_change, digits) %>% format(scientific = FALSE),
-           log2FoldChange = round(log2FoldChange, digits) %>% format(scientific = FALSE),
-           stat = round(stat, digits) %>% format(scientific = FALSE))
+           mean_TPM_grp1 = round_values(mean_TPM_grp1, digits),
+           mean_TPM_grp2 = round_values(mean_TPM_grp2, digits),
+           pV = round_values(pV, digits),
+           qV = round_values(qV, digits),
+           percent_grp1 = round_values(percent_grp1, digits),
+           percent_grp2 = round_values(percent_grp2, digits),
+           baseMean = round_values(baseMean, digits),
+           lfcSE = round_values(lfcSE, digits),
+           fold_change = round_values(fold_change, digits),
+           log2FoldChange = round_values(log2FoldChange, digits),
+           stat = round_values(stat, digits))
     as.data.frame(res)
 }
 
@@ -142,4 +142,12 @@ splicing_analysis <- function(res, txi) {
                main_isoform_grp1 = NA,
                main_isoform_grp2 = NA)
     }
+}
+
+round_values <- function(values, digits = 4) {
+    stopifnot(is.numeric(values))
+    i <- is.na(values)
+    new_values <- round(values, digits) %>% format(scientific = FALSE)
+    new_values[i] <- NA
+    as.numeric(new_values)
 }
