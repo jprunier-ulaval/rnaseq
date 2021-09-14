@@ -96,17 +96,17 @@ format_de <- function(dds, txi, contrast, ignoreTxVersion = FALSE, digits = 4) {
                   fold_change, ratio, stat)
 
     res <- dplyr::mutate(res,
-           mean_TPM_grp1 = round_values(mean_TPM_grp1, digits),
-           mean_TPM_grp2 = round_values(mean_TPM_grp2, digits),
-           pV = round_values(pV, digits),
-           qV = round_values(qV, digits),
-           percent_grp1 = round_values(percent_grp1, digits),
-           percent_grp2 = round_values(percent_grp2, digits),
-           baseMean = round_values(baseMean, digits),
-           lfcSE = round_values(lfcSE, digits),
-           fold_change = round_values(fold_change, digits),
-           log2FoldChange = round_values(log2FoldChange, digits),
-           stat = round_values(stat, digits))
+           mean_TPM_grp1 = round_values(as.numeric(mean_TPM_grp1), digits),
+           mean_TPM_grp2 = round_values(as.numeric(mean_TPM_grp2), digits),
+           pV = round_values(as.numeric(pV), digits),
+           qV = round_values(as.numeric(qV), digits),
+           percent_grp1 = round_values(as.numeric(percent_grp1), digits),
+           percent_grp2 = round_values(as.numeric(percent_grp2), digits),
+           baseMean = round_values(as.numeric(baseMean), digits),
+           lfcSE = round_values(as.numeric(lfcSE), digits),
+           fold_change = round_values(as.numeric(fold_change), digits),
+           log2FoldChange = round_values(as.numeric(log2FoldChange), digits),
+           stat = round_values(as.numeric(stat), digits))
     as.data.frame(res)
 }
 
