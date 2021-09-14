@@ -139,7 +139,7 @@ produce_deliverables <- function (dir_kallisto, anno, design, contrasts,
 #' @importFrom parallel mclapply
 #'
 #' @export
-produce_de <- function(txi, design, contrasts, formula = ~ group, use_ruv = FALSE, ncores = 1) {
+produce_de <- function(txi, design, contrasts, formula = ~ group, use_ruv = FALSE, ignoreTxVersion = TRUE, ncores = 1) {
     # Make sure design is in correct order
     stopifnot(all(as.character(design$sample) %in% colnames(txi$genes$counts)))
     design <- dplyr::mutate(design, sample = factor(sample, levels = colnames(txi$genes$counts))) %>%
