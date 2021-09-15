@@ -37,7 +37,7 @@ produce_pca <- function(txi, graph = TRUE, use_ruv = FALSE) {
         tpm <- as.data.frame(txi$ruvg_counts)
     }
     tpm <- tpm %>%
-            dplyr::mutate(ensembl_gene = rownames(txi$abundance)) %>%
+            dplyr::mutate(ensembl_gene = rownames(tpm)) %>%
             tidyr::gather(sample, tpm, -ensembl_gene)
 
     min_tpm <- dplyr::group_by(tpm, ensembl_gene) %>%
