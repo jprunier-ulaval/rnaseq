@@ -32,7 +32,7 @@
 #' @param org The organism name. Currently accepted:
 #'                * Homo sapiens (Ensembl and Gencode)
 #'                * Mus musculus (Ensembl and Gencode)
-#'                * Macaca mulata (Ensembl only)
+#'                * Macaca mulatta (Ensembl only)
 #'                * Rattus norvegicus (Ensembl only)
 #' @param db The database to use: Ensembl or Gencode
 #' @param release The version of the database to use. Must be greater than 100
@@ -81,7 +81,7 @@ prepare_anno <- function(prefix, org, db, release,
     stopifnot(length(prefix) == 1)
     stopifnot(nchar(prefix) > 0)
 
-    stopifnot(org %in% c("Homo sapiens", "Mus musculus", "Macaca mulata",
+    stopifnot(org %in% c("Homo sapiens", "Mus musculus", "Macaca mulatta",
                          "Rattus norvegicus"))
 
     stopifnot(db %in% c("Ensembl", "Gencode"))
@@ -120,8 +120,13 @@ prepare_anno <- function(prefix, org, db, release,
         ref_fasta <- ref_fasta[!stringr::str_detect(names(ref_fasta), "PAR_Y")]
     }
     if (db == "Ensembl") {
-        chromosomes <- names(ref_fasta) %>% str_extract("chromosome:[^:]*:[^:]*") %>% str_extract("[^:]*$")
-        std_chr <- GenomeInfoDb::genomeStyles(org)$NCBI
+        if (org == "Macaca mulatta") {
+            chromosomes <- names(ref_fasta) %>% str_extract("Mmul_[0-9]*:[^:]*") %>% str_extract("[^:]*$")
+            std_chr <- c(1:20, "X", "Y", "MT")
+        } else {
+            chromosomes <- names(ref_fasta) %>% str_extract("chromosome:[^:]*:[^:]*") %>% str_extract("[^:]*$")
+            std_chr <- GenomeInfoDb::genomeStyles(org)$NCBI
+        }
         ref_fasta <- ref_fasta[chromosomes %in% std_chr]
     }
     ref_fasta <- ref_fasta[width(ref_fasta) != 0]
@@ -166,7 +171,7 @@ prepare_anno <- function(prefix, org, db, release,
 }
 
 get_filename_and_url <- function(org, db, release) {
-    stopifnot(org %in% c("Homo sapiens", "Mus musculus", "Macaca mulata",
+    stopifnot(org %in% c("Homo sapiens", "Mus musculus", "Macaca mulatta",
                          "Rattus norvegicus"))
 
     stopifnot(db %in% c("Ensembl", "Gencode"))
@@ -218,14 +223,14 @@ get_filename_and_url <- function(org, db, release) {
                           release, "/", filename)
         }
     }
-    if (org == "Macaca mulata") {
+    if (org == "Macaca mulatta") {
         filename <- "Macaca_mulatta.Mmul_10.cdna.all.fa.gz"
-        url <- paste0(base_url_ensembl, release, "fasta/macaca_mulatta/cdna/",
+        url <- paste0(base_url_ensembl, release, "/fasta/macaca_mulatta/cdna/",
                       filename)
     }
     if (org == "Rattus norvegicus") {
         filename <- "Rattus_norvegicus.Rnor_6.0.cdna.all.fa.gz"
-        url <- paste0(base_url_ensembl, release, "fasta/rattus_norvegicus/cdna/",
+        url <- paste0(base_url_ensembl, release, "/fasta/rattus_norvegicus/cdna/",
                       filename)
     }
     list(filename = filename, url = url)
