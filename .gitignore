@@ -7,3 +7,5 @@ data-raw/*rds
 data-raw/*RData
 data-raw/*gz
 data-raw/*txt
+datasets/*
+*pdf

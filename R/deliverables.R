@@ -108,7 +108,7 @@ produce_deliverables <- function (dir_kallisto, anno, design, contrasts,
     readr::write_csv(counts, file.path(dir_output, "counts.csv"))
 
     # Produce DE
-    de <- produce_de(txi, design,  ~ group, use_ruv = use_ruv, ncores = ncores)
+    de <- produce_de(txi, design, contrasts,  ~ group, use_ruv = use_ruv, ncores = ncores)
     purrr::iwalk(de, ~ readr::write_csv(.x, file.path(dir_output, paste0(.y, ".csv"))))
 
     invisible(list(txi_tx = txi$tx,
