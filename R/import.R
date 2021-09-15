@@ -129,13 +129,14 @@ summarize_to_gene <- function(txi_tx, anno, ignoreTxVersion = FALSE) {
 
 arrange_anno <- function(anno) {
     lvls <- c("protein_coding", "miRNA", "lincRNA", "antisense", "snRNA",
-              "lncRNA", "scRNA", "vault_RNA", "Spike-in",
-              "sense_intronic", "misc_RNA", "snoRNA", "scaRNA", "rRNA",
+              "lncRNA", "scRNA", "vault_RNA", "Spike-in", "sense_intronic",
+              "misc_RNA", "snoRNA", "scaRNA", "rRNA",
               "3prime_overlapping_ncrna", "sense_overlapping", "sRNA",
               "ribozyme", "vaultRNA", "non_coding", "macro_lncRNA", "Mt_tRNA",
               "Mt_rRNA", "IG_C_gene", "IG_D_gene", "IG_J_gene", "IG_V_gene",
-              "TR_C_gene", "TR_D_gene", "TR_J_gene", "TR_V_gene",
-              "processed_transcript", "translated_processed_pseudogene",
+              "TR_C_gene", "TR_D_gene", "TR_J_gene", "TR_V_gene", "IG_LV_gene",
+              "IG_D_pseudogene", "processed_transcript",
+              "translated_processed_pseudogene",
               "translated_unprocessed_pseudogene",
               "transcribed_processed_pseudogene",
               "transcribed_unitary_pseudogene",
