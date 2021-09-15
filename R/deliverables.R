@@ -118,9 +118,7 @@ produce_deliverables <- function (dir_kallisto, anno, design, contrasts,
                    design = design,
                    contrasts = contrasts,
                    counts = counts,
-                   de = de,
-                   dds_genes = dds$genes,
-                   dds_tx = dds$tx))
+                   de = de))
 }
 
 # TODO: params
