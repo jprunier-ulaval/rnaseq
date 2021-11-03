@@ -42,41 +42,41 @@ produce_volcano <- function(de_res, fc_threshold = 3, graph = TRUE) {
     if (!is.data.frame(de_res)) {
         de_res <- as.data.frame(de_res)
     }
-    de_res <- dplyr::filter(de_res, !is.na(padj))
+    de_res <- dplyr::filter(de_res, !is.na(pvalue))
 
     # Rename qV to padj
     i <- stringr::str_detect(colnames(de_res), "qV")
     stopifnot(sum(i) %in% c(0,1))
     if (sum(i) == 1) {
-        colnames(de_res)[i] <- "padj"
+        colnames(de_res)[i] <- "pvalue"
     }
-    de_res <- dplyr::mutate(de_res, padj = as.numeric(padj),
+    de_res <- dplyr::mutate(de_res, pvalue = as.numeric(pvalue),
                             log2FoldChange = as.numeric(log2FoldChange))
 
     # Remove inf -log10(padj), i.e.: padj == 0
-    min_padj <- dplyr::filter(de_res, !is.na(padj), padj != 0) %>%
-        dplyr::arrange(padj) %>% head(1) %>% dplyr::pull(padj)
-    i <- de_res$padj == 0
-    de_res$padj[i] <- min_padj
+    min_pvalue <- dplyr::filter(de_res, !is.na(pvalue), pvalue != 0) %>%
+        dplyr::arrange(pvalue) %>% head(1) %>% dplyr::pull(pvalue)
+    i <- de_res$pvalue == 0
+    de_res$pvalue[i] <- min_pvalue
 
     # Add color
     de_res <- dplyr::mutate(de_res, color = grey) %>%
-        dplyr::mutate(color = dplyr::if_else(log2FoldChange <= log2(1/fc_threshold) & padj <= 0.05,
+        dplyr::mutate(color = dplyr::if_else(log2FoldChange <= log2(1/fc_threshold) & pvalue <= 0.05,
                                              blue, color)) %>%
-        dplyr::mutate(color = dplyr::if_else(log2FoldChange >= log2(fc_threshold) & padj <= 0.05,
+        dplyr::mutate(color = dplyr::if_else(log2FoldChange >= log2(fc_threshold) & pvalue <= 0.05,
                                       red, color))
 
     count_blue <- dplyr::filter(de_res, color == blue) %>% nrow
     count_red <- dplyr::filter(de_res, color == red) %>% nrow
     lbl <- c(count_blue, count_red) %>% as.character
-    count_y <- round(max(-log10(de_res$padj), na.rm = TRUE))
+    count_y <- round(max(-log10(de_res$pvalue), na.rm = TRUE))
     count_y <- count_y * 0.925
     min_x <- round(min(de_res$log2FoldChange, na.rm = TRUE))
     min_x <- min_x * 0.925
     max_x <- round(max(de_res$log2FoldChange, na.rm = TRUE))
     max_x <- max_x * 0.925
     p <- ggplot2::ggplot(de_res, ggplot2::aes(x = log2FoldChange,
-                                              y = -log10(padj),
+                                              y = -log10(pvalue),
                                               color = color)) +
         ggplot2::geom_point(size = 3, alpha = 0.8) +
         ggplot2::scale_colour_identity() +
